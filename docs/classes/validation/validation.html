@@ -43,31 +43,31 @@
 
 		<div id="main">
 
-			<h2>Validation Class</h2>
+			<h2>Класс Проверки (Validation Class)</h2>
 
 			<p>The Validation class helps you validate user input, if you want to create a form &amp; its validation at
 				the same time use the <a href="../fieldset.html">Fieldset</a> class instead.</p>
 
 			<ul>
-				<li><a href="#config">Configuration</a></li>
-				<li><a href="#usage">Usage</a></li>
-				<li><a href="#rules">Validation rules</a></li>
-				<li><a href="#extending_validation">Extending the Validation class</a></li>
-				<li><a href="errors.html">Validation Errors</a></li>
-				<li><a href="methods.html">Methods</a></li>
+				<li><a href="#config">Конфигурация</a></li>
+				<li><a href="#usage">Использование</a></li>
+				<li><a href="#rules">Правила проверки</a></li>
+				<li><a href="#extending_validation">Рассширение класса проверки</a></li>
+				<li><a href="errors.html">Ошибки при проверке</a></li>
+				<li><a href="methods.html">Методы</a></li>
 			</ul>
 
 			<article>
-				<h3 id="config">Configuration</h3>
+				<h3 id="config">Конфигурация</h3>
 
 				<p>Optionally, the validation class can be configured through the global application configuration file, <strong>app/config/config.php</strong>. Define a section called '<strong>validation</strong>', in which the following settings can be defined:</p>
 				<table class="method">
 					<tbody>
 						<tr>
-							<th>Variable</th>
-							<th>Type</th>
-							<th>Default</th>
-							<th class="description">Description</th>
+							<th>Переменные</th>
+							<th>Тип</th>
+							<th>Значение по умолчанию</th>
+							<th class="description">Описание</th>
 						</tr>
 						<tr>
 							<th><kbd>no_errors</kbd></th>
@@ -118,7 +118,7 @@
 			</article>
 
 			<article>
-				<h3 id="usage">Usage</h3>
+				<h3 id="usage">Использование</h3>
 
 				<p>To start validation you need to create an object, this can be the default object named "default" or
 				you can name it if you need multiple validation objects.</p>
@@ -190,7 +190,7 @@ $val->run(array('password' => 'whatever'), true);</code></pre>
 			</article>
 
 			<article>
-				<h3 id="rules">Validation rules</h3>
+				<h3 id="rules">Правила проверки</h3>
 
 				<p>Note that all methods (even min_length) will also return true on empty input. To also require the field
 				you must add the rule "required" as well.</p>
@@ -204,9 +204,9 @@ $val->add_field('email', 'Email address', 'match_value[me@mydomain.com,1]|valid_
 				<table class="config">
 					<tbody>
 						<tr class="header">
-							<th>Rule</th>
-							<th>Additional parameters</th>
-							<th>Description</th>
+							<th>Правило</th>
+							<th>Дополнительные параметры</th>
+							<th>Описание</th>
 						</tr>
 						<tr>
 							<th>required</th>
@@ -386,7 +386,7 @@ $val->add_field('email', 'Email address', 'match_value[me@mydomain.com,1]|valid_
 			</article>
 
 			<article>
-				<h4 id="extending_validation">Extending the Validation class</h4>
+				<h4 id="extending_validation">Расширение класса проверки</h4>
 				<p>There are few approaches to extend the validation class:</p>
 				<p>1. To extend the core class like described in the <a href="../../general/extending_core.html">Extending Core Classes</a></p>
 				<p>2. To create a class in <b>app/classes/myrules.php</b> (for example)</p>
