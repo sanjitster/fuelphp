@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../';
+	</script>
+	<script src="./../../assets/js/combined.js"></script>
+	<title>Introduction - Oil Package - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Documentation
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">table of contents</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+            <iframe width="640" height="360" src="http://www.youtube.com/embed/iUa8kg9_pE8" frameborder="0" allowfullscreen></iframe>
+            <h2>Если у вас Windows</h2>
+            <p>
+                Очень часто локальная разработка ведется на машинах под управлением ОС Windows, всвязи с чем могут возникнуть
+                трудности при работе из коммандной строки. Чтобы комманды работали как нужно, запрос должен выглядеть так:
+
+
+            </p>
+            <pre class="cli"><code>$ cd v:/Sites/fuel
+$ v:/usr/local/php5/php.exe oil -v
+Fuel: 1.1</code></pre>
+
+            <p>
+                О том как настроить тут <a href="http://www.php.ru/manual/install.windows.commandline.html">install_windows_commandline</a>
+            </p>
+
+			<h2>Oil утилита</h2>
+
+			<p>Oil это специальная коммандная утилита, которая может быть использована несколькими способами,
+                например для ускорения разработки приложения, а также его тестирования и запуска отложенных заданий
+                (<a href="../../general/tasks.html">Tasks</a>).</p>
+
+			<section>
+
+				<p>Oil является опциональной утилитой коммандной строки для ускорения разработки предоставляя несколько функций:</p>
+
+				<ul>
+					<li><a href="../../packages/oil/generate.html">Generate</a> - Создание MVC компонентов, миграций и скафолдинга.</li>
+					<li><a href="../../packages/oil/refine.html">Refine</a> - Запуск отложенных заданий таких как миграция и своих собственных.</li>
+					<li><a href="../../packages/oil/package.html">Package</a> - Установка, апдейт и удаление пакетов.</li>
+					<li><a href="../../packages/oil/console.html">Console</a> - Тестирование вашего кода в режиме реально времени используя интерактивный шелл(shell - оболочка).</li>
+				</ul>
+
+				<p>
+					Каждая из этих комманд работает по своему достигая различных результатов, но перед тем, как ими воспользоваться
+                    лучше всего убедиться, что вы в нужной папке, а oil доступна и запущена.
+				</p>
+
+				<pre class="cli"><code>$ cd Sites/fuel
+$ php oil -v
+Fuel: 1.1</code></pre>
+
+				<h3 id="help">Помощь(Inline Help)</h3>
+
+				<p>Oil содержит простую документацию внутри себя которая может быть вызвана коммандой:</p>
+
+				<pre class="cli"><code>$ php oil help
+
+Usage:
+  php oil [console|generate|help|test|package]
+
+Runtime options:
+  -f, [--force]    # Заменять файлы, которые уже существуют
+  -s, [--skip]     # Пропускать файлы, которые уже существуют
+  -q, [--quiet]    # Подавлять статус ответа
+
+Description:
+  The 'oil' command can be used in several ways to facilitate quick development, help with
+  testing your application and for running Tasks.
+
+Documentation:
+  http://docs.fuelphp.com/packages/oil/intro.html
+</code></pre>
+
+				<p>Каждая из этих команд имеет свой раздел справки, который можно найти, например введя:</p>
+
+				<pre class="cli"><code>$ php oil generate help</code></pre>
+
+			</section>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>ViewModels - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<article>
+				<h2>ViewModel(представления-модели)</h2>
+
+				<p>ViewModels необязательны. Если они вам не нужны, используйте представления.</p>
+
+				<h3 id="what_is_a_viewmodel">Что такое ViewModel?</h3>
+
+				<p>ViewModel - класс, содержащий логику, необходимую для генерации ваших представлений. Когда контроллер заканчивает обработку ввода пользователя и заканчивает все действия, которые он должен был сделать, он передает выполнение ViewModel, чтобы он извлек все данные, требуемые для представления. ViewModel не должен выполнять никаких преобразований данных,
+				но может содержать вызовы базы данных и любые другие операции извлечения или подготовки, требуемые для генерации данных представления.</p>
+
+				<h3 id="creating_viewmodels">Создание ViewModel</h3>
+
+				<p>Сперва создается пустой ViewModel в <code>app/classes/view/index.php</code>:</p>
+
+				<pre><code>class View_Index extends ViewModel {}</code></pre>
+
+				<p>Затем в <code>app/views/index.php</code> создается представление, к которому он принадлежит:</p>
+
+				<pre><code>&lt;h1&gt;&lt;?php echo $title; ?&gt;&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;?php
+	foreach ($articles as $a)
+	{
+		echo '&lt;li&gt;'.$a-&gt;title.'&lt;/li&gt;';
+	}
+?&gt;
+&lt;/ul&gt;</code></pre>
+
+				<p class="note"><strong>Имена представлений</strong><br />
+				Ожадется, что ViewModel и его представление имеют одинаковое имя. Следовательно,
+				ViewModel <code>View_Index</code> ожидает, что представление будет в <code>app/views/index.php</code>. Здесь символы подчеркивания работают точно так же, как и с классами, а значит, ожидается, что представление для <code>View_Some_Thing</code> находится в <code>app/views/some/thing.php</code>.<br />
+				Данную стандартную настройку можно переписать путем установки нестатического свойства<code>$_view</code> в вашем ViewModel с именем представления (без суффикса .php).</p>
+
+				<p>В конце вызывается ViewModel из контроллера:</p>
+
+				<pre><code>ViewModel::forge('Index');</code></pre>
+
+				<p>Теперь настройка завершена; но представлению все еще не передаются никакие данные. Ему все еще нужно получить строку
+				<code>$title</code> и массив <code>$articles</code>, переданные ему. Это делается путем добавления метода <code>view()</code> в ViewModel, который будет присваивать эти данные:</p>
+
+				<pre><code>class View_Index extends ViewModel
+{
+
+	public function view()
+	{
+		$this->title = 'Testing this ViewModel thing';
+
+		$this->articles = Model_Articles::find('all');
+	}
+}</code></pre>
+
+				<p>Работа закончена.</p>
+
+				<h3 id="functions">Передача функций представлениям</h3>
+
+				<p>Чтобы передать связанную с представлением функцию из вашего ViewModel в ваше представление, воспользуйтесь замыканиями<a href="http://www.php.net/manual/functions.anonymous.php"></a>:</p>
+
+				<pre class="php"><code>// В ViewModel
+class View_Index extends ViewModel
+{
+
+	public function view()
+	{
+		$this->echo_upper = function($string) { echo strtoupper($string); };
+	}
+}
+
+// Который вы затем можете использовать в вашем представлении:
+$echo_upper('this string'); // Выходные данные: "THIS STRING"</code></pre>
+			</article>
+
+			<article>
+			  <h3 id="security">Защита</h3>
+
+				<p>Она работает так же, как и в представлении. Это означает, что все, заданное в ViewModel, будет кодироваться на выходе, если вы не отключите данную функцию. Вы можете использовать такой же метод <code>set($name, $value, $encode)</code> в ViewModel, как бы вы использовали их непосредственно в представлении. Более подробно об этом в разделе защита представления<a href="views.html#security"></a>.</p>
+			</article>
+
+			<article>
+			  <h3 id="advanced">Усложненное использование</h3>
+
+				<h4 id="more_methods">Дополнительные методы</h4>
+
+				<p>Если существуют разные способы синтаксического разбора одного и того же представления, вы можете добавить несколько методов в ViewModel, отличных от стандартного метода <code>view()</code>. Чтобы использовать это, вы должны добавить имя метода в качестве второго параметра в метод 
+				<code>ViewModel::forge()</code>:</p>
+
+				<pre><code>// будет вызывать other_method() в ViewModel из вышеприведенного примера
+ViewModel::forge('Index', 'other_method');</code></pre>
+
+				<h4 id="before_after">Методы перед и после</h4>
+
+				<p>Если вам нужно добавить некоторые данные для всех методов в ViewModel, вы можете добавить метод <code>before()</code>
+				или <code>after()</code>, так же как и для контроллеров.</p>
+
+				<h4 id="changing_view">Замена представления</h4>
+
+				<p>По умолчанию <code>$this->_view</code> извлекает объкт представления, присвоенный ему. Вы можете заменить этот объект путем создания вашего собственного метода <code>set_view()</code> в ViewModel и установки <code>$this->_view</code> в выбранный вами объект.<br />
+				Однако данный объект должен позволять вам устанавливать в нем свойства (используемые в качестве данных шаблона) и должен иметь магический метод <code>__toString()</code>,  который будет формировать и возвращать разобранное содержимое.<br />
+				Имя ожидаемого представления доступно в свойстве <code>$this->_view</code>.</p>
+
+				<h4>Использование ViewModels из других пространства имен или без префикса View_</h4>
+
+				<p>Если вы хотите использовать их, вы должны использовать полное имя класса с <code>factory()</code>, включая пространство имен.
+				В этих случаях стандартное именование часто не работает как ожидается, поэтому настоятельно рекомендуется установить свойство <code>$_view</code>.</p>
+			</article>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

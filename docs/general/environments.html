@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Environments - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+				
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+				
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+		
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+		
+		<div id="main">
+		
+			<h2>Среды</h2>
+			
+			<p>
+				Поддержка сред помогает FuelPHP и вашему приложению принимать решения на основе настроек среды.
+				FuelPHP сам использует настройки среды, чтобы загружать/переписывать дополнительные настройки конфигурации исходя из того, какая среда активна в данный момент.  	
+			</p>
+			
+			<h3 id="possible_envs">Список сред</h3>
+			
+			<p>
+				FuelPHP имеет четыре встроенных среды.
+			</p>
+
+			<ul>
+				<li>
+					<strong>\Fuel::DEVELOPMENT</strong><br/>
+					Среда разработки.
+				</li>
+				<li>
+					<strong>\Fuel::TEST</strong><br/>
+					Среда тестирования.
+				</li>
+				<li>
+					<strong>\Fuel::STAGE</strong><br/>
+					Среда переноса.
+				</li>
+				<li>
+					<strong>\Fuel::PRODUCTION</strong><br/>
+					Среда производства.
+				</li>
+			</ul>
+			
+			<h3 id="setting_env">Настройка вашей среды</h3>
+			
+			<p>
+				Настройка вашей среды выполняется путем установки <em>серверной переменной FUEL_ENV</em> или путем ручного изменения настроек в <em>fuel/app/bootstrap.php</em>.
+			</p>
+			
+			<pre class="php"><code>// Внутри app/bootstrap.php
+			
+/**
+ * Ваша среда.  Может быть установлена на любую из следующих:
+ *
+ * Fuel::DEVELOPMENT
+ * Fuel::TEST
+ * Fuel::STAGE
+ * Fuel::PRODUCTION
+ */
+Fuel::$env = (isset($_SERVER['FUEL_ENV']) ? $_SERVER['FUEL_ENV'] : Fuel::DEVELOPMENT);</code></pre>
+			
+			<h3 id="env_config">Среды и конфигурация</h3>
+			
+			<p>
+				Исходя из среды, на которую настроено приложение, класс конфигурации ищет связанные со средой файлы конфигурации.
+				Класс конфигурациибудет искать такое же имя файла конфигурации в каталоге, названном именем текущей среды.
+				Пример ниже иллюстрирует это:
+			</p>
+			
+			<pre class="plain"><code>app/
+  config/
+    stuff.php
+      development/
+        stuff.php
+      production/
+        stuff.php</code></pre>
+			
+			<p>
+				Когда ваша среда установлена на <kbd>\Fuel::DEVELOPMENT</kbd>, настройки из <em>stuff.php</em> объединяются с <em>development/stuff.php</em>.
+				Если параметр среды установлен в любой, отличный от <kbd>\Fuel::DEVELOPMENT</kbd>, дополнительный файл конфигурации не загружается. Это же верно для любого другого параметра среды, который вы можете использовать.
+			</p>
+			
+			<p>
+				Практический пример этого - конфигурация базы данных. Отсутствуют параметры конфигкрации по умолчанию (это может быть очень опасным).  Есть только связанные со средой параметры конфигурации.
+			</p>
+		
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

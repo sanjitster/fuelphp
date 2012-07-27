@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Configuration - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2>Расширение классов ядра</h2>
+
+			<p><strong>Обязательно знайте, что вы делаете, расширенные методы ядра под одним и тем же именем будут использоваться ядром, а также вашим приложением, что может привести к неожиданному поведению.</strong></p>
+
+			<ul>
+				<li><a href="#extend_dont_replace">Расширение без замены класса ядра</a></li>
+				<li><a href="#extend_and_replace">Расширение и замена классов ядра</a></li>
+				<li><a href="#extend_from_packages">Расширение ядра из пакетов</a></li>
+				<li><a href="#extension_limitations">Ограничения расширения</a></li>
+			</ul>
+
+			<article>
+				<h3 id="extend_dont_replace">Расширение без замены класса ядра</h3>
+
+				<p>Это простейшее, работает так же, как любые другие созданные вами классы; заставьте их расширять класс ядра в глобальном пространстве имен:</p>
+
+				<pre><code>class MyConfig extends Config {}</code></pre>
+			</article>
+
+			<article>
+			  <h3 id="extend_and_replace">Расширение и замена классов ядра</h3>
+
+				<p>IЕсли вы хотите, чтобы ваше расширение ядра использовалось и ядром, и вашим собственным приложением, вы должны расширить его под таким же именем, но взять его из пространства имен "Fuel\Core". Ниже приведен пример для класса Config, который вы создаете в "fuel/app/classes/config.php":</p>
+
+				<pre><code>class Config extends Fuel\Core\Config {}</code></pre>
+
+				<p>Но классы, имеющие такое же имя, что и классы ядра, игнорируются по умолчанию. Чтобы заставить автозагрузчик распознать вашу замену, вы должны зарегистрировать его в файле самозагрузки приложения. Ищите строки ниже:</p>
+
+				<pre><code>Autoloader::add_classes(array(
+	// Сюда добавьте классы, которые вы хотите заменить
+	// Пример: 'View' => APPPATH.'classes/view.php',
+));</code></pre>
+
+				<p>Как объясняется в комментариях, вы должны добавить новый класс Config следующим образом:</p>
+
+				<pre class="php"><code>Autoloader::add_classes(array(
+	// Сюда добавьте классы, которые вы хотите заменить
+	// Пример: 'View' => APPPATH.'classes/view.php',
+	'Config' => APPPATH.'classes/config.php',
+));</code></pre>
+
+				<p>После этого класс ядра будет заменен вашим расширением.<br />
+				Замечание: класс ядра все же будет доступен при использовании с префиксом в виде полного пространства имен. В вышеприведенном примере расширения "Config" вы можете использовать исходный класс путем вызова "Fuel\Core\Config".</p>
+			</article>
+
+			<article>
+			  <h3 id="extend_from_packages">Расширение ядра из пакетов</h3>
+
+				<p>Путем добавления вашего пакета в качестве пространства имен ядра автозагрузчик попытается загрузить любой класс из вашего пакета
+					перед попыткой загрузить его из ядра. Вы должны зарегистрировать эти классы в автозагрузчике, чтобы они были обнаружены (автозагрузчик файловой системы не поддерживает совмещения имен с глобальными). Ниже дан пример расширения класса <kbd>View</kbd>.</p>
+
+				<pre class="php"><code>Autoloader::add_core_namespace('Example');
+
+Autoloader::add_classes(array(
+	'Example\\View'  => __DIR__.'/classes/view.php',
+));</code></pre>
+			</article>
+
+			<article>
+				<h3 id="extension_limitations">Ограничения расширения</h3>
+
+				<p>Большинств классов могут быть расширены из приложения и пакетов, но есть несколько исключений:</p>
+
+				<ul>
+					<li><kbd>Fuel</kbd></li>
+					<li><kbd>Config</kbd></li>
+					<li><kbd>Profiler</kbd></li>
+					<li><kbd>Security</kbd></li>
+					<li><kbd>Event</kbd></li>
+					<li>Любой класс, используемый вами в главном <kbd>app/config/config.php</kbd></li>
+				</ul>
+
+				<h4>Автозагрузчик</h4>
+				<p>Класс автозагрузчика - особый случай, вы можете расширить его лишь однажды как<code>Autoloader</code> и использовать его. После его расширения вы должны затребовать его вручную <kbd>в файле app/bootstrap.php</kbd>
+					после оригинального<code>Fuel\Core\Autoloader</code>, не забывайте убрать строку, дающую глобальный псевдоним классу ядра.</p>
+			</article>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

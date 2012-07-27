@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Packages - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2>Пакеты</h2>
+
+			<p>
+                Когда дело доходит до организации приложения и повторного использования решения в других приложениях,
+                пакеты являются отличным вариантом для того, чтобы делать всё это наиболее быстро и эффективно.
+                Пакеты могут содержать всевозможный код например: модели, сторонние библиотеки, конфиги и т.д.
+                Пакеты также позволяют расширять ядро без app/classes каталога.
+			</p>
+
+			<h4 id="they_are">Пакеты...</h4>
+			<ul>
+				<li>отличный способ организации кода,</li>
+				<li>отличный способ и место для подключения сторонних библиотек,</li>
+				<li>позволяют вам расширять другие пакеты без лишней возни с кодом,</li>
+				<li>позволяют расширять ядро fuel без возни с кодом ядра.</li>
+			</ul>
+
+			<h4 id="they_are_not">Но..</h4>
+			<ul>
+				<li>пакеты это не контроллеры и не имеют с URL вызовами ничего общего,</li>
+				<li>а также не являются дочтупными через HMVC запросы</li>
+			</ul>
+
+			<h3 id="installing">Установка пакетов</h3>
+			<p>Установить пакет можно вручную или через утилиту <a href="../packages/oil/package.html">oil</a>.
+                Для ручной установки скачайте нужный пакет и закиньте в папку пакетов
+                (по дефолту это fuel/packages).</p>
+			<p class="note">Чтобы использовать пакет его нужно добавить в <code>always_load</code> в
+			<code>app/config/config.php</code> или использовать <a href="../classes/package.html#method_load">Package::load()</a>.
+            Ещё вы можете добавить его в автозагрузку в bootsrap.php</p>
+
+			<h3 id="creation">Создание пакетов</h3>
+			<p>Чтобы пакет был более понятен, стройте его внутреннюю структуру как тут:</p>
+
+			<pre><code>/packages
+    /package
+        /bootstrap.php
+        /classes
+            /your.php
+            /classes.php
+            /here.php
+        /config
+            /packageconfig.php
+        /and_so_on
+</code></pre>
+
+			<p>
+				Каждый пакет ожидает наличие файла <em>bootstrap.php</em> расположение смотрите выше.
+				В bootstrap вы можете добавить в автозагрузку namespace, классы и т.д.
+			</p>
+
+			<pre class="php"><code>// Добавление пространства имен, необходимо, второй параметр показывает автозагрузчику местоположение классов
+Autoloader::add_namespace('Mypackage', __DIR__.'/classes/');
+
+// Добавляем в качестве основного пространства имен(чтобы глобално можно было вызывать классы без неймспейспрефикса)
+Autoloader::add_core_namespace('Mypackage');
+
+// Установите второй аргумент в <kbd>true</kbd> что бы перезаисать префиксы класса ядра
+Autoloader::add_core_namespace('Mypackage', true);
+
+// Добавление классов для:
+// - оптимизация: не нужно искать пути до вызываемого класса
+// - это необходимо, чтобы иметь возможность использовать в качестве основного пространство имен
+// - если вы хотите нарушить правила поиска путей автозагрузчика
+Autoloader::add_classes(array(
+	'Mypackage\\Classname' => __DIR__.'/classes/classname.php',
+	'Mypackage\\Anotherclass' => __DIR__.'/classes/anotherclass.php',
+));
+</code></pre>
+
+			<p>Таким образом имея свой собственный класс или библиотеку вы можете начать их использовать.</p>
+
+			<p class="note">Примечание: если пространство имен пакета привязано к глобальному то небходимо это указать:</p>
+
+			<pre class="php"><code>// Если привязан к глобальному
+$instance = new Myclass;
+
+// Если не привязан к глобальному
+$instance = new Mynamespace\Myclass;
+</code></pre>
+
+
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>HMCV Requests - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2>Запросы HMVC</h2>
+            <iframe width="640" height="360" src="http://www.youtube.com/embed/MP7XbqCQVUA" frameborder="0" allowfullscreen></iframe>
+			<p>
+				Запросы HMVC - отличный способ отделения логики и повторного использования логики контроллера в нескольких местах.
+				Он широко применяется, когда вы используете движок тем или шаблонов для генерации страниц,
+				когда каждая страница поделена на разделы, а разделы заполняются виджетами.
+				Используя модули для порождения вывода виджетов, вы можете создать крайне модульное приложение с удобными для повторного использования компонентами.
+			</p>
+
+			<p>Вы вызываете метод констроллера модуля с помощью класса <a href="../classes/request.html">Request</a>(запрос):</p>
+			<pre class="php"><code>// извлекаем вывод контроллера
+$widget = Request::forge('mycontroller/mymethod/parms')->execute();
+echo $widget;
+
+// или извлекаем вывод модуля
+$widget = Request::forge('mymodule/mycontroller/mymethod/parms', false)->execute();
+echo $widget;
+</code></pre>
+			<p class="note">
+				По умолчанию все выполняемые запросы обрабатываются механизмом маршрутизации Fuel. Если вам нужно запросить нечто не маршрутизируемое
+				(например, так как вы не хотите, чтобы браузер запрашивал это), вы должны передать '<strong>false(ложь)</strong>' в качестве второго параметра при вызове forge(). Если вы не сделаете этого, то получите ошибку 404 при выполнении запроса!
+			</p>
+
+			<p>
+				Загрузка представлений в запросе HMVC такая же, как и в нормальных запросах, и контроллеры, вызываемые запросом HMVC, также доступны через браузер. Однако в некоторых случаях вам может быть не нужно, чтобы компонент  (например, виджет) 
+				вызывался через браузер. В таких случаях вам придется проверять, сделан ли запрос через HMVC или через браузер. 
+				Следующий пример покаывает, как проверять на запрос HMVC:
+			</p>
+
+			<pre class="php"><code>&lt;?php
+
+class Controller_Widget extends Controller
+{
+
+	public function action_show()
+	{
+		if(Request::main() === Request::active())
+		{
+			// это главный запрос
+		}
+		else
+		{
+			// это запрос HMVC
+		}
+	}
+
+}</code></pre>
+
+			<h3>404 во время запросов HMVC</h3>
+
+			<p>
+				Когда 404 появляется во время запроса HMVC, выдается <kbd>HttpNotFoundException</kbd>. Если оно не поймано, оно запустит полное сообщение 404 с помощью<kbd>Request::show_404()</kbd>. Однако вы можете предотвратить это и сами обработать 404:
+			</p>
+
+			<pre class="php"><code>try
+{
+	\Request::forge('this_will_fail');
+}
+catch (HttpNotFoundException $e)
+{
+	// обработка исключения
+}
+</code></pre>
+
+			<h3>Обход экземпляров запроса</h3>
+
+			<p>Если вы хотите получить доступ к другим запросам, вы можете обойти их с помощью двух методов:
+				<kbd>$request->parent()</kbd> и <kbd>$request->children</kbd>. Родитель - запрос, во время которого был создан текущий запрос (<kbd>пустой для главного запроса</kbd>). Потомок - все запросы,
+				созданные во время текущего запроса.</p>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

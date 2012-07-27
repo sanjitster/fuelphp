@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Modules - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">оглавление</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+        <iframe width="640" height="360" src="http://www.youtube.com/embed/KsgFJXJzxKI" frameborder="0" allowfullscreen></iframe>
+        <iframe width="640" height="360" src="http://www.youtube.com/embed/jxjuLIRAttM" frameborder="0" allowfullscreen></iframe>
+        <iframe width="640" height="360" src="http://www.youtube.com/embed/0pHNJk7XTPw" frameborder="0" allowfullscreen></iframe>
+        <h2>Модули</h2>
+
+			<h3>Что такое модуль?</h3>
+
+			<p>
+				Модуль - группа независимых элементов MVC. Использование модулей обеспечивает многократное использование и инкапсуляцию (сокрытие) вашего кода.
+				Модуль обычно хранится внутри подкаталога приложения с именем <strong>modules(модули)</strong>.
+				Рекомендуется использовать модули всегда, когда вы работаете над крупным проектом,
+				база кода которого будет состоять больше чем из нескольких строк кода.
+				Модули помогут вам держать весь код в порядке.
+			</p>
+
+			<p>
+				Модуль может работать независимо, как, например, модуль блога или модуль альбома. Вы можете прокладывать маршрут непосредственно в контроллеры модулей, не обращаясь ни к какому глобальному коду.
+				Модули могут использоваться в настоящем контексте HMVC, где контроллеры вызывают другие контроллеры, вырабатывающие (часть) результат, необходимый для генерации результата запроса страницы.
+			</p>
+
+			<h3 id="module_config">Конфигурация модуля</h3>
+
+			<p>
+				Чтобы начать использовать модули, вы должны сообщить Fuel, где хранятся ваши модули.
+				По умолчанию это папка modules в папке app. Используйте параметр 'modules_path' в файле config.php вашего приложения, чтобы задать ваш собственный путь к модулям.
+				Также можно задать несколько путей. Если вы это сделаете, они будут обыскиваться в той последовательности, в какой вы их указали.
+			</p>
+
+			<pre class="php"><code>/**
+ * Чтобы обеспечить разбиение приложения на модули, маршрут к которым прокладывается
+ * по первой части uri, вы должны задать их базовые пути
+ * здесь.
+ */
+'module_paths' => array(
+	APPPATH.'modules'.DS,		// путь к модулям приложения
+	APPPATH.'..'.DS.'globalmods'.DS	// путь к глобальным модулям
+),
+</code></pre>
+			<p>Когда вы определите ваши пути, убедитесь, что они заканчиваются DS, разделителем отдельных каталогов платформы Fuel.</p>
+
+			<h3 id="module_namespace">Пространство имен модуля</h3>
+
+			<p>Одна из проблем, часто встречающихся при работе с независимо разработанным кодом, - конфликты имен классов. Например, многие модули включают в себя контроллер admin (администрирование). Чтобы избежать конфликтов, в Fuel каждый модуль находится в своем собственном прстранстве имен PHP, которое должно называться так же, как и имя папки модуля.</p>
+
+			<pre class="php"><code>&lt;?php
+/**
+ * Констроллер модуля в модуле Mymodule
+ */
+
+namespace Mymodule;
+
+class Controller_Widget extends \Controller
+{
+
+	// поместите сюда код вашего контроллера, точно так же как для контроллера приложения
+}
+</code></pre>
+
+			<h3 id="folder_structure">Структура папки модуля</h3>
+
+			<p>
+				Создание модуля начинается с создания папки для вашего нового модуля в паке модули, заданной вами в конфигурации.
+				Имя папки определяет имя модуля, и имя пространства имен для классов в модуле.
+				Это имя также используется в URI, если вам нужно проложить маршрут к контроллерам модуля, или в составе запроса<a href="../classes/request.html"></a> в случае вызова HMVC.
+			</p>
+			<p>
+				Так как модуль можно рассматривать как автономную часть приложения, вы заметите, что структура папки модуля очень знакомая.
+				Она идентична структуре папки приложения. Для модуля поддерживается следующая струтура папки:
+			</p>
+			<ul style="margin-top:-20px">
+				<li>classes
+					<ul style="padding-bottom:0px;">
+						<li>controller</li>
+						<li>model</li>
+						<li>view</li>
+					</ul>
+				</li>
+				<li>config</li>
+				<li>lang</li>
+				<li>views</li>
+			</ul>
+
+			<p class="note">
+				<strong>Замечание:</strong> В момент написания задачи внутри модуля еще не поддерживаются.
+			</p>
+
+			<h3 id="cross_module_file_loading">Перекрестная загрузка файлов модулей</h3>
+
+			<p>
+				Будь то файл конфигурации или файл представления, при перекрестной загрузке файла модуля модуль должен быть указан перед именем файла:
+			</p>
+
+			<pre class="php"><code>// Перекрестная загрузка конфигурации
+\Config::load('othermodule::myconfig');
+
+// Перекрестная загрузка представления
+\View::forge('othermodule::subdir/view');</code></pre>
+
+			<h3 id="module_routing">Маршрутизация модуля</h3>
+
+			<p>
+				Когда вы используете модули в режиме маршрутизации, вы можете добавлять пользовательские маршруты в ваш модуль, включая <b>routes.php</b> в вашу папку конфигурации модулей.
+				Эти маршруты будут загружаться, когда Fuel обнаружит, что первая часть URI ссылается на модуль, и только маршруты данного модуля будут загружаться.
+				Эти маршруты будут добавлены к началу массива маршрутов, поэтому возможный (:any) маршрут в конфигурации основных маршрутов не будет совпадать до обработки маршрутизации модуля.
+			</p>
+
+			<p>
+				Маршруты модуля нельзя использовать для задания маршрутов для глобальной маршрутизации или маршрутов для других модулей.
+				Иначе говоря, левая сторона всегда должна включать текущий модуль в качестве первой части URI.
+				Для правой стороны можно использовать все, описанное в разделах выше, вполне допустимо задать маршрут модуляк контроллеру приложения или к другому модулю.
+			</p>
+
+			<h3 id="modules_and_hmvc">Модули и запросы HMVC</h3>
+
+			<p>
+				Кроме использования моделей в качестве способа отделения логически независимых частей вашего приложения,
+				также можно использовать контроллеры модуля в контексте HMVC, когда один из контроллеров вашего приложения вызывает один или больше контроллеров модуля,
+				чтобы создать конечный результат запрошенного URI.
+			</p>
+
+			<p>
+			Дополнительную информацию читайте в документации запросов <a href="./hmvc.html">HMVC</a>. </p>
+
+			<h3 id="static_calls">Использование классов модуля за пределами модуля</h3>
+
+			<p>
+				Можно использовать классы модуля за его пределами.
+				Чтобы это работало, Fuel должен суметь автоматически загрузить класс, когда вы ссылаетесь на него в вашем коде.
+				А значит, вы должны собщить Fuel, где найти модуь. Есть два способа сделать это.
+			</p>
+
+			<p>
+				Вы можете предварительно загрузить модуль, указав модуль для загрузки в параметре<code>'always_load'</code>,
+				<code>'modules'</code> файла <code>config.php</code> вашего приложения:
+			</p>
+
+			<pre class="php"><code>'always_load' => array(
+
+	/**
+	 * Эти модули всегда загружаются при запуске Fuel. Вы можете указать их
+	 * следующим образом:
+	 *
+	 * array('module_name');
+	 *
+	 * Чтобы это работало, нужно указать путь в module_paths.
+	 */
+	'modules'	=> array('mymodule'),</code></pre>
+
+			<p>Или же можно добавить модуль вручную во время выполнения, перед использованием любого из статических методов:</p>
+
+			<pre class="php"><code>// добавляем модуль Mymodule в Fuel
+\Module::load('mymodule');</code></pre>
+
+			<p>Затем вы вызываете класс модуля таким образом:</p>
+            <pre class="php"><code>// Напомним, вызываемый метод статичен
+\Mymodule\Myclass::mymethod('params');
+
+//Если вам нужен объект, делайте так
+$obj = new \Mymodule\Myclass();
+$res = $obj->mymethod('params');
+
+//Ещё примеры
+//Модуль Test -----------------
+namespace Test;
+
+
+class Controller_Test extends \Controller {
+
+    public function get(){
+
+        \Module::load('testbase');
+
+        $hi = \Testbase\Controller_Testbase::get();
+
+        $obj = new \Testbase\Controller_Testbase();
+        $me = $obj->getMe();
+        $any = $obj->getAny('Что-то');
+
+        $view =
+            'Привет! '
+            .$hi
+            .$me
+            .$any;
+
+        return $view;
+
+
+    }
+
+    public function action_index(){
+
+        return $this->get();
+
+    }
+
+}
+
+//Модуль Testbase ---------------------
+namespace Testbase;
+
+
+class Controller_Testbase extends \Controller {
+
+    //Важно - Перегружаем конструктор
+    function __construct(){}
+
+    public static function get(){
+
+        return $helo = 'Hi!';
+
+    }
+
+    public function getMe(){
+
+        return $hello = 'Me!';
+
+    }
+
+    public function getAny($d){
+
+        return $d;
+
+    }
+
+}
+
+
+
+
+
+//Чтобы не перегружать конструктор можно сделать так
+namespace Testbase;
+
+
+class Controller_Testbase extends \Controller {
+
+    public static $instance = null;
+
+    public static function instance(){
+
+       if(!self::$instance){
+           self::$instance = new \Testbase\Controller_Testbase();
+       }
+
+          return self::$instance;
+
+    }
+
+    public function getMe(){
+
+        return $hello = 'Me!';
+
+    }
+
+    public function getAny($d){
+
+        return $d;
+
+    }
+
+}
+
+
+
+
+namespace Test;
+
+
+class Controller_Test extends \Controller {
+
+    public function get(){
+
+        \Module::load('testbase');
+
+        $obj = \Testbase\Controller_Testbase::instance();
+
+        $me = $obj->getMe();
+        $any = $obj->getAny('Oh yes)!');
+
+        $view =
+            'Hi! '
+            .$me
+            .$any;
+
+        return $view;
+
+
+    }
+
+    public function action_index(){
+
+        return $this->get();
+
+    }
+
+}
+
+
+
+//fuel\core\classes\controller.php - модифицируем
+
+ public function __construct(\Request $request, \Response $response)
+at
+ public function __construct(\Request $request = null, \Response $response = null)
+
+</code></pre>
+	</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

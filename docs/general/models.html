@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Models - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2>Модели</h2>
+
+			<h3>Что такое модели?</h3>
+
+			<p>
+				Всегда, когда данные должны быть извлечены, обработаны или удалены, это должно делаться с помощью модели. Модель является представлением некоторого вида данных и содержит методы для их изменения. Например: вы никогда не вставляете запросы SQL в контроллер, они вставляются в модель, и контроллер будет вызывать модель для выполнения запросов. Таким образом, если ваша база данных изменится, вам не придется менять все ваши контроллеры, придется изменить лишь модель, воздействующую на нее.
+			</p>
+
+		  <h3 id="using_models">Как используются модели?</h3>
+
+			<p>
+				В Fuel модель в сущности является таким же классом, как и любой другой. Они образуют не что иное, как библиотеку, но префикс Model_ prefix
+				помогает отоичать ее от других классов. Чтобы сделать нечто полезное с помощью модели, нужно использовать другие классы.
+			</p>
+
+			<h3 id="creating_models">Создание модели</h3>
+
+			<pre class="php"><code>
+namespace Model;
+
+class Welcome extends \Model {
+
+    public static function get_results()
+    {
+        // Взаимодействия с базой данных
+    }
+
+}</code></pre>
+
+			<p class="note">Не забывайте ставить обратную косую черту перед классами, которые вы используете из глобального, вне пространства имен,
+				в котором вы находитесь. Если вы не понимаете почему, прочитайте о пространствах имен на
+				<a href="http://www.php.net/namespaces">PHP.net</a>.</p>
+
+			<h3 id="accessing_models">Подключение модели</h3>
+
+			<p>PHP имеет ключевое слово<code>use</code> для импорта классов в текущее пространство имен, это позволяет вам сократить имя класса модели с <code>Model\Welcome</code>до <code>Welcome</code>
+				внутри файла конкретного класса:</p>
+
+            <pre class="php"><code>
+use \Model\Welcome;
+
+class Controller_Welcome extends Controller
+{
+    public function action_index()
+    {
+        $results = Welcome::get_results();
+    }
+}   </code></pre>
+
+
+
+			<h3 id="writing_own_models">Написание ваших собственных моделей</h3>
+
+			<p>Хотя модели могут использоваться с любым типом хранилищ данных, здесь сделан упор на использовании с SQL, так как он применяется чаще всего.Почти всегда ваши модели будут иметь как минимум все методы <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete" target="_blank">CRUD</a>: создать, считать, обновить, удалить (или их вариации). В Fuel ваши модели ничего не должны расширять по умолчанию, хотя вы можете создать свою собственную базовую модель или воспользоваться пакетом <a href="#orm_models">Orm</a> Fuel<a href="#orm_models"></a>.</p>
+
+			<h3 id="writing_queries">Написание запросов SQL</h3>
+
+			<p>Вы можете использовать класс <a href="../classes/database/db.html">DB </a>для создания запросов с помощью собственного SQL таким образом:</p>
+
+			<pre class="php"><code>DB::query('SELECT * FROM users WHERE id = 5');</code></pre>
+
+			<h3 id="use_query_builder">Использование конструктора запросов</h3>
+
+			<p>Когда дело касается экранирования данных, работы с данными в массивах или создания приложения, переносимого на несколько механизмов баз данных, работа с собственным
+				SQL может стать крайне трудоемкой. Использование методов конструктора запросов в классе DB позволит вам абстрагироваться от написания собственного SQL:
+			</p>
+
+			<pre class="php"><code>DB::select('title','content')->from('articles')->execute()->get('title');</code></pre>
+
+			<p>Дополнительную информацию о собственных запросах SQL и использовании конструктора запросов смотрите в документации в <a href="../classes/database/db.html">класса DB</a>.</p>
+
+			<h3 id="orm_models">Использование Orm для создания моделей</h3>
+
+			<p>Можно создавать модели с помощью <a href="../packages/orm/intro.html">пакета Orm</a>, добавляющего много готовой функциональности в ваши модели. Пример его применения показан ниже.</p>
+
+			<pre class="php"><code>// находим все статьи
+$entry = Model_Article::find('all');
+
+// находим все статьи из категории 1 в порядке убывания по дате
+$entry = Model_Article::find('all', array(
+    'where' => array('category_id', 1),
+    'order_by' => array('date', 'desc')
+));</code></pre>
+
+			<p>Дополнительную информацию о работе с ORM смотрите в документации <a href="../packages/orm/intro.html">пакета Orm</a>.</p>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

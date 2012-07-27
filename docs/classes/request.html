@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+		var class_prefix = "Request::";
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Request - Classes - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Documentation
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">table of contents</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+
+			<h2>Request(Запрос) Class</h2>
+
+			<p>Request class обрабатывает запросы URI.
+                Он используется для обработки запроса URI,
+                а также генерации запросов в контексте HMVC.</p>
+
+			<article>
+				<h4 class="method" id="method_factory">forge($uri = null, $route = true)</h4>
+				<p><strong>forge</strong> метод возвращает объект.</p>
+				<table class="method">
+					<tbody>
+					<tr>
+						<th class="legend">Static</th>
+						<td>Yes</td>
+					</tr>
+					<tr>
+						<th>Parameters</th>
+						<td>
+							<table class="parameters">
+								<tr>
+									<th>Param</th>
+									<th>Default</th>
+									<th class="description">Description</th>
+								</tr>
+								<tr>
+									<th><kbd>$uri</kbd></th>
+									<td><pre class="php"><code>null</code></pre></td>
+									<td>Запрашиваемый URI.
+                                        Если URI не будет указан, то URI class попытается обнаружить его самостоятельно.</td>
+								</tr>
+								<tr>
+									<th><kbd>$route</kbd></th>
+									<td><pre class="php"><code>true</code></pre></td>
+									<td>Если это true, передаваемый URI, будет обработан маршрутизацией.
+                                        Если маршрут не присутствует, 404 не будет.
+                                        Если вы запрашиваете непубличный URI, установите в <strong>false</strong>.
+                                    </td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th>Returns</th>
+						<td>Fuel\Core\Request Object</td>
+					</tr>
+					<tr>
+						<th>Example</th>
+						<td>
+							<pre class="php"><code>// создание объекта запроса для контроллера admin и его метода login
+$request = Request::forge('admin/login');
+
+// Важно понимать, что это только создаст объект запроса,
+//  без выполнения самих запросов!</code></pre>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+
+			<article>
+				<h4 class="method" id="method_execute">execute()</h4>
+				<p>Метод <strong>execute</strong> выполняет запрос и сохраняет полученный ответ в объект запроса для последующего использования.
+                </p>
+				<table class="method">
+					<tbody>
+					<tr>
+						<th class="legend">Static</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Parameters</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Returns</th>
+						<td>Fuel\Core\Request Object</td>
+					</tr>
+					<tr>
+						<th>Example</th>
+						<td>
+							<pre class="php"><code>// создание объекта запроса и выполнение самого запроса
+$request = Request::forge('admin/login')->execute();</code></pre>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+
+			<article>
+				<h4 class="method" id="method_response">response()</h4>
+				<p>
+
+                    Метод <strong>response</strong> получает ответ выполненного запроса.</p>
+				<table class="method">
+					<tbody>
+					<tr>
+						<th class="legend">Static</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Parameters</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Returns</th>
+						<td>Fuel\Core\Response Object</td>
+					</tr>
+					<tr>
+						<th>Example</th>
+						<td>
+							<pre class="php"><code>// выполняет запрос, получает ответ, и отображает его
+$response = Request::forge('admin/login')->execute()->response();
+echo $response;
+
+// Использовние метода <a href="http://www.php.net/manual/ru/language.oop5.magic.php#object.tostring" target="_blank">__toString()</a> как альтернативный путь для получения вывода
+$output = Request::forge('admin/login')->execute();
+echo $output;</code></pre>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+
+			<article>
+				<h4 class="method" id="method_parent">parent()</h4>
+				<p><strong>parent()</strong> запрос который создал этот запрос, т.е. родитель текущего запроса.</p>
+				<table class="method">
+					<tbody>
+					<tr>
+						<th class="legend">Static</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Parameters</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Returns</th>
+						<td>Fuel\Core\Request Object или null когда это основной запрос</td>
+					</tr>
+					<tr>
+						<th>Example</th>
+						<td>
+							<pre class="php"><code>// получает родителя текущего активного запроса
+$parent = Request::active()->parent();</code></pre>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+
+			<article>
+				<h4 class="method" id="method_children">children()</h4>
+				<p>Запрос объектов, которые были созданы этим запросом, т.е. являются его потомками.</p>
+				<table class="method">
+					<tbody>
+					<tr>
+						<th class="legend">Static</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Parameters</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Returns</th>
+						<td>Array of Fuel\Core\Request Objects</td>
+					</tr>
+					<tr>
+						<th>Example</th>
+						<td>
+							<pre class="php"><code>// получить потомков запросов метода main()
+$children = Request::main()->children();</code></pre>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+
+			<article>
+				<h4 class="method" id="method_show_404">show_404($return = false)</h4>
+				<p>The <strong>show_404</strong> method will display or return the application's 404 page. If none is configured in your config routes.php, the Fuel default 404 page will be used instead. If the configured 404 route is incorrect, an error will be thrown.</p>
+				<p class="note">This function is deprecated in 1.1 in favour of <kbd>HttpNotFoundException</kbd>.</p>
+				<table class="method">
+					<tbody>
+					<tr>
+						<th class="legend">Static</th>
+						<td>Yes</td>
+					</tr>
+					<tr>
+						<th>Parameters</th>
+						<td>
+							<table class="parameters">
+								<tr>
+									<th>Param</th>
+									<th>Default</th>
+									<th class="description">Description</th>
+								</tr>
+								<tr>
+									<th><kbd>$return</kbd></th>
+									<td><pre class="php"><code>false</code></pre></td>
+									<td>If <strong>false</strong>, the result will be echoed out. If <strong>true</strong>, it will be returned.</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th>Returns</th>
+						<td>If <strong>$return</strong> is false, the method will exit. If not, it will return the html of the 404 page configured.</td>
+					</tr>
+					<tr>
+						<th>Example</th>
+						<td>
+							<pre class="php"><code>Request::show_404();</code></pre>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+
+			<article>
+				<h4 class="method" id="method_main">main()</h4>
+				<p>
+                    Метод <strong>main</strong> возвращает экземпляр основного(instance) запроса, (первоначальный запрос страницы).
+                </p>
+				<table class="method">
+					<tbody>
+					<tr>
+						<th class="legend">Static</th>
+						<td>Yes</td>
+					</tr>
+					<tr>
+						<th>Parameters</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Returns</th>
+						<td>Fuel\Core\Request Object, or false if no main request instance exists.</td>
+					</tr>
+					<tr>
+						<th>Example</th>
+						<td>
+							<pre class="php"><code>$main = Request::main();</code></pre>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+
+				<p class="note">
+                    Это объект первого выполненного запроса, и не обязательно из корня родителя текущего запроса.
+                </p>
+			</article>
+
+			<article>
+				<h4 class="method" id="method_active">active()</h4>
+				<p>Метод <strong>active</strong> возвращает текущий активный инстанс запроса.</p>
+				<table class="method">
+					<tbody>
+					<tr>
+						<th class="legend">Static</th>
+						<td>Yes</td>
+					</tr>
+					<tr>
+						<th>Parameters</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Returns</th>
+						<td>Fuel\Core\Request Object, or false if no active request instance exists.</td>
+					</tr>
+					<tr>
+						<th>Example</th>
+						<td>
+							<pre class="php"><code>$active = Request::active();</code></pre>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+
+            <article>
+            				<h4 class="method" id="method_parent">params()</h4>
+            				<p>Возвращает массив, содержащий все именованные параметры в маршруте, который вызвал этот запрос.</p>
+            				<table class="method">
+            					<tbody>
+            					<tr>
+            						<th class="legend">Static</th>
+            						<td>No</td>
+            					</tr>
+            					<tr>
+            						<th>Parameters</th>
+            						<td>No</td>
+            					</tr>
+            					<tr>
+            						<th>Returns</th>
+            						<td>array</td>
+            					</tr>
+            					<tr>
+            						<th>Example</th>
+            						<td>
+            							<pre class="php"><code>// получение списка параметров
+            $params = Request::active()->params();</code></pre>
+            						</td>
+            					</tr>
+            					</tbody>
+            				</table>
+            			</article>
+
+            			<article>
+            				<h4 class="method" id="method_get_method">get_method()</h4>
+            				<p>Получает методы запроса.</p>
+            				<table class="method">
+            					<tbody>
+            					<tr>
+            						<th class="legend">Static</th>
+            						<td>No</td>
+            					</tr>
+            					<tr>
+            						<th>Parameters</th>
+            						<td>none</td>
+            					</tr>
+            					<tr>
+            						<th>Returns</th>
+            						<td>Request method</td>
+            					</tr>
+            					<tr>
+            						<th>Example</th>
+            						<td>
+            							<pre class="php"><code>
+            $method = Request::main()->get_method();</code></pre>
+            						</td>
+            					</tr>
+            					</tbody>
+            				</table>
+            			</article>
+
+            			<article>
+            				<h4 class="method" id="method_set_method">set_method($method)</h4>
+            				<p>Устанавливает методы запроса.</p>
+            				<table class="method">
+            					<tbody>
+            					<tr>
+            						<th class="legend">Static</th>
+            						<td>No</td>
+            					</tr>
+            					<tr>
+            						<th>Parameters</th>
+            						<td>
+            							<table class="parameters">
+            								<tr>
+            									<th>Param</th>
+            									<th>Default</th>
+            									<th class="description">Description</th>
+            								</tr>
+            								<tr>
+            									<th><kbd>$method</kbd></th>
+            									<td>string, required</td>
+            									<td>The name of the parameter to be returned. This must be exactly the same as defined in the route.</td>
+            								</tr>
+            							</table>
+            						</td>
+            					</tr>
+            					<tr>
+            						<th>Returns</th>
+            						<td>current instance</td>
+            					</tr>
+            					<tr>
+            						<th>Example</th>
+            						<td>
+            							<pre class="php"><code>// Set the request method on a forged request
+            $params = Request::forge('some/route')->set_method('POST');</code></pre>
+            						</td>
+            					</tr>
+            					</tbody>
+            				</table>
+            			</article>
+
+            			<article>
+            				<h4 class="method" id="method_parent">param($param, $default = null)</h4>
+            				<p>
+                                Возвращает именованный параметр в маршруте, который вызвал этот запрос, по умолчанию, если параметр не найден.
+                            </p>
+            				<table class="method">
+            					<tbody>
+            					<tr>
+            						<th class="legend">Static</th>
+            						<td>No</td>
+            					</tr>
+            					<tr>
+            						<th>Parameters</th>
+            						<td>
+            							<table class="parameters">
+            								<tr>
+            									<th>Param</th>
+            									<th>Default</th>
+            									<th class="description">Description</th>
+            								</tr>
+            								<tr>
+            									<th><kbd>$param</kbd></th>
+            									<td>string, required</td>
+            									<td>The name of the parameter to be returned. This must be exactly the same as defined in the route.</td>
+            								</tr>
+            								<tr>
+            									<th><kbd>$default</kbd></th>
+            									<td><pre class="php"><code>null</code></pre></td>
+            									<td>value to be returned if the named parameter requested is not defined.</td>
+            								</tr>
+            							</table>
+            						</td>
+            					</tr>
+            					<tr>
+            						<th>Returns</th>
+            						<td>mixed</td>
+            					</tr>
+            					<tr>
+            						<th>Example</th>
+            						<td>
+            							<pre class="php"><code>// get a specific named parameter called 'name'
+            $param = Request::active()->param('name', 'none');</code></pre>
+            						</td>
+            					</tr>
+            					</tbody>
+            				</table>
+            				<p class="note">
+                                В разделе маршрутизации(<a href="../general/routing.html#/named_routes">routing</a>) объясняется, как именованные параметры могут быть определены в маршруте.
+                                </p>
+            			</article>
+
+            <article>
+                        				<h4 class="method" id="method_parent">is_hmvc()</h4>
+                        				<p>Выполняет проверку какой запрос, если запрос hmvc, то вернется true</p>
+                        				<table class="method">
+                        					<tbody>
+
+
+                        					<tr>
+                        						<th>Returns</th>
+                        						<td>bool</td>
+                        					</tr>
+                        					<tr>
+                        						<th>Example</th>
+                        						<td>
+                        							<pre class="php"><code>
+            public function action_getWidget(){
+
+            if( Request::is_hmvc() ){ // если запрос HMVC
+
+                $view = \Fuel\Core\View::forge('top/subtop');
+                return $view;
+
+            }
+            else { Request::show_404(); }// если запрос не HMVC
+
+            }</code></pre>
+                        						</td>
+                        					</tr>
+                        					</tbody>
+                        				</table>
+
+                        			</article>
+
+			<article>
+				<h4 class="method" id="method_add_path">add_path($path, $prefix = false)</h4>
+				<p>
+                    Метод позволяет добавить путь поиска на текущий экземпляр запроса.
+                    <strong>add_path</strong> использует Fuel::find_file() для поиска файлов в приложении.
+
+                </p>
+				<table class="method">
+					<tbody>
+					<tr>
+						<th class="legend">Static</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Parameters</th>
+						<td>
+							<table class="parameters">
+								<tr>
+									<th>Param</th>
+									<th>Default</th>
+									<th class="description">Description</th>
+								</tr>
+								<tr>
+									<th><kbd>$path</kbd></th>
+									<td><i>required</i></td>
+									<td>Путь будет добавлен в список местных путей поиска запроса</td>
+								</tr>
+								<tr>
+									<th><kbd>$prefix</kbd></th>
+									<td><pre class="php"><code>false</code></pre></td>
+									<td>Если <strong>false</strong>, путь будет прибавлен к пути до.
+                                        Если <strong>true</strong>, то он будет прибавлен к пути после.</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th>Returns</th>
+						<td><i>void</i></td>
+					</tr>
+					<tr>
+						<th>Example</th>
+						<td>
+							<pre class="php"><code>// добавит папку MyFiles к путям поиска активного запроса
+Request::active()->add_path(APPPATH.'myfiles'.DS);</code></pre>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+
+			<article>
+				<h4 class="method" id="method_get_paths">get_paths()</h4>
+				<p>Метод <strong>get_paths</strong> возвращает список объявленных путей поиска.</p>
+				<table class="method">
+					<tbody>
+					<tr>
+						<th class="legend">Static</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Parameters</th>
+						<td>No</td>
+					</tr>
+					<tr>
+						<th>Returns</th>
+						<td><i>void</i></td>
+					</tr>
+					<tr>
+						<th>Example</th>
+						<td>
+							<pre class="php"><code>// получить пути поиска активного экземпляра запроса
+$paths = Request::active()->get_paths();</code></pre>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</article>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

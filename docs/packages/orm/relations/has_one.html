@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../../';
+	</script>
+	<script src="./../../../assets/js/combined.js"></script>
+	<title>Has One - Relations - Orm Package - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Documentation
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">table of contents</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<section>
+				<h2 id="has_one">Отношение: Has One(Один к одному)</h2>
+
+				<p>Задает отношение "один-к-одному" к другой модели. Целевая модель должна содержать
+                    "<a href="belongs_to.html">Belongs To</a>" ссылку на текущую модель для поддержания обратной связи.
+                </p>
+
+				<h3>Примеры</h3>
+
+				<pre class="php"><code>protected static $_has_one = array('profile');</code></pre>
+
+				<p>Ниже приведены примеры установления и разрыва has-one отношений:</p>
+
+				<pre class="php"><code>// когда оба отношения новые:
+$user = new Model_User();
+$user->profile = new Model_Profile();
+$user->save();
+
+// когда оба отношения уже существуют
+$user = Model_User::find(6);
+$user->profile = Model_Profile::find(1);
+$user->save();
+
+// отключение отношений
+$user = Model_User::find(6);
+$user->profile = null;
+$user->save();</code></pre>
+
+				<h3>Пример всех настроек, причем указаны дефолтные значения</h3>
+
+				<pre class="php"><code>// in a Model_User which has one profile
+protected static $_has_one = array(
+	'profile' => array(
+		'key_from' => 'id',
+		'model_to' => 'Model_Profile',
+		'key_to' => 'user_id',
+		'cascade_save' => true,
+		'cascade_delete' => false,
+	)
+);</code></pre>
+			</section>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

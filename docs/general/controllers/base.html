@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../';
+	</script>
+	<script src="./../../assets/js/combined.js"></script>
+	<title>Controller - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+				
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+				
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+		
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+		
+		<div id="main">
+		
+			<h2>Контроллеры</h2>
+
+            <iframe width="640" height="360" src="http://www.youtube.com/embed/LSRdbC3dw9w" frameborder="0" allowfullscreen></iframe>
+	
+			<h3 id="what_is_a_controller">Что такое контроллер?</h3>
+	
+			<p>
+				Контроллеры - классы, вызываемые через URL и выполняющие обработку запроса.
+				Контроллер вызывает модели и другие классы, чтобы они извлекли информацию. В конце он передает все представлению на вывод. Если запрошен такой URL, как www.yoursite.com/example/index, его первый сегмент
+				("example") будет контроллером, который вызывается, а второй сегмент ("index") будет методом данного контроллера, который вызывается.
+			</p>
+	
+			<h3 id="creating_a_controller">Создание контроллера</h3>
+	
+			<p>
+				В FuelPHP контроллеры хранятся в каталоге <kbd>fuel/app/classes/controller</kbd>. Они должны (необязательно) расширять класс <kbd>Controller</kbd>  и иметь префикс <kbd>"Controller_"</kbd>.
+				Ниже приведен пример контроллера "example":
+			</p>
+	
+			<pre class="php"><code>class Controller_Example extends Controller
+{
+
+	public function action_index()
+	{
+		$data['css'] = Asset::css(array('reset.css','960.css','main.css'));
+		return Response::forge(View::forge('welcome/index'));
+	}
+}</code></pre>
+	
+			<p>
+				Методы, которые могут быть запрошены через URL, снабжаются префиксом <kbd>"action_"</kbd>. Это значит, что
+				 конструкции PHP не ограничивают ваш возможный выбор имени (пример: метод "list"
+				не разрешается, "action_list" - нет проблем). Но это также значит, что вы можете давать вашему контроллеру открытые методы, которые могут использоваться из других классов, но являются не маршрутизируемыми.
+			</p>
+	
+			<h4 id="more_parameters">Использование дополнительных параметров из URL</h4>
+	
+			<p>Допустим, у нас есть следующий метод в контроллере _Example: </p>
+	
+	<pre class="php"><code>public function action_name_to_upper($name_1, $name_2)
+{
+	$data['name_1'] = strtoupper($name_1);
+	$data['name_2'] = strtoupper($name_2);
+	return View::forge('test/name_to_upper', $data);
+}</code></pre>
+	
+			<p>
+				Если мы вызываем этот метод с помощью: <kbd>www.yoursite.com/example/name_to_upper/fuel/php</kbd>, он вернет представление <kbd>test/name_to_upper</kbd>. "Fuel" и "PHP" будут переданы вместе в виде значений
+			<var>$name_1</var> и <var>$name_2</var> в массиве <var>$data</var>. </p>
+	
+			<h4 id="controller_in_subdir">Контроллер в подкаталогах</h4>
+	
+			<p>
+				Вы можете поместить контроллер в подкаталог, например,
+				<kbd>fuel/app/classes/controller/subdir/test.php</kbd>. В этом случае контроллер должен включать имя каталога в имя класса таким образом: <var>Controller_Subdir_Test</var>.
+			</p>
+	
+			<p>
+				Неограниченные вложенные подкаталоги поддерживаются, поэтому
+				<kbd>fuel/app/classes/controller/subdir1/subdir2/subdir3/test.php</kbd>. будет иметь имя класса
+				<var>Controller_Subdir1_Subdir2_Subdir3_Test</var>.
+			</p>
+	
+			<h3 id="special_methods">Специальные методы контроллера</h3>
+	
+			<p class="note">
+				Не переписывайте конструктор класса <kbd>__construct()</kbd>, вместо этого используйте <kbd>before()</kbd>,
+				если вы сперва не изучили базовый контроллер из ядра и не понимаете, как его нужно расширять,
+				чтобы не разрушить Fuel.
+			</p>
+	
+			<article>
+				<h4 id="action_index">action_index()</h4>
+				<p>
+					Этот метод будет вызываться, если контроллер вызывается без второго параметра. В примере выше <kbd>www.yoursite.com/example/index</kbd> будет идентичным 
+					<kbd>www.yoursite.com/example</kbd>.
+				</p>
+			</article>
+	
+			<article>
+				<h4 id="before">before()</h4>
+				<p>
+					Данный метод будет выполняться <strong>перед </strong>тем, как метод из URL будет вызван в вашем контроллере, даже если этот метод окажется несуществующим.
+				</p>
+			</article>
+	
+			<article>
+				<h4 id="after">after($response)</h4>
+				<p>
+					Данный метод будет выполняться <strong>после</strong> того, как метод из URL был успешно вызван,
+					он не будет вызван, если метод окажется несуществующим. Параметр <a href="#response"><var>$response</var></a> обязателен.</a>
+				</p>
+			</article>
+	
+			<article>
+				<h4 id="router">router($method, $params)</h4>
+				<p>
+					Данный метод будет брать на себя внутреннюю маршрутизацию контроллера. Сразу после загрузки контроллера метод router() будет вызван и использует переданный <var>$method</var> вместо стандартного метода. Он также передаст <var>$params</var> в массив в данный
+					<var>$method</var>. Методы before() и after() будут работать как ожидается.
+				</p>
+			</article>
+	
+			<h3 id="special_propperties">Специальные свойства контроллера</h3>
+	
+			<article>
+				<h4 id="request">$request</h4>
+				<p>
+					Данное свойство хранит объект запрос. Его нельзя переписывать. Оно должно использоваться для получения информации о текущем запросе. Оно должно быть неизменяемым.
+				</p>
+			</article>
+	
+			<article>
+				<h4 id="response">$response</h4>
+				<p>
+					Данное свойство хранит объект ответ. Чтобы вывести что-либо, добавьте его в свойство
+				<kbd>$this->response->body</kbd>. </p>
+			</article>
+	
+			<h3 id="extending_other_controllers">Расширение других контроллеров</h3>
+	
+			<p>
+				Благодаря автозагрузчику вы можете расширять другие контроллеры, не указывая ничего кроме его имени в определении класса:
+			</p>
+			
+			<pre class="php"><code>class Controller_Example extends Controller_Welcome
+{
+
+	// ваши методы
+
+}</code></pre>
+	
+			<p>
+				Сперва это может казаться страным, но расширение контроллеров позволяет вам с легкостью совместно использовать методы и создавать базовые контроллеры.
+			</p>
+	
+			<h3>Создание базовых контроллеров</h3>
+	
+			<p>
+				Базовый контроллер - совместно используемый контроллер, такой как <kbd>Controller_Public</kbd> или <kbd>Controller_Admin,</kbd> используемый для распределения логики между группами контроллеров.
+				Например, контроллер <kbd>Controller_Admin</kbd> может содержать ваши действия входа/выхода из системы и возможно панель управления, но также может содержать метод <kbd>before(),</kbd> проверяющий, чтобы выяснить, вошел ли пользователь в систему в качестве админитсратора. Затем все остальные контроллеры в вашей панели админитстрирования будут расширять его и будут автоматически защищены.
+			</p>
+	
+			<pre class="php"><code>class Controller_Admin extends Controller
+{
+
+	public function before()
+	{
+		// проверка на администратора
+	}
+
+	// ваши методы
+
+	public function action_index()
+	{
+		// загрузка панели управления
+	}
+
+	public function action_login()
+	{
+		// вход пользователя в систему
+	}
+}</code></pre>
+	
+			<p>
+				Данный код войдет в <kbd>fuel/app/classes/controller/admin.php,</kbd> и все ваши остальные контроллеры должны входить в <kbd>fuel/app/classes/controller/admin/</kbd>, так же как и этот:
+			</p>
+	
+			<pre class="php"><code>class Controller_Admin_User extends Controller_Admin
+{
+
+	public function action_index()
+	{
+		// заменяет панель управления перечислением индексов пользователей
+	}
+
+	public function action_edit($id)
+	{
+		// редактирует пользователей
+	}
+}</code></pre>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

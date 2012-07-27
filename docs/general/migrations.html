@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Migrations - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2>Переносы</h2>
+
+			<p>Переносы - удобный для вас способ изменения вашей базы данных структурированным и упорядоченным образом. Вы можете редактировать фрагменты SQL вручную, но затем вы были бы обязаны рассказать другим разработчикам, что они должны пойти и запустить их. Вы также должны следить за тем, какие изменения нужно запустить на производственных машинах в следующий раз, когда вы будете развертывать.</p>
+
+			<p>Таблица базы данных `перенос` отслеживает, какие переносы уже были запущены, поэтому вам остается лишь обновлять файлы вашего приложения и вызывать <kbd>Migrate::current(),</kbd> чтобы вычислить, какие переносы должны быть запущены. Текущая версия находится в core/config/migration.php, поэтому, как и любой другой конфигурационный файл, вы должны скопировать его в app/config, чтобы внести изменения.</p>
+
+			<h3>Создание переноса</h3>
+
+			<p>Создайте файл в папке app/migrations. Префикс должен быть возрастающим счетчиком, начиная с 001, не пропускайте числа и не вводите два сопадающих числа. Первый должен быть чем-то вроде <kbd>app/migrations/001_example.php</kbd>.
+		  <pre class="php"><code>namespace Fuel\Migrations;
+
+class Example
+{
+
+    function up()
+    {
+        \DBUtil::create_table('posts', array(
+			'id' => array('type' => 'int', 'constraint' => 5),
+			'title' => array('type' => 'varchar', 'constraint' => 100),
+			'body' => array('type' => 'text'),
+		), array('id'));
+    }
+
+    function down()
+    {
+       \DBUtil::drop_table('posts');
+    }
+}</code></pre>
+
+			<h3 id="run_a_mirgation">Запуск переноса</h3>
+
+			<p>Перенос может быть запущен двумя способами:</p>
+
+			<ol>
+				<li><a href="../classes/migrate.html">Класс Migrate (Перенести</a>)</li>
+				<li><a href="../packages/oil/refine.html">Команда Refine (улучшить) Oil</a></li>
+			</ol>
+
+			<p>Команда oil здесь использует команду Улучшить для вызова задачи переноса<a href="tasks.html"></a>.</p>
+
+			<pre class="cli"><code>$ php oil refine migrate
+$ php oil refine migrate:current
+$ php oil refine migrate:up
+$ php oil refine migrate:down
+$ php oil refine migrate --version=10</code></pre>
+
+			<p class="note">
+				<strong>Замечание: </strong>
+				Заадча migrate:current применяется для согласования вашей схемы с версией, перечисленной в <kbd>fuel/[app|core]/config/migrate.php,</kbd> словно вы только что получили копию приложения, самый последний перенос не будет считаться стабильным. Использование oil для переносов изменит данный номер конфигурации переноса, поэтому текущая команда не будет применимой во многих ситуациях.
+			</p>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

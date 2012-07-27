@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Configuration - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2>Конфигурирование вашего приложения</h2>
+
+			<h3 id="intro">Введение</h3>
+			<p>
+				 Среда разработки Fuel создана с учетом преобладания конфигурирования над правилами. В результате это дает высоконастраиваемую основу, на которой вы можете начать создавать свое приложение.
+			</p>
+
+			<p>
+				Файлы конфигурации хранятся внутри папки <kbd>app/config</kbd>. Базовая конфигурация приложения выполняется в <em>app/config/config.php</em>. Загруженная конфигурация может быть сделана связанной со средой, более подробно об этом в разделе <a href="environments.html#/env_config">Среды</a>.
+			</p>
+
+			<h3 id="config">Опции конфигурации</h3>
+
+			<table class="config">
+				<tbody>
+					<tr class="header">
+						<th>Ключ</th>
+						<th>Тип</th>
+						<th>Значение по умолчанию</th>
+						<th>Описание</th>
+					</tr>
+					<tr>
+						<th>base_url</th>
+						<td>string (строка)</td>
+						<td><pre class="php"><code>null</code></pre></td>
+						<td>
+							Базовый URL приложения. Может быть относительным. Должен содержать завершающий слэш. ('/foo/', 'http://example.com/')
+						</td>
+					</tr>
+					<tr>
+						<th>url_suffix</th>
+						<td>string</td>
+						<td><pre class="php"><code>''</code></pre></td>
+						<td>
+							Любой суффикс, который должен добавляться к URL, генерируемым Fuel. Если суффикс является расширением,
+							обязательно включите в него точку. ('.html')
+						</td>
+					</tr>
+					<tr>
+						<th>index_file</th>
+						<td>string</td>
+						<td><pre class="php"><code>'index.php'</code></pre></td>
+						<td>
+							Имя главного файла самозагрузки. Установите его в false(ложь) или удалите, если вы используете mod_rewrite.
+						</td>
+					</tr>
+					<tr>
+						<th>profiling</th>
+						<td>bool (логический, булев)</td>
+						<td><pre class="php"><code>false</code></pre></td>
+						<td>
+							Включать профилировщик или нет.
+						</td>
+					</tr>
+					<tr>
+						<th>caching</th>
+						<td>bool</td>
+						<td><pre class="php"><code>false</code></pre></td>
+						<td>
+							Включать кэширование или нет.
+						</td>
+					</tr>
+					<tr>
+						<th>cache_dir</th>
+						<td>string</td>
+						<td><pre class="php"><code>APPPATH.'cache/'</code></pre></td>
+						<td>
+							Каталог для сохранения файлов кэша. Этот каталог должен быть доступен для записи.
+						</td>
+					</tr>
+					<tr>
+						<th>cache_lifetime</th>
+						<td>int (целочисленный)</td>
+						<td><pre class="php"><code>3600</code></pre></td>
+						<td>
+							Время существования кэша в секундах.
+						</td>
+					</tr>
+					<tr>
+						<th>ob_callback</th>
+						<td>callback (обратный вызов)</td>
+						<td><pre class="php"><code>null</code></pre></td>
+						<td>
+							Обратный вызов, передаваемый ob_start(), установите в ob_gzhandler, чтобы включить кодирование gzip вывода.
+						</td>
+					</tr>
+					<tr>
+						<th>errors.continue_on</th>
+						<td>array (массив)</td>
+						<td><pre class="php"><code>array(
+E_NOTICE,
+E_WARNING,
+E_DEPRECATED,
+E_STRICT
+)</code></pre></td>
+						<td>
+							При каких ошибказ php продолжать выполнение.
+						</td>
+					</tr>
+					<tr>
+						<th>errors.throttle</th>
+						<td>int</td>
+						<td><pre class="php"><code>10</code></pre></td>
+						<td>
+							Сколько ошибок показывать до прекращения их отображения. (предотвращает ошибки из-за нехватки памяти)
+						</td>
+					</tr>
+					<tr>
+						<th>errors.notices</th>
+						<td>bool</td>
+						<td><pre class="php"><code>true</code></pre></td>
+						<td>
+							Показывать предупреждения или нет.
+						</td>
+					</tr>
+					<tr>
+						<th>language</th>
+						<td>string</td>
+						<td><pre class="php"><code>'en'</code></pre></td>
+						<td>
+							Стандартный язык приложения, используемый классом <a href="../classes/lang.html">Lang</a>.
+						</td>
+					</tr>
+					<tr>
+						<th>locale</th>
+						<td>string</td>
+						<td><pre class="php"><code>'en_US'</code></pre></td>
+						<td>
+							Используется для <em>setlocale()</em>, требуемой в некоторых установках php, установите в <kbd>false</kbd>,
+							чтобы запретить ее установку.<br />
+							<em>Настройка синтаксиса для нее может отличаться для каждой ОС, например, Ubuntu требует суффикс
+							<kbd>.utf8</kbd> (кодировка).</em>
+						</td>
+					</tr>
+					<tr>
+						<th>encoding</th>
+						<td>string</td>
+						<td><pre class="php"><code>'UTF-8'</code></pre></td>
+						<td>
+							Стандартная кодировка приложений.
+						</td>
+					</tr>
+					<tr>
+						<th>server_gmt_offset</th>
+						<td>int</td>
+						<td><pre class="php"><code>0</code></pre></td>
+						<td>
+							Смещение в секундах, смещение сервера от временной метки gmt при использовании time().
+						</td>
+					</tr>
+					<tr>
+						<th>default_timezone</th>
+						<td>string</td>
+						<td><pre class="php"><code>'UTC'</code></pre></td>
+						<td>
+							Часовой пояс сервера.
+						</td>
+					</tr>
+					<tr>
+						<th>log_threshold</th>
+						<td>int</td>
+						<td><pre class="php"><code>Fuel::L_WARNING</code></pre></td>
+						<td>
+							Порог записи в журнал. Ошибки серьезней какого уровня записывать в журнал. <a href="../classes/fuel.html#log_constants">Ознакомьтесь с возможными значениями</a>
+						</td>
+					</tr>
+					<tr>
+						<th>log_path</th>
+						<td>string</td>
+						<td><pre class="php"><code>APPPATH.'logs/'</code></pre></td>
+						<td>
+							Каталог для сохранения журналов. Этот каталог должен быть доступен для записи.
+						</td>
+					</tr>
+					<tr>
+						<th>log_date_format</th>
+						<td>string</td>
+						<td><pre class="php"><code>'Y-m-d H:i:s'</code></pre></td>
+						<td>
+							Формат даты/времени, используемый в журналах.
+						</td>
+					</tr>
+					<tr>
+						<th>security.csrf_autoload</th>
+						<td>bool</td>
+						<td><pre class="php"><code>false</code></pre></td>
+						<td>
+							Проверять ли автоматически метку crsf. <a href="../general/security.html#csrf">Прочитать больше о csrf</a>.
+						</td>
+					</tr>
+					<tr>
+						<th>security.csrf_token_key</th>
+						<td>string</td>
+						<td><pre class="php"><code>'fuel_csrf_token'</code></pre></td>
+						<td>
+							Какой ключ $_POST извлекать при проверке метки csrf.
+						</td>
+					</tr>
+					<tr>
+						<th>security.csrf_expiration</th>
+						<td>int</td>
+						<td><pre class="php"><code>0</code></pre></td>
+						<td>
+							Устанавливает время окончания срока действия куки-файла csrf. Любое значение больше 0 - это число раделов, в которых срок действия куки-файла истечет.
+						</td>
+					</tr>
+					<tr>
+						<th>security.uri_filter</th>
+						<td>array</td>
+						<td><pre class="php"><code>array('htmlentities')</code></pre></td>
+						<td>
+							Какие функции php использовать для фильтрации URI.
+						</td>
+					</tr>
+					<tr>
+						<th>security.input_filter</th>
+						<td>array</td>
+						<td><pre class="php"><code>array()</code></pre></td>
+						<td>
+							Какие функции php должны фильтровать входные массивы ($_GET, $_POST и $_COOKIE). Может быть установлен в <em>xxs_clean</em>,
+							это может вызвать скачок производительности исходя из размера ввода.
+						</td>
+					</tr>
+					<tr>
+						<th>security.auto_encode_view_data</th>
+						<td>bool</td>
+						<td><pre class="php"><code>true</code></pre></td>
+						<td>
+							Кодировать (htmlentities) автоматически данные представления  или нет.
+						</td>
+					</tr>
+					<tr>
+						<th>security.whitelisted_classes</th>
+						<td>array()</td>
+						<td><pre class="php"><code>array(
+'stdClass',
+'Fuel\\Core\\View',
+'Fuel\\Core\\ViewModel',
+'Closure'
+)</code></pre></td>
+						<td>
+							При включенном кодировании вывода все передаваемые объекты будут преобразовываться в строки или генерировать исключения,
+							если они не являются экземплярами классом из данного массива.
+						</td>
+					</tr>
+					<tr>
+						<th>cookie.expiration</th>
+						<td>int</td>
+						<td><pre class="php"><code>0</code></pre></td>
+						<td>
+							Количество секунд до того, как срок действия куки-файла истечет.
+						</td>
+					</tr>
+					<tr>
+						<th>cookie.path</th>
+						<td>string</td>
+						<td><pre class="php"><code>'/'</code></pre></td>
+						<td>
+							Ограничивает путь, для которого доступен куки-файл.
+						</td>
+					</tr>
+					<tr>
+						<th>cookie.domain</th>
+						<td>string</td>
+						<td><pre class="php"><code>null</code></pre></td>
+						<td>
+							Ограничивает домен, для которого доступен куки-файл.
+						</td>
+					</tr>
+					<tr>
+						<th>cookie.secure</th>
+						<td>bool</td>
+						<td><pre class="php"><code>false</code></pre></td>
+						<td>
+							Передавать куки-файлы только через защищенные соединения.
+						</td>
+					</tr>
+					<tr>
+						<th>cookie.http_only</th>
+						<td>bool</td>
+						<td><pre class="php"><code>false</code></pre></td>
+						<td>
+							Передавать куки-файлы только через HTTP, доступ через Javascript запрещен.
+						</td>
+					</tr>
+					<tr>
+						<th>module_paths</th>
+						<td>array</td>
+						<td><pre class="php"><code>array()</code></pre></td>
+						<td>
+							Пути к каталогам модулей. Используется при добавлении модуля без указания местоположения.
+						</td>
+					</tr>
+					<tr>
+						<th>always_load.packages</th>
+						<td>array</td>
+						<td><pre class="php"><code>array()</code></pre></td>
+						<td>
+							Which packages to autoload. Specify like so: <strong>array('package')</strong> or <strong>array('package' => PKGPATH.'path/to/package')</strong>
+						</td>
+					</tr>
+					<tr>
+						<th>always_load.modules</th>
+						<td>array</td>
+						<td><pre class="php"><code>array()</code></pre></td>
+						<td>
+							Какие модулю загружаются автоматически. Укажите таким образом: <strong>array('package')</strong>.Загруженные автоматически модули доступны через URL. Чтобы это работало, путь к модулям должен быть установлен в <em>module_paths</em>
+						</td>
+					</tr>
+					<tr>
+						<th>always_load.classes</th>
+						<td>array</td>
+						<td><pre class="php"><code>array()</code></pre></td>
+						<td>
+							Какие классы загружаются автоматически и инициализируются.
+						</td>
+					</tr>
+					<tr>
+						<th>always_load.config</th>
+						<td>array</td>
+						<td><pre class="php"><code>array()</code></pre></td>
+						<td>
+							Какие конфигурационные файлы загружаются автоматически. Загружайте конфигурационный файл в группу таким образом: <strong>array('config')</strong> или
+							<strong>array('filename' => 'group')</strong>. Если вы не хотите загружать конфигурационный файл в группу, установите имя группы в
+							<em>null (пустой)</em>: <strong>array('filename' => null)</strong>.
+						</td>
+					</tr>
+					<tr>
+						<th>always_load.language</th>
+						<td>array</td>
+						<td><pre class="php"><code>array()</code></pre></td>
+						<td>
+							Какие файлы языков загружаются автоматически. Загружайте конфигурационный файл в группу таким образом: <strong>array('lang')</strong> или
+							<strong>array('filename' => 'group')</strong>. Если вы не хотите загружать конфигурационный файл в группу, установите имя группы в
+							<em>null</em>: <strong>array('filename' => null)</strong>.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

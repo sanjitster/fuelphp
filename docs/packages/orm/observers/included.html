@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../../';
+	</script>
+	<script src="./../../../assets/js/combined.js"></script>
+	<title>Included - Observers - Orm Package - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Documentation
+				</h1>
+
+				<form id="google_search">
+					<p>
+                        <span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+                        <span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">table of contents</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2>Observers(Наблюдатели): встроенные наблюдатели</h2>
+
+            <article>
+
+				<p>Список встроенных наблюдателей приведен ниже:</p>
+
+				<ul>
+					<li><a href="#os_self">Observer_Self</a></li>
+					<li><a href="#os_created">Observer_CreatedAt</a></li>
+					<li><a href="#os_updated">Observer_UpdatedAt</a></li>
+					<li><a href="#os_validation">Observer_Validation</a></li>
+					<li><a href="#os_typing">Observer_Typing</a></li>
+					<li><a href="#os_slug">Observer_Slug</a></li>
+				</ul>
+
+				<h4 id="os_self">Observer_Self</h4>
+
+				<p>
+                    Хотя и не совсем хорошая практика, но в некоторых случаях это наиболее подходящий способ связать событие
+                    с вашей моделью. Observer_Self проверяет, имеет ли модель метод с именем как у события с префиксом <kbd>_event_</kbd>.
+                    Например, для after_save события в модель нужно добавить публичный метод _event_after_save().
+                </p>
+
+				<pre class="php"><code>// простое добавление Observer
+protected static $_observers = array('Orm\\Observer_Self');
+
+// однако он будет наблюдать за всеми событиями подряд, что бы указать какие события вас интересуют делайте так
+protected static $_observers = array('Orm\\Observer_Self' => array('after_save', 'before_insert'));</code></pre>
+
+				<h4 id="os_created">Observer_CreatedAt</h4>
+
+				<p>Этот наблюдатель доступен только для события <kbd>before_insert</kbd> и ожидает что ваша модель имеет свойство
+					<kbd>created_at</kbd>, которому будет назначен Unix timestamp при первом сохрании.</p>
+
+				<pre class="php"><code>// простое добавление наблюдателя
+protected static $_observers = array('Orm\\Observer_CreatedAt');
+
+// добавление с настройками:
+// - требуется только для before_insert события
+// - use mysql timestamp (uses UNIX timestamp by default)
+// - использовать просто "created" вместо "created_at"
+protected static $_observers = array(
+	'Orm\\Observer_CreatedAt' => array(
+		'events' => array('before_insert'),
+		'mysql_timestamp' => true,
+		'property' => 'created',
+	),
+);</code></pre>
+
+				<h4 id="os_updated">Observer_UpdatedAt</h4>
+
+				<p>Этот наблюдатель доступен только для события <kbd>before_save</kbd> и ожидает в вашей модели свойство
+					<kbd>updated_at</kbd>, которому назначет Unix timestamp при сохранении (включая и первое сохранение).</p>
+
+				<pre class="php"><code>// простое добавление
+protected static $_observers = array('Orm\\Observer_UpdatedAt');
+
+// добавление с настройками:
+// - only needs to run on before_save
+// - use mysql timestamp (uses UNIX timestamp by default)
+// - use just "updated" instead of "updated_at"
+protected static $_observers = array(
+	'Orm\\Observer_UpdatedAt' => array(
+		'events' => array('before_save'),
+		'mysql_timestamp' => true,
+		'property' => 'updated',
+	),
+);</code></pre>
+
+				<h4 id="os_validation">Observer_Validation</h4>
+
+				<p>Этот наблюдатель действует только для <kbd>before_save</kbd> события. Он используется для предотвращения сохранения,
+                    если данные не проходят валидацию. Он использует класс <a href="../../../classes/fieldset.html">Fieldset</a>
+					и генерирует форму.</p>
+
+
+				<p>Наблюдатель может быть загружен так:</p>
+
+				<pre class="php"><code>// по простому
+protected static $_observers = array('Orm\\Observer_Validation');
+
+// добавление только для before_save
+protected static $_observers = array('Orm\\Observer_Validation' => array('before_save'));</code></pre>
+
+				<p>Правила валидации должны быть объявлены в свойствах <kbd>$_properties</kbd> вашей модели. Их добавление
+					 демонстрируется тут <a href="../creating_models.html#propperties">Creating Models</a>. После добавления
+					Validation Observer, the Orm\ValidationFailed exception попытается обработать данные модели перед сохранением.
+				    Вы должны оборачивать try/catch вызовы <kbd>save</kbd> методов
+					в модели.</p>
+
+				<p>Более наглядный пример functionality/scaffolding, ниже:</p>
+
+				<pre class="php"><code>class Controller_Articles extends Controller
+{
+	public function action_create()
+	{
+		$view = View::forge('articles/create');
+		if (Input::param() != array())
+		{
+			try
+			{
+				$article = Model_Article::forge();
+				$article->name = Input::param('name');
+				$article->url = Input::param('url');
+				$article->save();
+				Response::redirect('articles');
+			}
+			catch (Orm\ValidationFailed $e)
+			{
+				$view->set('errors', $e->getMessage(), false);
+			}
+		}
+		return new Response($view);
+	}
+
+	public function action_edit($id = false)
+	{
+		if ( ! ($article = Model_Article::find($id))
+		{
+			throw new HttpNotFoundException();
+		}
+
+		$view = View::forge('articles/edit');
+		if (Input::param() != array())
+		{
+			try
+			{
+				$article->name = Input::param('name');
+				$article->url = Input::param('url');
+				$article->save();
+				Response::redirect('articles');
+			}
+			catch (Orm\ValidationFailed $e)
+			{
+				$view->set('errors', $e->getMessage(), false);
+			}
+		}
+		return new Response($view);
+	}
+
+	public function action_delete($id = null)
+	{
+		if ( ! ($article = Model_Article::find($id))
+		{
+			throw new HttpNotFoundException();
+		}
+		else
+		{
+			$article->delete();
+		}
+		Response::redirect('articles');
+	}
+
+}</code></pre>
+
+				<p>Он использует класс <a href="../../../classes/fieldset.html">Fieldset</a> для выполения проверки и
+					и создания форм для модели. В следующем примере показано создание и редактирование формы, вызываемое в общем представлении,
+                    но вы всегда можете так же легко назначить его в модели и затем получить <code>Fieldset::instance()</code> экземпляр в своем представлении
+                   .</p>
+
+				<pre class="php"><code>// используется экземпляр Model_Article для создания формы, для того же самого вы можете передать имя класса обычной строкой
+$fieldset = Fieldset::forge()->add_model($article);
+
+// Заполнит форму со значениями из экземпляра модели
+// передаём true для использования POST/PUT в ходе перезамещения(repopulate) после неудачной попытки сохранения
+$fieldset->populate($article, true);
+
+// Форма будет построена как html и преведна к строке
+echo $fieldset;</code></pre>
+
+				<h4 id="os_typing">Observer_Typing</h4>
+
+				<p>
+                    Делает 2 вещи: проверяет вводимые данные и проверяет типы данных для вывода из базы данных.
+                    Это означает, что, когда вы сохраняете Typing наблюдатель будет отлавливать входное значение ожидаемого типа и запускать исключение,
+                    когда значение невалидно. При извлечении данных из БД, как правило, это будут строки (четные числа или с плавающей точкой),
+                    Observer_Typing будет приводить их к скалярнму типу.
+				</p>
+
+				<p>Дополнительно Typing observer поддержвает serialized и json поля. И то и другое является строкой
+					 ("text" преимущественно) используйте закодировные значения для сохрания (используйте
+					<kbd>serialize()</kbd> или <kbd>json_encode()</kbd>) и декодирования приизвлечении из DB (используйте
+					<kbd>unserialize()</kbd> или <kbd>json_decode()</kbd>).</p>
+
+				<p class="note">Observer_Typing не является альтернативой валидации, не пробуйте использовать его как таковую.
+                    Исключения предназначены для того чтобы ваши пользователи смогли отправлять вам код ошибок, таким образом помогать вам в дебаге.</p>
+
+				<pre class="php"><code>// Простое добавление наблюдателя
+protected static $_observers = array('Orm\\Observer_Typing');
+
+// добавление на заданные события
+protected static $_observers = array('Orm\\Observer_Typing' => array('before_save', 'after_save', 'after_load'));</code></pre>
+
+				<p>
+					Для работы данного наблюдателя вы должны иметь насройку в <kbd>$_properties</kbd> в вашей модели,
+                    или не иметь её, а использовать <kbd>DB::list_columns()</kbd> (mySQL only!). Параметры настроек:
+				</p>
+
+				<table class="config">
+					<tbody>
+						<tr class="header">
+							<th style="width: 15%;">Param</th>
+							<th style="width: 35%;">Valid input</th>
+							<th style="width: 50%;">Description</th>
+						</tr>
+						<tr>
+							<th>data_type</th>
+							<td>varchar, int, integer, tinyint, smallint, mediumint, bigint, float, double, decimal,
+								text, tinytext, mediumtext, longtext, enum, set, bool, boolean, serialize, json,
+								time_unix, time_mysql</td>
+							<td>
+								SQL типы данных.
+							</td>
+						</tr>
+						<tr>
+							<th>null</th>
+							<td>bool</td>
+							<td>
+								<kbd>null</kbd> допускается в качестве значения
+							</td>
+						</tr>
+						<tr>
+							<th>character_maximum_length</th>
+							<td>int</td>
+							<td>
+								Максимальная длинна строки (varchar, text)
+							</td>
+						</tr>
+						<tr>
+							<th>min</th>
+							<td>int</td>
+							<td>
+                                Минимальная длинна строки (varchar, text)
+							</td>
+						</tr>
+						<tr>
+							<th>max</th>
+							<td>int</td>
+							<td>
+								Максимальное значение для цифр
+							</td>
+						</tr>
+						<tr>
+							<th>options</th>
+							<td>array</td>
+							<td>
+                                Массив допустимых значений строк для набора или перечисления типов данных<br />
+
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 id="os_slug">Observer_Slug</h3>
+
+				<p>
+                    Этот наблюдатель создает уникальный URL для вашей модели. Это работает только для <kbd>before_insert</kbd>
+					, ожидается, что ваша модель содержит  свойства <kbd>title</kbd> (для создания slug) и <kbd>slug</kbd> (для сохранения).
+				</p>
+
+				<pre class="php"><code>// Простое добавление
+protected static $_observers = array('Orm\\Observer_Slug');
+
+// С настройками
+protected static $_observers = array(
+	'Orm\\Observer_Slug' => array(
+		'events' => array('before_insert'),
+		'source' => 'title',   // основной базовый slug, может передаваться массив свойств
+		'property' => 'slug',  // свойство для установки slug когда его ещё нет
+	),
+);
+protected static $_observers = array('Orm\\Observer_Slug' => array('before_insert'));</code></pre>
+
+				<p>
+					Оbserver создаёт <kbd>slug</kbd> из <kbd>title</kbd> используя <a href="../../../classes/inflector.html#method_friendly_title">Inflector::friendly_title()</a> и добавляя индекс, если таковой уже существует.
+				</p>
+			</article>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

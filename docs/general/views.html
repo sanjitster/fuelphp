@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Views - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+				
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+				
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+		
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+		
+		<div id="main">
+
+        <iframe width="640" height="360" src="http://www.youtube.com/embed/5lQBl0DNpKw" frameborder="0" allowfullscreen></iframe>
+
+			<h2>Представления</h2>
+	
+			<h3 id="what_is_a_view">Что такое представления?</h3>
+	
+			<p>Представления - файлы, передающие данные браузеру. Эти файлы позволяют разделять логику и представление в вашем приложении. Представления обычно имеют формат html, javascript или css, но может содержать переменные, переданные в него из контроллера.</p>
+	
+			<h3>Создание представления</h3>
+	
+			<p>В FuelPHP представления расположены в каталоге fuel/app/views. Представления могут быть расположены в подкаталогах. Представления именуются по пути к их каталогу из fuel/app/views и имени файла, поэтому файл представления, расположенный в <em>fuel/app/views/user/join.php,</em> будет назван <kbd>user/join</kbd>.</p>
+	
+			<p>Пример:</p>
+	
+	<pre class="html"><code>&lt;html&gt;
+	&lt;head&gt;
+		&lt;title>&lt;?php echo $title; ?&gt;&lt;/title>
+	&lt;/head&gt;
+	&lt;body&gt;
+		Welcome, &lt;?php echo $username; ?&gt;.
+	&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+	
+			<h3 id="using_views">Использование представлений</h3>
+	
+			<p>Представления в среде разработки Fuel очень гибкие. Вы можете создавать одиночное представление и вложенные представления внутри других представлений. Это можно сделать несколькими способами.</p>
+	
+			<p><strong>Пример представления (fuel/app/views/home/index.php):</strong></p>
+			<pre class="html"><code>&lt;html&gt;
+	&lt;head&gt;
+		&lt;title>&lt;?php echo $title; ?&gt;&lt;/title>
+	&lt;/head&gt;
+	&lt;body&gt;
+		Welcome, &lt;?php echo $username; ?&gt;.
+	&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+	
+			<p><strong>Метод 1 (используется вышеприведенный пример представления):</strong></p>
+	
+			<pre class="php"><code>class Controller_Home extends Controller
+{
+
+	$data = array(); //хранит переменные, передаваемые представлениям
+
+	$data['username'] = 'Joe14';
+	$data['title'] = 'Home';
+
+	//назначает представление выводу браузера
+	return View::forge('home/index', $data);
+}</code></pre>
+	
+			<p><strong>Метод 2 (используется вышеприведенный пример представления):</strong></p>
+	
+			<pre class="php"><code>class Controller_Home extends Controller
+{
+	//создает представление
+	$view = View::forge('home/index');
+
+	//присваивает переменные представлению
+	$view->username = 'Joe14';
+	$view->title = 'Home';
+
+	//другой способ присвоения переменных представлению
+	$view->set('username', 'Joe14');
+	$view->set('title', 'Home');
+
+	//назначает представление выводу браузера
+	return $view;
+}</code></pre>
+	
+			<h3 id="security">Защита</h3>
+	
+			<p>По умолчанию представления используют кодирование вывода для обезвреживания всех передаваемых им данных с помощью Security::htmlentities().
+				Если вам нужно передать что-то неотфильтрованным, воспользуйтесь методом <kbd>set($name, $value, false)</kbd>.</p>
+	
+			<pre class="php"><code>class Controller_Example extends Controller
+{
+
+	public function action_index()
+	{
+		$view = \View::forge('example');
+
+		// добавляет строку неотфильтрованной в ее исходном виде
+		// добавляет отфильтр, выходные данные: &amp;lt;strong&amp;gt;не жирный, так как filtered&amp;lt;/strong&amp;gt;
+		$view->title = '&lt;strong&gt;not bold because filtered&lt;/strong&gt;';
+
+		// добавляет строку неотфильтрованной в ее исходном виде
+		$view->set('title', '&lt;strong&gt;not bold because filtered&lt;/strong&gt;', false);
+
+		return $view;
+	}
+}</code></pre>
+	
+			<p>Если вы не хотите, чтобы ваше представление работало так, измените открытое статическое свойство <kbd>View::$auto_encode</kbd>
+			и установите его в <kbd>ложь</kbd>. Теперь все добавляемое не будет фильтроваться.  Если вам нужно отфильтровать некоторые значения, используйте
+			<kbd>set($name, $value, true)</kbd>.</p>
+	
+			<p class="note"><strong>Примечание для объектов:</strong> Если переданный объект не имеет тип View, ViewModel или Closure, ожидается, что он имеет метод <kbd>__toString(),</kbd> и он должен быть строкой, когда включена фильтрация вывода. Если вам нужно передать его в любом случае, используйте <kbd>set($name, $value, false)</kbd>, но не забывайте фильтровать то, что вы используете!<br />
+			Представление и ViewModels должны содержать HTML и обеспечивать свою собственную фильтрацию, вот почему они не обезвреживаются. Замыкания невозможно обезвреживать, и при необходимости вы должны выполнять обезвреживание внутри них при необходимости.</p>
+	
+			<h3>Отложенное формирование</h3>
+	
+			<p>
+				При создании экземпляра объекта представления устанавливается только среда, требуемая для генерации вывода. Файл представления не считывается, никакие переменные не интерпретируются, и вывод не формируется.
+			</p>
+			<p>
+				Это выполняется лишь при явном вызове метода <code>render()</code> для объекта представления или когда вы преобразуете объект представления в строку (что выполняется автоматически при его отображении). Это значит, что никакие представления не обрабатываются,
+				пока в этом нет абсолютной необходимости. Это также означает, что Fuel держит в памяти все сформированные представления, пока не придет время отправлять их браузеру.
+			</p>
+	
+			<h3>Вложение представлений</h3>
+	
+			<p>Представления могут быть вложенными, чтобы содержать другие представления. Это можно сделать несколькими способами.</p>
+	
+			<h3>Примеры представлений</h3>
+	
+			<p>fuel/app/views/layout.php</p>
+	
+			<pre class="html"><code>&lt;html&gt;
+	&lt;head&gt;
+		&lt;?php echo $head; ?&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;?php echo $header; ?&gt;
+		&lt;?php echo $content; ?&gt;
+		&lt;?php echo $footer; ?&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+	
+			<p>fuel/app/views/head.php</p>
+	
+			<pre class="html"><code>&lt;title&gt;&lt;?php echo $title; ?&gt;&lt;/title&gt;</code></pre>
+	
+			<p>fuel/app/views/header.php</p>
+	
+			<pre class="html"><code>&lt;div class=&quot;logo&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;logo_text&quot;&gt;&lt;?php echo $site_title; ?&gt;&lt;/div&gt;</code></pre>
+	
+			<p>fuel/app/views/content.php</p>
+	
+			<pre class="html"><code>&lt;title&gt;&lt;?php echo $title; ?&gt;&lt;/title&gt;
+&lt;div class=&quot;welcome_user&quot;&gt;Welcome &lt;?php echo $username; ?&gt;&lt;/div&gt;</code></pre>
+	
+			<p>fuel/app/views/footer.php</p>
+	
+			<pre class="html"><code>&lt;div class=&quot;footer&quot;&gt;
+	&amp;copy; Copyright &lt;?php echo date(&#x27;Y&#x27;);?&gt; &lt;?php echo $site_title; ?&gt;
+&lt;/div&gt;</code></pre>
+	
+			<h3 id="method_one">Метод 1 (используются примеры представлений выше и отложенное формирование):</h3>
+	
+			<pre class="php"><code>class Controller_Home extends Controller
+{
+
+	public function action_index()
+	{
+		// создает представление
+		$view = View::forge('layout');
+
+		// присваивает глобальные переменные, чтобы все представления имели доступ к ним
+		$view->set_global('username', 'Joe14');
+		$view->set_global('title', 'Home');
+		$view->set_global('site_title', 'My Website');
+
+		//присваивает представления в качестве переменных, отложенное формирование
+		$view->head = View::forge('head');
+		$view->header = View::forge('header');
+		$view->content = View::forge('content');
+		$view->footer = View::forge('footer');
+
+		// возвращает объект представления запросу
+		return $view;
+	}
+}</code></pre>
+	
+			<h3 id="method_two">Метод 2 (используются примеры представлений выше и принудительное формирование):</h3>
+	
+			<pre class="php"><code>class Controller_Home extends Controller
+{
+
+	public function action_index()
+	{
+		//присваивает переменные
+		$data = array();
+		$data['title'] = 'Home';
+		$data['site_title'] = 'My Website';
+		$data['username'] = 'Joe14';
+
+		//присваивает представления в качестве переменных, принудительное формирование
+		$views = array();
+		$views['head'] = View::forge('head', $data)->render();
+		$views['header'] = View::forge('header', $data)->render();
+		$views['content'] = View::forge('content', $data)->render();
+		$views['footer'] = View::forge('footer', $data)->render();
+
+		// возвращает сформированный HTML запросу
+		return View::forge('layout', $views)->render();
+	}
+}</code></pre>
+	
+			<p>Описания функций представления смотрите в <a href="../classes/view.html">классе представления в разделе классы</a>.</p>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

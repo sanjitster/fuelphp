@@ -1,0 +1,188 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './';
+	</script>
+	<script src="./assets/js/combined.js"></script>
+	<title>FuelPHP документация на русском языке</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, среда разработки PHP 5.3</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+            <div class="page-chunk default"><div class="page-chunk-pad"><div class="two_third">
+            	<h2>Почему FuelPHP?</h2>
+
+            	<h2>
+            		HMVC</h2>
+            	<p>
+                    FuelPHP построен на MVC (Model-View-Controller) паттерне, чтобы иметь полную поддержку HMVC как части архитектуры. Но мы не остановились на этом, мы также добавили ViewModels (также известный как представление модели), которое
+                    даёт возможность добавить мощный слой между контроллером и представлением делая их более независимыми.
+            	<ul style="list-style-type:disc; margin-left: 20px;">
+            		<li>
+            			Полная поддержка HMVC, везде и всюду!</li>
+            		<li>
+                        ViewModels - прослойка между контроллером и представлением. Для большей гибкости.</li>
+            		<li>
+            			Более гибкая поддержка роутинга (с версии v1.1)</li>
+            	</ul>
+            	<h2>
+            		Модульный и легко расширяемый</h2>
+            	<p>
+                    Почти каждый класс в ядре FuelPHP может быть расширен без необходимости переписывать код,
+                    в тех местах где он используется.
+                    Вы можете создавать свои собственные пакеты/классы, которые расширяют или заменяют пакеты FuelPHP ядра. Вы
+                    можете делать свои приложения модульными. Пакеты и модули
+                    позволяют повторно использовать код и предоставляют большую свободу архитектуре самого приложения позволяя применять различные паттерны.
+                </p>
+            	<ul style="list-style-type:disc; margin-left: 20px;">
+            		<li>
+            			Легкое расширение или замена классов ядра</li>
+            		<li>
+            			Расширение стандартного функционала за счет Пакетов(Packges)</li>
+            		<li>
+            			Создание модульных приложений, свобода архитектуры, применение паттернов программирования, повторное использование кода</a></li>
+            	</ul>
+            	<h2>
+            		Безопасность</h2>
+            	<p>
+                    Безопасность была в центре внимания с самого начала разработки Fuel.
+                    Fuel обладает высочайшей степенью безопасности. Подробнее о безопасности в FuelPHP можно прочитать в документации.</p>
+            	<ul style="list-style-type:disc; margin-left: 20px;">
+            		<li>
+            			Input фильтрация</li>
+            		<li>
+            			XSS фильтрация</li>
+            		<li>
+            			Output фильтрация</li>
+            		<li>
+            			Защита от CSRF</li>
+            		<li>
+            			Защита от любых SQL иньекций</li>
+            	</ul>
+            	<h2>
+            		Oil: мощная утилита коммандной строки(опционально)</h2>
+            	<p>
+                    FuelPHP использует возможности командной строки с помощью утилиты под названием Oil.
+                    Oil предназначена, чтобы ускорить разработку проекта, повысить эффективность тестирования и отладки,
+                    будучи совершенно необязательной для противников использования коммандной строки.
+                </p>
+            	<ul style="list-style-type:disc; margin-left: 20px;">
+            		<li>
+            			Генерация кода, Скафолдинг и генерация админки</li>
+            		<li>
+            			Запуск миграций Баз Данных</li>
+            		<li>
+            			Интерактивный дебаг</li>
+            		<li>
+            			Задания(Tasks) - например когда нужно запускать какой-то фоновый процесс и т.д.</li>
+            	</ul>
+            	<h2>
+            		Базовые классы для Контроллеров и Моделей</h2>
+            	<p>
+            		FuelPHP содержит несколько классов для быстрого старта.</p>
+            	<ul style="list-style-type:disc; margin-left: 20px;">
+            		<li>
+            			Controller_Template - Добавляет функции шаблонизатора в ваших контроллерах</li>
+            		<li>
+            			Controller_Rest - Это простейший способ создания RESTful API</li>
+            		<li>
+            			Controller_Hybrid - Комбинация rest и temlate функционала в одном контроллере</li>
+            		<li>
+            			Model_Crud - Поддержка всех методов CRUD.</li>
+            	</ul>
+            	<h2>
+            		Мощный и в тоже время легкий ORM</h2>
+            	<p>
+
+                    Он не должен быть заменой Доктрине/Propel, это более легкое решение, но с мощным функционалом способным выполнить очень многие задачи.
+     </p>
+            	<ul style="list-style-type: disc; margin-left: 20px;">
+            		<li>
+            			ООП подход при работе с базами данных</li>
+
+            		<li>
+                        Выборка отношения отношения отношения ... и т.д. .. за один раз ("вложенные отношения")</li>
+                   </ul>
+            	<p>
+            		The API of the ORM model is quite similar to that of the Model_Crud base class, which makes switching to ORM when you need extra functionality a fairly painless operation.</p>
+            	<h2>
+            		Поддержка аутнтификации</h2>
+            	<p>
+                    Невозможно создать библиотеку Auth, которая бы удовлетворила всех.
+                    Поэтому мы вынесли функциональную начинку в различные драйверы аутентификации. Это позволяет одним разработчикам создавать и
+                    делиться своими собственными реализациями, а другим использовать уже готовое. Например простой набор драйверов ("SimpleAuth") хорошо подходит для быстрого старта.
+                </p>
+            	<ul style="list-style-type:disc; margin-left: 20px;">
+            		<li>
+            			Содержит простую аутентификацию для пользователей, групп и ACL(Access Control List или ACL — список контроля доступа)</li>
+            		<li>
+            			Содержит хеширование паролей(<a href="http://en.wikipedia.org/wiki/PBKDF2">PBKDF2</a>)</li>
+            		</ul>
+            	<h2>
+            		Использование любых шаблонизаторов для ваших представлений</h2>
+            	<p>
+                    С версии 1.1 Parser пакет поставляется с FuelPHP, что позволяет использовать любой шаблонизатор(шаблон-анализатор)
+                    Включены следующие библиотеки:</p>
+            	<ul style="list-style-type: disc; margin-left: 20px;">
+            		<li>
+            			Mustache</li>
+            		<li>
+            			Markdown</li>
+            		<li>
+            			Smarty</li>
+            		<li>
+            			Twig</li>
+            		<li>
+            			Haml</li>
+            		<li>
+            			Jade</li>
+            		<li>
+            			Dwoo</li>
+            		<li>
+            			Phptal<a href="http://particletree.com/features/php-quick-profiler/" target="notSet">http://particletree.com/features/php-quick-profiler/</a></li>
+            	</ul>
+            	<p>
+                    Скопируйте в папку Parser необходимый шаблонизатор, включите пакет Parser, и вперед!</p>
+            </div>
+
+		<footer>
+			<p>
+				&copy; Группа разработчиков FuelPHP 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> выпущен по лицензии MIT(Массачусетского технологического института).
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

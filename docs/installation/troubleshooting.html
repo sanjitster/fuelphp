@@ -1,0 +1,204 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Поиск и устранение ошибок - Установка - Документация FuelPHP</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, среда разработки PHP 5.3</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2>Поиск и устранение ошибок</h2>
+
+			<p>Fuel поддерживает широкий спектр конфигураций. Иногда приходится потрудиться, чтобы заставить конфигурацию работать правильно. Ниже перечислена пара сценариев, которые могут возникнуть при установке Fuel на вашем компьютере.</p>
+
+			<p>Если ваша проблема не указана ниже или указана, но не дано ее правильное решение, сообщите об этом в систему отслеживания ошибок ( http://dev.fuelphp.com ).</p>
+
+			<article>
+
+				<h3 id="syntax_error_clean_install">Синтаксические ошибки при чистой установке</h3>
+
+				<pre class="php"><code>Parse error: syntax error, unexpected T_FUNCTION, expecting ')' in /Users/info/Sites/fuel/public/index.php on line 9</code></pre>
+
+				<h4>Возникает, когда...</h4>
+
+				<p>Fuel запускается на версии PHP младше 5.3.</p>
+
+				<h4>Решение</h4>
+
+				<p>Проверьте phpinfo(); в отдельном тестовом файле и посмотрите, установлена ли у вас версия 5.3 или выше. Дополнительная информация о <a href="http://docs.fuelphp.com/requirements.html" title="Requirements - FuelPHP Documentation">требованиях</a> здесь.</p>
+
+				<p>В случае локальной разработки обновите ваш сервер до новейшей версии PHP 5.3. Если вы разрабатываете не локально, вам придется попросить вашу хостинговую компанию об этом. Версии PHP ниже 5.3 перестали поддерживаться не только нами, но и <a href="http://www.php.net/archive/2011.php#id2011-03-17-1" title="PHP: News Archive - 2011">самим PHP</a>.</p>
+
+			</article>
+
+			<article>
+
+				<h3 id="404_install">Заставил ее работать, но индексная страница отображает 404.</h3>
+
+				<h4>Возникает, когда...</h4>
+
+				<p>В некоторых установках php нужно добавить знак вопроса в .htaccess после <em>index.php</em></p>
+
+				<h4>Решение</h4>
+
+				<p>Добавьте знак вопроса таким образом:</p>
+
+				<pre class="plain"><code># Включаем перезапись URL
+RewriteEngine On
+
+# Каталог установки
+RewriteBase /
+# Если fuel не установлен уровнем выше
+# RewriteBase /public
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.*)$ index.php?/$1 [L]
+# Обратите внимание на ? после index.php
+</code></pre>
+
+			<p>Некоторые установки fcgi требуют вариант данного решения:</p>
+
+			<pre class="plain"><code>
+RewriteRule ^(.*)$ index.php?$1 [L]
+# Обратите внимание, что косая черта после ? была убрана
+
+#Другие возможные настройки:
+
+RewriteRule ^(.*)$ /index.php/$1 [L]
+# Заметьте, что начальная косая черта добавлена перед index.php
+</code></pre>
+			</article>
+
+			<article>
+
+				<h3 id="oil_db_error">Oil не может подключиться к базе данных, но приложение может</h3>
+
+				<pre class="plain"><code>mysql_connect(): [2002] No such file or directory (trying to connect via unix:///var/mysql/mysql.sock) in /Users/phil/Sites/fuel/fuel/core/classes/database/mysql/connection.php on 73</code></pre>
+
+				<h4>Возникает, когда...</h4>
+
+				<p>Возникает, когда вы пытаетесь взаимодействовать с базой данных посредством командной строки, часто при использовании MAMP для вашего сервера MySQL. Причина этого в том, что PHP-CLI - другая установка в MAMP, предоставленная MAMP, поэтому PHP ничего не знает о сервере базы данных.</p>
+
+				<p>Примечание: Перед выполнения следующего шага для устранения проблемы, проверьте соединение с базой данных с помощью стандартного обращения к БД через браузер.</p>
+
+				<h4>Решение</h4>
+
+				<p>Замените "localhost" на "127.0.0.1" в вашем файле database.php</p>
+
+				<strong>Если не срабатывает, то:</strong>
+
+				<p>Создайте символьную ссылку, указывающую на  mysql.socket MAMP.</p>
+
+				<pre class="cli"><code>$ sudo ln -s /Applications/MAMP/tmp/mysql/mysql.sock /var/mysql/mysql.sock</code></pre>
+
+				<p>В ряде случаев вам сперва придется создать каталог:</p>
+
+				<pre class="cli"><code>$ sudo mkdir /var/mysql
+$ sudo ln -s /Applications/MAMP/tmp/mysql/mysql.sock /var/mysql/mysql.sock</code></pre>
+
+			</article>
+
+			<article>
+
+			  <h3 id="orm_list_columns">Orm\исключение [ ошибка ]: Составление списка столбцов не провалилось</h3>
+
+				<h4>Ошибка</h4>
+
+				<pre class="php"><code>Orm\Exception [ Error ]: Listing columns not failed, you have to set the model properties with a static $_properties setting in the model.</code></pre>
+
+				<h4>Возникает, когда...</h4>
+
+				<p>Работают с моделями ORM при отсутствии подключения через mysql.</p>
+
+				<h4>Решение</h4>
+
+				<p>Убедитесь, что значения конфигурации базы данных правильные, и протестируйте ваше соединение с базой данных.</p>
+
+				<p>Обновите модель, чтобы включить в нее свойства.</p>
+
+				<pre class="php"><code>protected static $_properties = array('id', 'title', 'contents', 'publish');</code></pre>
+
+				<p>Или измените тип базы данных на "mysql" в APPATH/config/db.php</p>
+
+			</article>
+
+			<article>
+
+				<h3 id="assets_error">Ресурсы не работают после изменения расположения index.php</h3>
+
+				<h4>Решение</h4>
+
+				<p>Причина в том, что класс Asset(ресурс)  использует относительный путь к index.php.</p>
+
+				<p>Чтобы исправить это, вы должны изменить app/config/asset.php, чтобы установить правильный путь. Заметьте, что в index.php константа по имени DOCROOT определяется таким образом:</p>
+
+				<pre class="php"><code>define('DOCROOT', __DIR__.DIRECTORY_SEPARATOR);</code></pre>
+
+				<p>Вы можете использовать ее в app/config/asset.php. Это установит в качестве пути к ресурсам стандартную папку DOCROOT/public/assets, в которой расположены подкаталоги для css/ img/ и js/:</p>
+
+				<pre class="php"><code>'paths' => array(DOCROOT.'public/assets/'),</code></pre>
+
+			</article>
+
+			<article>
+
+				<h3 id="symlinks_error">Core, App или Packages не обнаруживаются после изменения символьной ссылки</h3>
+
+				<h4>Решение</h4>
+
+				<p>Причина в том, что в DOCROOT/index.php realpath() применяется для работы с относительными путями, кэширующая данные о пути, включая символьную ссылку.</p>
+
+				<p>
+					Чтобы исправить это, вы должны изменить DOCROOT/index.php и использовать clearstatcache() для всех путей, содержащих символьную ссылку, чтобы очистить кэш. Также можно перезагрузить вебсервер, чтобы очистить кэш путей. Вы не можете вручную выдать команду
+					clearstatcache(), так как она кэшируется на каждый поток, и выдача команды очистить только кэш для текущего потока.
+				</p>
+
+			</article>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; Группа разработчиков FuelPHP 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> выпущен по лицензии MIT.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

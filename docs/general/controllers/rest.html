@@ -1,0 +1,166 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../';
+	</script>
+	<script src="./../../assets/js/combined.js"></script>
+	<title>Rest Controller - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+				
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+				
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+		
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+		
+		<div id="main">
+	
+			<h2 id="rest_controller">Rest контроллер</h2>
+            <iframe width="640" height="360" src="http://www.youtube.com/embed/d5LMU2DE2uU" frameborder="0" allowfullscreen></iframe>
+			<h3 id="what_is_rest">Что такое Rest(тихий) контроллер?</h3>
+	
+			<p>
+				Rest контроллер - расширение базового контроллера, имеющее встроенную тихую поддержку.
+				Это позволит вам с легкостью создавать API.
+			</p>
+	
+			<p class="note">
+				<strong>Заметьте:</strong> если вы имеете метод <kbd>before()</kbd> или <kbd>router</kbd> в вашем расширении Rest контроллера, вы должны вызвать родительский метод
+				<kbd>parent::before()</kbd> (or router), чтобы он продолжал работать правильно.
+			</p>
+	
+			<h3 id="usage">Использование</h3>
+	
+			<p>
+				Как и все контроллеры, вы создаете класс в каталоге <kbd>fuel/app/classes/controller</kbd>.
+				Он должен расширять класс <kbd>Controller_Rest</kbd> и по умолчанию должен снабжаться префиксом "Controller_".
+				Ниже дан пример класса с именем "test":
+			</p>
+	
+			<pre class="php"><code>class Controller_Test extends Controller_Rest
+{
+
+	public function get_list()
+	{
+		$this->response(array(
+			'foo' => Input::get('foo'),
+			'baz' => array(
+				1, 50, 219
+			),
+			'empty' => null
+		));
+	}
+}</code></pre>
+	
+			<p>Метод "list" данного контроллера  вызывается с помощью следующего URL:</p>
+	
+			<pre>http://localhost/test/list.json?foo=bar</pre>
+	
+			<p>Вы заметите, что вместо обычного префикса "action_" тихий контроллер использует метод HTTP в качестве префикса. Тихий контроллер поддерживает следующие методы HTTP:</p>
+			
+			<table class="config">
+				<tbody>
+					<tr class="header">
+						<th>Метод HTTP</th>
+						<th>Описание</th>
+					</tr>
+					<tr>
+						<th>GET</th>
+						<td>
+							Используется для извлечения информации о существующем ресурсе. Это используется браузерами, когда вы вводите URL и нажимаем перейти, или когда вы щелкаете по ссылке, поэтому он идеально подходт для извлечения информации
+							об одном или более ваших ресурсов REST (вероятный пользователь).
+						</td>
+					</tr>
+					<tr>
+						<th>POST</th>
+						<td>
+							Используется для обновления информации в существующем ресурсе. Браузеры используют его для отправки большинства типов форм в интернете, хотя некоторые используют GET а также передают действие формы
+							со строкой запроса, содержащей данные полей.
+						</td>
+					</tr>
+					<tr>
+						<th>PUT</th>
+						<td>
+							Реже используется и не поддерживается большинством браузеров, PUT применяется для создания нового ресурса.
+						</td>
+					</tr>
+					<tr>
+						<th>DELETE</th>
+						<td>
+							Также не используется многими браузерами команда HTTP, довольно очевидно применяемая для удаления ресурса.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	
+			<h3 id="output">Вывод</h3>
+	
+			<pre class="javascript"><code>{
+	"foo":"bar",
+	"baz":[1,50,219],
+	"empty":null
+}</code></pre>
+	
+			<p>
+				Так как вывод в формаете json, так как данное расширение файла было задано URL. По умолчанию ответы форматируются как XML или любой другой формат,установленный в <em>fuel/core/config/rest.php</em>.
+			</p>
+	
+			<h3 id="formats">Поддерживаемые форматы</h3>
+	
+			<ul>
+				<li><strong>xml</strong> – почти любой язык программирования может читать XML</li>
+				<li><strong>json</strong> – полезен для JavaScript и приложений все в большей степени на PHP.</li>
+				<li><strong>csv</strong> – открывает программы электронных таблиц</li>
+				<li><strong>html</strong> – простая таблица HTML</li>
+	
+				<li><strong>php</strong> – представление кода PHP, который можно выполнить с помощью <kbd>eval()</kbd></li>
+				<li><strong>serialize</strong> – преобразует в последовательную форму данные, которые могут быть возвращены в исходную форму в PHP</li>
+			</ul>
+	
+	
+			<h3 id="special_methods">Специальные методы контроллера</h3>
+	
+			<article>
+				<h4 id="response">response($data = array(), $http_code = 200)</h4>
+				<p>
+					Данный метод применяется для оправки ваших данных ответа через логику форматирования и вывода. При желании можно установить код состояния в качестве 2го параметра.
+				</p>
+			</article>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

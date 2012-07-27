@@ -1,0 +1,66 @@
+<?php defined('COREPATH') or exit('No direct script access allowed'); ?>
+
+Error - 2012-07-23 17:01:09 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:03:11 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:03:12 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:03:13 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:03:13 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:03:13 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:07:52 --> Parsing Error - syntax error, unexpected T_VARIABLE in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 20
+Error - 2012-07-23 17:07:59 --> Parsing Error - syntax error, unexpected T_VARIABLE in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 20
+Error - 2012-07-23 17:08:59 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:09:06 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:09:12 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:17:29 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:17:30 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:20:23 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:20:30 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:20:36 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:27:46 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:27:47 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:39:28 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:39:57 --> 1048 - Column 'fullname' cannot be null [ INSERT INTO `actor` (`fullname`, `last_update`) VALUES (null, null) ] in V:\home\fuelphp\fuel\core\classes\database\mysqli\connection.php on line 222
+Error - 2012-07-23 17:40:28 --> 1054 - Unknown column 't0.id' in 'on clause' [ SELECT `t0`.`actor_id` AS `t0_c0`, `t0`.`fullname` AS `t0_c1`, `t0`.`last_update` AS `t0_c2`, `t1`.`film_id` AS `t1_c0`, `t1`.`title` AS `t1_c1`, `t1`.`description` AS `t1_c2`, `t1`.`release_year` AS `t1_c3`, `t1`.`rental_duration` AS `t1_c4`, `t1`.`length` AS `t1_c5`, `t1`.`replacement_cost` AS `t1_c6`, `t1`.`rating` AS `t1_c7`, `t1`.`special_features` AS `t1_c8`, `t1`.`last_update` AS `t1_c9`, `t1`.`actor_id` AS `t1_c10` FROM `actor` AS `t0` LEFT JOIN `film` AS `t1` ON (`t0`.`id` = `t1`.`actor_id`) ] in V:\home\fuelphp\fuel\core\classes\database\mysqli\connection.php on line 222
+Error - 2012-07-23 17:40:59 --> 1054 - Unknown column 't0.id' in 'on clause' [ SELECT `t0`.`actor_id` AS `t0_c0`, `t0`.`fullname` AS `t0_c1`, `t0`.`last_update` AS `t0_c2`, `t1`.`film_id` AS `t1_c0`, `t1`.`title` AS `t1_c1`, `t1`.`description` AS `t1_c2`, `t1`.`release_year` AS `t1_c3`, `t1`.`rental_duration` AS `t1_c4`, `t1`.`length` AS `t1_c5`, `t1`.`replacement_cost` AS `t1_c6`, `t1`.`rating` AS `t1_c7`, `t1`.`special_features` AS `t1_c8`, `t1`.`last_update` AS `t1_c9`, `t1`.`actor_id` AS `t1_c10` FROM `actor` AS `t0` LEFT JOIN `film` AS `t1` ON (`t0`.`id` = `t1`.`actor_id`) ] in V:\home\fuelphp\fuel\core\classes\database\mysqli\connection.php on line 222
+Error - 2012-07-23 17:41:00 --> 1054 - Unknown column 't0.id' in 'on clause' [ SELECT `t0`.`actor_id` AS `t0_c0`, `t0`.`fullname` AS `t0_c1`, `t0`.`last_update` AS `t0_c2`, `t1`.`film_id` AS `t1_c0`, `t1`.`title` AS `t1_c1`, `t1`.`description` AS `t1_c2`, `t1`.`release_year` AS `t1_c3`, `t1`.`rental_duration` AS `t1_c4`, `t1`.`length` AS `t1_c5`, `t1`.`replacement_cost` AS `t1_c6`, `t1`.`rating` AS `t1_c7`, `t1`.`special_features` AS `t1_c8`, `t1`.`last_update` AS `t1_c9`, `t1`.`actor_id` AS `t1_c10` FROM `actor` AS `t0` LEFT JOIN `film` AS `t1` ON (`t0`.`id` = `t1`.`actor_id`) ] in V:\home\fuelphp\fuel\core\classes\database\mysqli\connection.php on line 222
+Error - 2012-07-23 17:42:11 --> 1054 - Unknown column 't0.id' in 'on clause' [ SELECT `t0`.`actor_id` AS `t0_c0`, `t0`.`fullname` AS `t0_c1`, `t0`.`last_update` AS `t0_c2`, `t1`.`film_id` AS `t1_c0`, `t1`.`title` AS `t1_c1`, `t1`.`description` AS `t1_c2`, `t1`.`release_year` AS `t1_c3`, `t1`.`rental_duration` AS `t1_c4`, `t1`.`length` AS `t1_c5`, `t1`.`replacement_cost` AS `t1_c6`, `t1`.`rating` AS `t1_c7`, `t1`.`special_features` AS `t1_c8`, `t1`.`last_update` AS `t1_c9`, `t1`.`actor_id` AS `t1_c10` FROM `actor` AS `t0` LEFT JOIN `film` AS `t1` ON (`t0`.`id` = `t1`.`actor_id`) ] in V:\home\fuelphp\fuel\core\classes\database\mysqli\connection.php on line 222
+Error - 2012-07-23 17:43:09 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:43:25 --> Error - Related model not found by Has_Many relation "film": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:43:37 --> Error - Related model not found by Has_Many relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasmany.php on line 37
+Error - 2012-07-23 17:47:12 --> Error - Related model not found by Has_One relation "films": Model_Film in V:\home\fuelphp\fuel\packages\orm\classes\hasone.php on line 39
+Error - 2012-07-23 17:59:48 --> Error - Property "films" not found for Exemple_Ormrelation\Model_Actor. in V:\home\fuelphp\fuel\packages\orm\classes\model.php on line 905
+Error - 2012-07-23 18:01:25 --> 1048 - Column 'fullname' cannot be null [ INSERT INTO `actor` (`fullname`, `last_update`) VALUES (null, null) ] in V:\home\fuelphp\fuel\core\classes\database\mysqli\connection.php on line 222
+Error - 2012-07-23 18:12:47 --> Error - Property "title" not found for Exemple_Ormrelation\Model_Actor. in V:\home\fuelphp\fuel\packages\orm\classes\model.php on line 867
+Error - 2012-07-23 18:38:53 --> 2 - Attempt to assign property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 28
+Error - 2012-07-23 18:38:53 --> Error - Call to a member function save() on a non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 29
+Error - 2012-07-23 18:39:39 --> 2 - Attempt to modify property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 28
+Error - 2012-07-23 18:39:39 --> Error - Call to a member function save() on a non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 29
+Error - 2012-07-23 18:40:13 --> Error - Related model not found by Belongs_To relation "actor": Model_Actor in V:\home\fuelphp\fuel\packages\orm\classes\belongsto.php on line 43
+Error - 2012-07-23 18:48:54 --> Error - Relation "films" was not found in the model. in V:\home\fuelphp\fuel\packages\orm\classes\query.php on line 524
+Error - 2012-07-23 19:01:17 --> Error - Call to a member function find() on a non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 20
+Error - 2012-07-23 19:06:01 --> Parsing Error - syntax error, unexpected T_VARIABLE in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 23
+Error - 2012-07-23 19:07:19 --> Parsing Error - syntax error, unexpected T_VARIABLE in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 23
+Error - 2012-07-23 19:07:22 --> Parsing Error - syntax error, unexpected T_VARIABLE in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 23
+Error - 2012-07-23 19:08:48 --> Parsing Error - syntax error, unexpected T_VARIABLE in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 23
+Error - 2012-07-23 19:11:38 --> Parsing Error - syntax error, unexpected T_VARIABLE in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 23
+Error - 2012-07-23 19:12:22 --> Parsing Error - syntax error, unexpected T_VARIABLE in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 23
+Error - 2012-07-23 21:12:57 --> 4096 - Object of class Exemple_Ormrelation\Model_Actor could not be converted to string in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 19
+Error - 2012-07-23 21:13:19 --> 4096 - Object of class Exemple_Ormrelation\Model_Actor could not be converted to string in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 19
+Error - 2012-07-23 21:13:37 --> 4096 - Object of class Exemple_Ormrelation\Model_Actor could not be converted to string in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 19
+Error - 2012-07-23 21:18:09 --> 8 - Undefined variable: actor in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 22
+Error - 2012-07-23 21:18:09 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\classes\controller\orm.php on line 22
+Error - 2012-07-23 21:29:35 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 13
+Error - 2012-07-23 21:29:35 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 13
+Error - 2012-07-23 21:29:35 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 13
+Error - 2012-07-23 21:29:35 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 13
+Error - 2012-07-23 21:31:50 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 13
+Error - 2012-07-23 21:31:50 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 13
+Error - 2012-07-23 21:31:50 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 13
+Error - 2012-07-23 21:31:50 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 13
+Error - 2012-07-23 21:34:42 --> 8 - Undefined index: fullname in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 13
+Error - 2012-07-23 21:36:09 --> 4096 - Object of class Exemple_Ormrelation\Model_Actor could not be converted to string in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 25
+Error - 2012-07-23 21:37:36 --> 4096 - Object of class Exemple_Ormrelation\Model_Actor could not be converted to string in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 25
+Error - 2012-07-23 21:37:37 --> 4096 - Object of class Exemple_Ormrelation\Model_Actor could not be converted to string in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 25
+Error - 2012-07-23 21:39:27 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 13
+Error - 2012-07-23 21:39:27 --> 8 - Trying to get property of non-object in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 15
+Error - 2012-07-23 21:39:27 --> 2 - Invalid argument supplied for foreach() in V:\home\fuelphp\fuel\app\modules\exemple_ormrelation\views\index.php on line 15

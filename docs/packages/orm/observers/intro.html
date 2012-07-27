@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../../';
+	</script>
+	<script src="./../../../assets/js/combined.js"></script>
+	<title>Introduction - Obervers - Orm Package - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Documentation
+				</h1>
+
+				<form id="google_search">
+					<p>
+                        <span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+                        <span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">table of contents</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+	
+			<article>
+				<h3 id="intro">Наблюдатели(Observers): Введение</h3>
+	
+				<p>Это система основанная на событиях позволяющая вам добавить своё поведение к событиям.</p>
+
+			</article>
+	
+			<article id="add_observers">
+				<h3 id="adding">Добавление Observers к вашей модели</h3>
+	
+				<p>Вы можете добавить наблбдателя двумя способами: просто добавив имя наблюдателя вызываемого для всех событий или имя наблюдателя
+                    с массивом определенных событий для которых и будет вызываться наблюдатель.<br />
+                    Когда наблюдатель находится в том же пространстве имен, что и модель Вы можете не указывать "Observer_" префикс.
+                    Во всех остальных случаях вы должны обеспечить полное имя класса.</p>
+	
+				<pre class="php"><code>class Model_Article
+{
+	protected static $_observers = array(
+		'example', // будет вызывать Observer_Example класс для всех событий
+		'Orm\\Observer_CreatedOn' => array('before_insert'), // будет вызывать Orm\Observer_CreatedOn и только для события before_insert
+	);
+}</code></pre>
+			</article>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

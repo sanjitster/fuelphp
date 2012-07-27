@@ -1,0 +1,109 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './';
+	</script>
+	<script src="./assets/js/combined.js"></script>
+	<title>Внести вклад - документация FuelPHP</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					 <strong>FuelPHP, среды разработки PHP 5.3</strong>
+					Документация
+				</h1>
+				
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+				
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+		
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+		
+		<div id="main">
+		
+			<h2>Внести вклад</h2>
+	
+			<h3 id="introduction">Введение</h3>
+			
+			<p>
+				Fuel - публично разрабатываемая среда разработки, открытая для участия в разработке любого человека, считающего, что он может уулчшить ее или добавить функцию, переводящую среду разработки на более высокий уровень. Есть множество форм, в которых этого можно достигнуть. От написания учебных пособий, wнаписания и выпуска пакетов, до внесения вклада в официальные части Fuel (Core, Orm, Docs, и т.д.).
+			</p>
+			
+			<h3 id="fixing_bugs">Устранение ошибок</h3>
+			
+			<p>
+				Когда вы сталкиваетесь с ошибкой или видите в списке проблем ошибку, которую вы можете устранить или устранили,
+				и вы хотите исправить данную ошибку в среде разработки. Используйте GitHub, чтобы отправить запрос на включение.
+				Ветвь, в которую включается ваш запрос, зависит от того, в какой версии вы работаете. Выполните следующие два шага, когда запрашиваете включение:
+			</p>
+			
+			<ul>
+				<li>
+					<strong>Поддерживается ли еще моя текущая версия?</strong><br/>
+					Если нет, обновите ее до поддерживаемой версии и проверьте, существует ли еще ошибка.
+				</li>
+				<li>
+					<strong>Проверьте вашу версию в вашем локальном репозитории</strong><br/>
+					<code class="cli">$ git checkout -b 1.1/develop origin/1.1/develop</code>
+					or
+					<code class="cli">$ git checkout -b 1.0/develop origin/1.0/develop</code>
+				</li>
+				<li>
+					<strong>Устраните ошибку и зафиксируйте исправление в вашем локальном репозитории</strong><br/>
+					Используйте наглядное и понятное сообщение о фиксации исправления
+					<code class="cli">$ git commit -m "This is my awesome description (Это мое превосходное описание)."</code>
+				</li>
+				<li>
+					<strong>Поместите исправление в вашу учетную запись GitHub</strong><br/>
+					<code class="cli">$ git push</code>
+				</li>
+				<li>
+					<strong>Запросите включение</strong><br/>
+					Запросите включение в ту же ветвь, в которой вы работаете (или на которой основана ваша ветвь).
+					Запрос ветви разработки 1.0/develop включается в 1.0/develop, 1.1/develop - в 1.1/develop, и т.д.
+					Используйте интерфейс "обновить диапазон фиксации", чтобы направить ваш запрос в правильную ветвь.
+				</li>
+				<li>
+					<strong>Ждите вашего момента славы</strong><br/>
+					Как только ваш запрос будет присоединен, вы войдете в список славы участников.
+				</li>
+			</ul>
+			
+			<h3 id="enhancements">Вклад, не связанный с ошибками</h3>
+			
+			<p>
+				Вклад, не связанный с ошибками, - это новые функции, оптимизации и все остальные изменения. Все такие запросы нужно делать в
+				новейшую ветвь разработки. Подключитесь к ветви разработки новейшей версии, внесите изменения и запросите включение.
+			</p>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; Группа разработчиков FuelPHP 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> выпущен по лицензии MIT.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

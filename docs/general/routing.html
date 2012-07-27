@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Routing - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2>Маршрутизация</h2>
+
+			<p>Маршрутизация Fuel может варьироваться от простых статических маршрутов до усложненных маршрутов с использованием маршрутизации на основе команды HTTP.</p>
+
+			<p>Маршруты установлены в <kbd>fuel/app/config/routes.php</kbd>.</p>
+
+			<h3 id="reserved">Зарезервированные маршруты</h3>
+
+			<p>В Fuel есть 2 зарезервированных маршрута.	 Это <kbd>_root_</kbd> и <kbd>_404_</kbd>.</p>
+
+			<ul>
+				<li><kbd>_root_</kbd> - Маршрут по умолчанию, когда не задан никакой URI.</li>
+				<li><kbd>_404_</kbd> - Маршрут используется, когда не удается найти никакой контроллер или действие. Также может использоваться как маршрут универсальная ловушка.</li>
+			</ul>
+
+			<pre class="php"><code>return array(
+    '_root_'  => 'welcome/index',
+    '_404_'   => 'welcome/404',
+);</code></pre>
+
+			<h3 id="basics">Базовая маршрутизация</h3>
+
+			<p>Маршрут слева сравнивается с URI запроса.  Если найдено совпадение, запрос направляется в URI справа.</p>
+
+			<p>Это позволяет вам делать следующие вещи:</p>
+
+			<pre class="php"><code>return array(
+    'about'   => 'site/about',
+    'contact' => 'contact/form',
+    'admin'   => 'admin/login',
+);</code></pre>
+
+
+			<h3 id="slightly_advanced">Немного усложненная маршрутизация</h3>
+
+			<p>В маршруты можно включать любые регулярные выражения.	Левая сторона сравнивается с URI запросов, а правая сторона - замена для левой, поэтому вы можете использовать обратные ссылки в правой части из регулярного выражения слева.  Есть также несколько специальных операторов, позволяющих вам сравнвиать все или только сегмент:</p>
+
+			<ul>
+				<li><kbd>:any</kbd> - Сравнивает все с этой точки в URI</li>
+				<li><kbd>:segment</kbd> - Сравнивает только 1 сигмент в URI, но этот сегмент может быть чем угодно</li>
+				<li><kbd>:num</kbd> - Сравнивает любые числа</li>
+				<li><kbd>:alpha</kbd> - Сравнивает любые буквы, включая UTF-8</li>
+				<li><kbd>:alnum</kbd> - Сравнивает любые буквенно-цифровые символы, включая UTF-8</li>
+			</ul>
+
+			<p>Здесь дано несколько примеров:</p>
+
+			<pre class="php"><code>return array(
+    'blog/(:any)'      => 'blog/entry/$1', // Маршруты /blog/entry_name в /blog/entry/entry_name
+    '(:segment)/about' => 'site/about/$1', // Маршруты /en/about в /site/about/en
+    '(\d{2})/about'    => 'site/about/$1', // Маршруты /12/about в /site/about/12
+);</code></pre>
+
+
+			<h3 id="advanced">Усложненная маршрутизация</h3>
+
+			<p>В маршруты также можно включать именованные параметры.  Это позволяет давать  вашим сегментам URI имена, к которым можно обращаться изнутри ваших действий.</p>
+
+			<p>Пример:</p>
+
+			<pre class="php"><code>return array(
+    'blog/:year/:month/:id' => 'blog/entry', // Маршруты /blog/2010/11/entry_name в /blog/entry
+);</code></pre>
+
+			<p>В примере выше он будет захватывать следующее <kbd>/blog/2010/11/entry_name</kbd>.  Затем он будет передавать этот запрос вашему действию 'запись' в вашем контроллере 'блог'.  Именованные параметры будут доступны таким образом:</p>
+
+			<pre class="php"><code>$this->param('year');
+$this->param('month');
+$this->param('id');</code></pre>
+
+
+			<h3 id="http_verb">Маршрутизация на основе команды HTTP</h3>
+
+			<p>Вы можете передавать URL контроллерам и действиям на основе команды HTTP, используемой для их вызова.
+			Это ускоряет и облегчает реализацию тихих контроллеров.</p>
+
+			<p>Пример:</p>
+
+			<pre class="php"><code>return array(
+    // Маршруты GET /blog в /blog/all и POST /blog в /blog/create
+    'blog' => array(array('GET', new Route('blog/all')), array('POST', new Route('blog/create'))),
+);</code></pre>
+
+			<p>Можно использовать именованные параметры и регулярные выражения внутри вашего URL, равно как и нормальные:</p>
+
+	        <pre class="php"><code>return array(
+    'blog/(:any)' => array(array('GET', new Route('blog/show/$1'))),
+);</code></pre>
+
+			<h3 id="named_routes">Именованные маршруты и обратная маршрутизация</h3>
+
+			<p>Идея обратной маршрутизации такова: допустим, вы получили область админитсрирования и имеете установку маршрута для нее.
+			В ваших представлеиях вы хотели бы использовать для данной области администрирования якорь HTML, ссылающийся, например, на 'admin/start/overview'.
+			Сейчас вы решаете переместить файлы и в итоге перемещаете данную конкретную страницу в 'admin/overview'.
+			В связи с этим вам нужно обновить ссылки во всех ваших представлениях.</p>
+
+			<p>При использовании обратной маршрутизации с данными именованными маршрутами вы можете связать якорь с именованным маршрутом, чтобы при изменении маршрута автоматически менялись и ссылки в ваших представлениях</p>
+
+			<p>пример маршрута:</p>
+
+			<pre class="php"><code>return array(
+    'admin/start/overview' => array('admin/overview', 'name' => 'admin_overview'), // добавляется именованный маршрут для 
+//страницы admin/overview
+);</code></pre>
+
+			<p>Пример якоря:</p>
+
+			<pre class="php"><code>// порождает produces &lt;a href="http://your_base_url/admin/start/overview"&gt;Overview&lt;/a&gt;
+echo Html::anchor(Router::get('admin_overview'), 'Overview');</code></pre>
+
+			<p class="note">
+				Заметьте, что в настоящий момент это работает только для маршрутов, не содержащих регулярные выражения, и только для маршрутов, определенных в <kbd>app/config/routes.php</kbd>, не для маршрутов модулей.
+			</p>
+
+			<h3 id="module_routing">Модули и маршрутизация</h3>
+
+			<p>Ознакомьтесь с тем, как модули обрабатывают маршрутизацию.</p>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

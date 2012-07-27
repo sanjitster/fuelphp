@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../../';
+	</script>
+	<script src="./../../../assets/js/combined.js"></script>
+	<title>Introduction - Relations - Orm Package - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Documentation
+				</h1>
+
+				<form id="google_search">
+					<p>
+                        <span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">table of contents</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2 id="intro">Relations(Отношения): Что такое отношения?</h2>
+            Базы данных позволяют использовать различные таблицы для разных данных. Пример: клиенты, заказы, записи, сообщения т.е. для каждой сущности отдельная таблица. Такой подход позволяет сделать структуру бд более понятной и в тоже время избежать избыточности данных в отдельно взятой таблице. Так же мы должны иметь взаимосвязи между этими таблицами. Например, клиент имеет заказы, а у заказа есть позиции (товары). Эти взаимосвязи должны быть отражены в базе данных. А также, когда мы получаем данные с помощью SQL, мы должны использовать определенные типы запросов JOIN, чтобы получить нужный результат.
+            Fuel поддерживает зависимости таблиц - отношения.
+
+
+			<article id="config">
+                <h2>Типы отношений</h2>
+<p> <strong>Один к одному</strong> (<code>has one</code>). Данный тип отношений используется, когда для одной записи из одной таблицы имеется одна запись из другой. Пример реализации: у каждого автора из таблицы <code>users</code> есть 1 запись из таблицы <code>passports</code>.</p>
+                    <p><strong>Пренадлежит к</strong> (<code>belongs to</code>). Этот тип отношений используется, когда для многих записей из одной таблицы имеется одна запись из другой. Пример: для каждой записи из таблицы <code>posts</code> имеется одна категория из таблицы <code>categories</code>. Другими словами, можно сказать, что запись (<code>posts</code>) принадлежит (англ. <em>belongs to</em>) к категории (<code>categories</code>).</p>
+
+                    <p> <strong>Один к многим</strong> (<code>has many</code>). Тип отношений подразумевает, что у одной записи есть много записей из другой таблицы, причем принадлежащие только ей. Например, у одного города (<code>cities</code>) может быть несколько жителей (<code>users</code>). Тем не менее, один житель может принадлежать только к одному городу.
+                    </p>
+                    <p> <strong>Много ко многому</strong> (<code>many to many</code>). Отношения используются, когда у многих записей из одной таблицы может быть много записей из другой. Например, у каждой записи в блоге (<code>posts</code>) существуют теги (<code>tags</code>). Причем, один и тот же тег может принадлежать нескольким записям одновременно. Для построения подобной связи используется вспомогательная таблица, название которой составляется из двух соединяемых таблиц. В этом случае, например, название может быть <code>posts_tags</code>.</p>
+
+
+				<h2>Настройки</h2>
+
+				<h3>Простая конфигурация</h3>
+
+				<pre class="php"><code>protected static $_has_many = array('comments');</code></pre>
+
+				<h3>Все настройки</h3>
+
+				<pre class="php"><code>protected static $_has_many = array('comments' => array( //has many - переводится, как "имеет много"
+	'model_to' => 'Model_Fancy_Comment', // Модель с которой есть отношения(внешняя модель)
+	'key_from' => 'article_id', //Primary key из текущей модели/таблицы
+	'key_to' => 'parent_article_id', //Зависиое поле из внешней модели/таблицы
+	'cascade_save' => true,
+	'cascade_delete' => false,
+));</code></pre>
+
+				<p>Orm автоматически выстроит карту отношений, в таблицах связанных бд.
+                    Вернет массив объектов. Когда выполнится операция сохранения в текущем объекте, то
+                    такая же операция будет выполнена и на всех зависимых, в зависимости от настроек она будет либо каскадная, либо единичная.
+                </p>
+
+
+				<h3>Опции конфигурации</h3>
+
+				<table class="config">
+					<tbody>
+						<tr class="header">
+							<th>Option</th>
+							<th>Default</th>
+							<th>Notes</th>
+						</tr>
+						<tr>
+							<th>model_to</th>
+							<td>Берется из алиаса</td>
+							<td>
+                                Если указывается, то должно быть указано полное имя класса (ex. <kbd>Model_Comment</kbd>).<br />
+								По дефолту, это значение формируется следующим образом: убирается префикс 'Model_' а имя 'Comment'
+                                преобразуется во множетсвенное число - 'comments'(ex. 'comments' becomes 'Model_Comment')
+								(ex. 'comments' becomes 'Model_Comment').</td>
+						</tr>
+						<tr>
+							<th>key_from</th>
+							<td>'id', либо 'имя настоящей модели'+'_id'</td>
+							<td>Поле из текущей модели. Позволяет связать себя с произвольноым полем из другой таблицы.</td>
+						</tr>
+						<tr>
+							<th>key_to</th>
+							<td>'id', либо 'имя настоящей модели'+'_id'</td>
+							<td>По умолчанию, отношение из <kbd>Model_Article</kbd> к <kbd>Model_Comment</kbd>
+								будет привязано к полю <kbd>article_id</kbd> в таблице comments</td>
+						</tr>
+						<tr>
+							<th>cascade_save</th>
+							<td>bool <kbd>true</kbd></td>
+							<td rowspan="2">Каскадность операции или единичность</td>
+						</tr>
+						<tr>
+							<th>cascade_delete</th>
+							<td>bool <kbd>false</kbd></td>
+						</tr>
+						<tr>
+							<th>conditions</th>
+							<td><kbd>array()</kbd></td>
+							<td>Принимает 'where' и 'order_by' ключи. Они более ограничены, чем обычное использование:
+                                тут должен быть массив содержащий массивы, которые содержат <kbd>array(field, compare, value)</kbd>.
+                                <kbd>order_by</kbd> содержит массив fields или ассоциативное field =&gt; direction.
+
+                                <strong>Note:</strong> это постоянно действует и не может быть отключено.
+                            </td>
+						</tr>
+					</tbody>
+				</table>
+			</article>
+
+			<article id="usage">
+				<h2>Использование</h2>
+
+				<p>Orm позволяет использовать, помимо "жадной" загрузки отношений, ещё и "ленивую". Eager loading означает,
+                    что некоторые (или все) отношения будут выбраны в исходном запросе. Lazy loading подразумевает что отношения не выберутся пока вы их не запросите.
+                </p>
+
+				<pre class="php"><code>// eager loading, using joins:
+$post = Model_Post::find('all', array('related' => array('comments')));
+// or
+$post = Model_Post::find()->related('comments')->get();
+// $post->comments доступна без каких-либо дополнительных запросов после этого
+
+// или lazy loading, он без сцеплений, один запрос - один ответ
+// первый получит "post"
+$post = Model_Post::find('first');
+// сейчас запрос не послан (но не загружен), его загрузка происходит со следующим запросом, без сцеплений, автоматически
+$comments = $post->comments;</code></pre>
+
+				<h3 id="usage_rel_conditions">Использование where/order_by операторов</h3>
+
+				<p>Ещё вы можете использовать дополнительные операторы where/order_by в Orm.</p>
+
+				<pre class="php"><code>// использование массива запросов
+$post = Model_Post::find('first', array(
+	'related' => array(
+		'articles' => array(
+			'order_by' => array('id' => 'desc'),
+			'where' => array(
+				array('publish_date', '>', time()),
+				array('published', '=', 1),
+			),
+		),
+	),
+));
+
+// использование метода сцеплений(цепочек)
+$post = Model_Post::query()->related('articles', array(
+	'order_by' => array('id' => 'desc'),
+	'where' => array(
+		array('publish_date', '>', time()),
+		array('published', 1), // when using '=' it can be omitted
+	),
+)->get_one();
+
+// но то же самое может быть сделано с помощью добавления префикса имени отношения к колонке:
+$post = Model_Post::query()->related('articles')
+	->order_by('articles.id', 'desc')
+	->where('articles.publish_date', '>', time())
+	->where('articles.published', 1)
+	->get_one();</code></pre>
+
+				<h3 id="usage_nested_rels">Использование с вложенными связями</h3>
+
+				<pre class="php"><code>// использвоание массива запросов
+$post = Model_Post::find('first', array(
+	'related' => array(
+		'articles' => array(
+			'related' => array(
+				'user' => array(
+					'related' => array('profile'),
+					'where' => array('active', 1),
+				),
+			),
+			'order_by' => array(
+				'published' => 'desc',
+			),
+		),
+	),
+));
+
+// использование только метода сцеплений
+$post = Model_Post::query()
+	->related('articles')
+	->related('articles.user')
+	->related('articles.user.profile')
+	->where('articles.user.active', '=', 1)
+	->order_by('articles.published', 'desc')
+	->get_one();
+
+// использование комбинации массива и метода сцеплений
+$post = Model_Post::query()
+	->related('articles', array(
+		'related' => array('user' => array(
+			'where' => array('active' => 1),
+		)),
+		'order_by' => array('published', 'desc'),
+	))
+	->related('articles.user.profile')
+	->get_one();</code></pre>
+			</article>
+			<article id="join_types">
+				<h2>Типы объединений</h2>
+
+				<p>По умолчанию Orm использует "left" «join_type».
+                    Чтобы задать другой «join_type» делайте так:</p>
+
+				<pre class="php"><code>
+				$post = Model_Post::find('first', array(
+    'related' => array(
+        'articles' => array(
+        	'join_type' => 'inner',
+            'order_by' => array('id' => 'desc'),
+            'where' => array(
+                array('publish_date', '>', time()),
+                array('published', '=', 1),
+        	),
+    	),
+	),
+));
+				</code></pre>
+			</article>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

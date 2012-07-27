@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../';
+	</script>
+	<script src="./../../assets/js/combined.js"></script>
+	<title>Creating models - Orm Package - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Documentation
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">table of contents</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+
+			<section>
+				<h2 id="creation">Создание Моделей</h2>
+
+				<p>Пример</p>
+
+				<pre class="php"><code>class Model_Article extends Orm\Model {}</code></pre>
+
+
+				<h2 id="config">Конфигурация</h2>
+
+				<p>Статические свойства, такие, как(<kbd>$_properties</kbd>) служат для конфигурации Модели, хоть это и не обязательно.
+                    Они могут быть <kbd>public</kbd> или
+					<kbd>protected</kbd>, но не <kbd>private</kbd>.<br />
+                    Обратите внимание, что все свойства конфигурации начинаются с одного подчеркивания для предотвращения столкновений с именами столбцов.
+                </p>
+
+				<h3 id="table_name">protected static $_table_name</h3>
+
+				<p> В модели "Model_Article", где "Model_" это префикс, а имя "Article" - имя таблицы будет ожидаться во множетсвенном числе т.е. "articles".
+                    Если вы не хотите следовать этому соглашению, имя таблицы можно изменить вручную
+                    присвоив $_table_name своё значение.
+                </p>
+
+				<pre class="php"><code>class Model_Article extends Orm\Model
+{
+	protected static $_table_name = 'myarticles';
+}</code></pre>
+
+				<h3 id="primary_key">protected static $_primary_key</h3>
+
+				<p>По дефолту имя колонки с primary key<kbd>array('id')</kbd>, если вы используете другое имя, то вам нужно будет его указать.
+				</p>
+
+				<pre class="php"><code>class Model_Article extends Orm\Model
+{
+	protected static $_primary_key = array('aid');
+}</code></pre>
+
+				<h3 id="propperties">protected static $_properties</h3>
+
+				<p>На простом примере показано, как все свойства модели, также могут быть сконфигурированы
+                    с помощью "имя_столбца" в качестве ключа и настройки параметров, как тип, заголовок и валидация.
+                </p>
+
+				<pre class="php"><code>class Model_Article extends Orm\Model
+{
+	protected static $_properties = array(
+		'id', // both validation & typing observers will ignore the PK
+		'name' => array(
+			'data_type' => 'varchar',
+			'label' => 'Article Name',
+			'validation' => array('required', 'min_length' => array(3), 'max_length' => array(20)),
+			'form' => array('data_type' => 'text'),
+			'default' => 'New article',
+		),
+		'gender' => array(
+			'data_type' => 'varchar',
+			'label' => 'Gender',
+			'form' => array('data_type' => 'select', 'options' => array('m' => 'Male', 'f' => 'Female')),
+			'validation' => array('required'),
+		),
+		'created_at' => array(
+			'data_type' => 'int',
+			'label' => 'Created At',
+			'form' => array(
+				'type' => false, // this prevents this field from being rendered on a form
+			),
+		),
+		'updated_at' => array('data_type' => 'int', 'label' => 'Updated At')
+	);
+)</code></pre>
+
+				<p>Атрибуты форм могут быть переданы в виде массива, как показано в примере.</p>
+				<p>Можно делать так:</p>
+
+                <pre class="php"><code>class Model_Article extends Orm\Model
+                    {
+                    protected static $_properties = array('id', 'title', 'contents', 'publish');
+                    }
+                </code></pre>
+
+                <p class="note">
+                    Это работает только с MySQL и MySQLi драйверами, потому что требует извлечения свойств модели из базы данных.
+                    Однако это не очень эффективно и, и не рекомендуется использовать его без надобности, потому что вам всегда будет нужен
+                    один дополнительный запрос в модели только для извлечения имен колонок.
+                </p>
+
+				<h3 id="relations">protected static $_has_one, $_belongs_to, $_has_many, $_many_many, $_many_through</h3>
+
+				<p>Об отношениях моделей друг с другом читайте тут<a href="relations/intro.html">Relating Models</a></p>
+
+				<h3 id="connection">protected static $_connection</h3>
+
+				<p>По умолчанию это свойство не существует и Model::connection() возвращает <kbd>null</kbd>, но вы можете назначить
+                    ей любое другое имя базы данных указанное в <kbd>app/config/db.php</kbd>. Обратите внимание отношения не работают через подключения.</p>
+
+				<pre class="php"><code>class Model_Article extends Orm\Model
+{
+	protected static $_connection = 'articles_database';
+}</code></pre>
+
+				<h3 id="observers">protected static $_observers</h3>
+
+				<p>Добавляет observers <a href="observers/intro.html">Observers</a></p>
+			</section>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

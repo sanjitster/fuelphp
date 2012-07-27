@@ -1,0 +1,1 @@
+<div class="logo"><?php echo $name ?></div>

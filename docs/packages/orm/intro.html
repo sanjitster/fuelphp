@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../';
+	</script>
+	<script src="./../../assets/js/combined.js"></script>
+	<title>Introduction - Orm Package - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Documentation
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">table of contents</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+			<h2>ORM (англ. Object-relational mapping, рус. Объектно-реляционное отображение)</h2>
+
+			<p>Orm это сокращение от <a href="http://ru.wikipedia.org/wiki/ORM" target="_blank">Object
+				Relational Mapper</a>. Orm делает две вещи: обычную бд представляет, как виртуальную объектную базу данных и
+                позволяет с ней взаимодействовать, как с объектом. ORM в данном контексте является реализацией паттерна ActiveRecord + наших добавлений.
+            </p>
+
+			<section>
+				<h2 id="intro">Введение</h2>
+
+				<p>
+                    В отличии от других ActiveRecord реализаций, наша компактна, быстра и проста в использовании.
+                    Чтение, запись, обновление и удаление данных из бд, все эти манипуляции теперь легковыполнимы.
+                    Orm делает всю тяжёлую работу за вас.
+                </p>
+			</section>
+
+			<section>
+				<h2 id="install">Подключение</h2>
+
+				<p>Orm пакет нуждается в подключении перед использованием. Строка в файле конфигурации:</p>
+				<pre class="php"><code>'packages' => array(
+	'orm',
+),</code></pre>
+			</section>
+
+			<section>
+				<h2 id="troubleshooting">Решение распространенных проблем</h2>
+
+				<h3>Мои relations/foreign ключи aren't being saved (1)</h3>
+				<p>Это случается, чаще всего, когда вы используете не тот тип relations.
+                    Перечитайте примеры и документацию и убедитесь что всё сделано правильно, и что задан корректный тип relations в конфигурации.</p>
+
+				<h3>Я не могу установить связь с объектом (2)</h3>
+				<p>Убедитесь что ваша модель наследует <code>Orm\Model</code> а не <code>Model_Crud</code>.</p>
+
+				<h3>Получаю следующее исключение - related model in a package/module can't be found</h3>
+				<p>Убедитесь что пакет или модуль подключен к Fuel.<br />
+					Также следите за правильностью неймспейсов своих подключений.</p>
+
+				<h3>Получаю Orm\FrozenObject exception</h3>
+				<p>Объекты не могут быть изменены в то время когда происходит трансакция с базой данных,
+                    это позволяет экономить круговой resaving уже сохраненных объектов.
+                    Это не должно происходить при нормальной эксплуатации и чаще всего случается при неправильной конфигурации relations.
+                    Иногда это может быть вызвано ошибкой, например, когда вы не используете стабильный релиз.</p>
+			</section>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

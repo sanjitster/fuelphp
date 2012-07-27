@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Constants - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+				
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+				
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+		
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+		
+		<div id="main">
+	
+			<h2>Константы</h2>
+	
+			<p>
+				Fuel имеет четыре константы в глобальном пространстве имен, чтобы направлять вас в важные каталоги. Fuel использует их внутренне, чтобы определять расположение классов и других файлов.
+				Эти константы установлены в <em>public/index.php</em>.
+			</p>
+			
+			<p class="note">
+				<strong>Замечание:</strong> Когда вы перемещаете любую из основных папок fuel (app, core, public, packages), обязательно обновите ваш файл index.php, чтобы указать fuel правильные пути.
+			</p>
+	
+			<table class="config valign">
+				<tbody>
+					<tr class="header">
+						<th>Ключ</th>
+						<th>Описание</th>
+					</tr>
+					<tr>
+						<th>APPPATH</th>
+						<td>
+							Путь к каталогу приложений (<em>/path/to/fuel/app</em>).
+							В нем постоянно хранятся каталоги приложений и код.
+						</td>
+					</tr>
+					<tr>
+						<th>COREPATH</th>
+						<td>Путь к каталогу ядра (<em>/path/to/fuel/core</em>).
+							В нем хранятся все классы Fuel.
+						</td>
+					</tr>
+					<tr>
+						<th>DOCROOT</th>
+						<td>
+							Путь к общедоступному каталогу (<em>/path/to/public</em>).
+							В нем хранится index.php. В нем хранится все, что доступно для пользователя через браузер).
+						</td>
+					</tr>
+					<tr>
+						<th>PKGPATH</th>
+						<td>
+							Путь к каталогу пакетов (<em>/path/to/fuel/packages</em>).
+							В нем установлены ваши пакеты(при установке через oil).
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

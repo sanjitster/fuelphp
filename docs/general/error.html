@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>404 - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<h2>Обработка ошибок</h2>
+
+			<h3 id="intro">Введение</h3>
+			<p>
+				Как известно, <a href="http://en.wikipedia.org/wiki/Exception_handling">обработка ошибок</a>
+				- очень важная часть в процессе разработки. Оно не только показывает пользователю, что запрошенная им страница недоступна, но и информирует машины (браузеры и тому подобные) о том, что происходит, предоставляя статус ошибки HTTP.
+			</p>
+
+			<h3 id="config">Ошибка 404</h3>
+
+			<p>
+				Маршрут 404 установлен в <em>app/config/routes.php</em> и должен указывать на контроллер/метод,
+				обрабатывающий страницы 404. <a href="routing.html">Больше об этом читайте в разделе маршрутизация.</a>
+			</p>
+
+			<h4 id="throw">Выдача 404</h4>
+
+			<p>
+				Бывают случаи, когда нужно выдать ошибку 404, например, когда вы сами обрабатываете маршрутизацию.
+				Это делается путем выдачи <kbd>HttpNotFoundException</kbd>. Fuel вызовет метод <kbd>exit,</kbd> как только покажет страницу 404.
+			</p>
+
+			<pre class="php"><code>throw new HttpNotFoundException;</code></pre>
+
+			<h4 id="404_handling">Обработка 404</h4>
+
+			<p>
+				Когда сделан запрос, и после того как маршрутизатор поискал возможные совпадения и не нашел ни одного, вступает в действие обработка 404. По умолчанию маршрут <strong>_404_</strong> указывает на <em>welcome/404</em>,
+				взглянем на данный метод:
+			</p>
+
+			<pre class="php"><code>// Внутри Controller_Welcome
+
+/**
+ * Действие 404 для приложения.
+ *
+ * @access  public
+ * @return  void
+ */
+public function action_404()
+{
+	$messages = array('Aw, crap!', 'Bloody Hell!', 'Uh Oh!', 'Nope, not here.', 'Huh?');
+	$data['title'] = $messages[array_rand($messages)];
+
+	// Set a HTTP 404 output header
+	$this->response->status = 404;
+	$this->response->body = View::forge('welcome/404', $data);
+}</code></pre>
+
+			<p>
+				Здесь видно, что происходит внутри обработчика 404. Как видно, это нормальное действие контроллера.
+				Оно позволяет отображать на странице любое нужное вам содержимое. Вы можете загружать ваши собственные представления с данными, извлеченными из базы данных.
+			</p>
+
+			<p class="note">
+				Заметьте, что Fuel не устанавливает статус 404, его должен устанавливать ваш ответ. Возвращайте <em>Response::forge(ViewModel::forge('welcome/404'), 404);</em>
+				чтобы отправить правильный заголовок статуса.
+			</p>
+
+			<h4 id="catch_all">Универсальная ловушка</h4>
+
+			<p>
+				Так как Fuel не устанавливает статус ответа 404, его можно использовать в качестве функции универсальной ловушки.
+				У вас может быть модель страницы, умеющая извлекать страницу из базы данных по uri.
+				Пример ниже иллюстрирует возможные сценарии:
+			</p>
+
+			<pre class="php"><code>// Внутри вашего контроллера 404
+
+public function action_my404()
+{
+	$original_uri = \Input::uri();
+	$result = \DB::select()->from('pages')->where('uri', $original_uri)->execute();
+	if(count($result) === 1)
+	{
+		// отображает данную страницу так, как вам нужно
+	}
+	else
+	{
+		// отображает вашу общую страницу 404
+		$messages = array('Aw, crap!', 'Bloody Hell!', 'Uh Oh!', 'Nope, not here.', 'Huh?');
+		$data['title'] = $messages[array_rand($messages)];
+		$this->response->status = 404;
+		$this->response->body = View::forge('welcome/404', $data);
+	}
+}</code></pre>
+			
+			<h3 id="throw_500">Выдача 500</h3>
+			
+			<p>
+				Бывают моменты, когда ваши приложения должны прекратить работу и вывести ошибку, чтобы показать, что на сервере произошла какая-то ошибка. Обычно это
+				<a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_Server_Error">500 Внутренняя ошибка сервера</a>.
+			</p>
+			
+			<p>
+				Аналогично выдаче 404 можно выдать ошибку 500.
+			</p>
+			
+			<pre class="php"><code>throw new HttpServerErrorException;</code></pre>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

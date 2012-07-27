@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Tasks - General - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Документация
+				</h1>
+				
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+				
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+		
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+		
+		<div id="main">
+			<h2>Задачи</h2>
+	
+			<h3 id="what_are_tasks">Что такое задача?</h3>
+	
+			<p>Задачи - классы, запускаемые с помощью командной строки или установленные в качестве задачи крон. В основном они используются для фоновых процессов, назначенных на определенное время задач и задач обслуживания. Задачи могут вызывать модели и другие классы, так же как контроллеры.</p>
+	
+			<h3 id="creating_tasks">Создание задачи</h3>
+	
+			<p>В Fuel контроллеры размещены в каталоге <kbd>fuel/app/tasks</kbd>. Ниже дан пример задачи "пример": </p>
+	
+	<pre class="php"><code>namespace Fuel\Tasks;
+
+class Example
+{
+
+	public function run($message = 'Hello!')
+	{
+		echo $message;
+	}
+}</code></pre>
+	
+			<p>Ее можно вызвать через утилиту улучшения внутри oil:</p>
+			
+			<pre class="cli"><code>$ php oil refine example "Good morning"</code></pre>.
+	
+			<p>Когда в команде используется только имя задачи, делается ссылка на метод <kbd>"run()"</kbd>.</p>
+	
+			<h3 id="more_methods">Разбиение задач на дополнительные методы
+	
+			<p>Вы можете добавлять дополнительные методы в ваш класс задачи, чтобы разбить группу задач на более специфические задачи, которые можно вызывать отдельно.</p>
+	
+	<pre class="php"><code>public function current_date()
+{
+	echo date('Y-m-d');
+}</code></pre>
+	
+			<p>После этого можно вызывать данный метод с помощью:</p>
+			
+			<pre class="cli"><code>$ php oil refine example:current_date</code></pre>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

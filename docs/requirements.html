@@ -1,0 +1,106 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './';
+	</script>
+	<script src="./assets/js/combined.js"></script>
+	<title>Требования - Документация FuelPHP</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, среда разработки PHP 5.3</strong>
+					Документация
+				</h1>
+				
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+				
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+		
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+		
+		<div id="main">
+			
+			<h2>Требования</h2>
+			<h5 id="web_server">Вебсервер</h5>
+			<ul>
+				<li>Любой вебсервер.  Fuel был протестирован на Apache, IIS и Nginx.</li>
+				<li>Работает на всех основных операционных системах, включая *nix и Windows.</li>
+			</ul>
+			<h5 id="php_version">Версия PHP</h5>
+			<ul>
+				<li>Требуется версия 5.3 или выше.</li>
+			</ul>
+			<h5 id="php_extensions">Расширения PHP</h5>
+			<p>
+				Fuel использует функциональность, которую PHP определяет как "расширения". Чтобы избежать любых возможных проблем с совместимостью, Fuel использует только расширения, являющиеся частью кода PHP, как задокументировано на <a href="http:://php.net">сайте PHP</a>. Если используются расширения, входящие в состав репозитория
+				PECL (который должен устанавливать вручную системный администратор), Fuel будет использовать их при их наличии, и решит проблему обходным способом при их отсутствии.
+			</p>
+			<p>Ниже приведен список используемых расширений, и классы, которые используют их:</p>
+			<table class="config valign">
+				<tbody>
+					<tr>
+						<th class="small">Расширение</th>
+						<th class="small">Используется в</th>
+						<th>Комментарии</th>
+					</tr>
+					<tr>
+						<td>fileinfo</td>
+						<td>Upload(пересылка файла)</td>
+						<td><a href="http://php.net/manual/en/book.fileinfo.php">Документация</a>.<br />
+						Учтите, что на платформах Windows может понадобиться вручную установить DLL.</td>
+					</tr>
+					<tr>
+						<td>mbstring</td>
+						<td>нет данных</td>
+						<td><a href="http://php.net/manual/en/book.mbstring.php">Документация</a>.<br />
+						Если оно отсутствует, среда разработки не поддерживает многобайтовый. Проверьте константу MBSTRING, чтобы узнать, подключена ли в вашей установке поддержка многобайтовых.</td>
+					</tr>
+					<tr>
+						<td>mcrypt</td>
+						<td>Crypt(зашифрование-расшифрование)</td>
+						<td><a href="http://php.net/manual/en/book.mcrypt.php">Документация</a>.<br />
+						Если оно отсутствует, PHPSecLib используется для имитации его функциональности.</td>
+					</tr>
+				</tbody>
+			</table>
+	
+			<h3 id="recommended">Рекомендуемые требования</h3>
+			<ul>
+				<li>Вебсервер - Apache, работающий на *nix.</li>
+				<li>Версия PHP - 5.3.2</li>
+				<li>mod_rewrite - Чтобы убрать index.php из URL.</li>
+				<li><a href="http://www.phpunit.de/manual/current/en/index.html">PHPUnit</a> - 3.5.12</li>
+			</ul>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; Группа разработчиков FuelPHP 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> выпущен по лицензии MIT.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

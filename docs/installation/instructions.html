@@ -1,0 +1,155 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../';
+	</script>
+	<script src="./../assets/js/combined.js"></script>
+	<title>Инструкция - Установка - Документация FuelPHP</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, среда разработки PHP 5.3</strong>
+					Документация
+				</h1>
+				
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+				
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">содержание</a>
+			<div class="clear"></div>
+		</header>
+		
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+		
+		<div id="main">
+			
+			<h5>Выберите одно: <a href="#command">Установка из командной строки</a> | <a href="#manual">Ручная установка</a></h5>
+			<br />
+			<h3 id="command">Установка из командной строки</h3>
+		    <p class="note">Она в настоящее время работает только в системах *nix (Linux, OS X, Unix и т.д.).</p>
+			<p>Наш быстрый установщик является урезанным интерфейсом для пакета Oil. Он позволяет создавать новый проект с помощью одной команды. Вам также больше не придется использовать 'php' в ваших командах oil.</p>
+	
+			<p>Чтобы установить быстрый установщик, откройте командную оболочку и выполните следующую команду:</p>
+			
+			<pre class="cli"><code>$ curl get.fuelphp.com/oil | sh</code></pre>
+			
+			<p class="note">Она попросит ввести ваш пароль, так как она устанавливает скрипт в /usr/bin.</p>
+			
+			<p>Теперь вы можете использовать 'oil' вместо 'php oil' в ваших проект.</p>
+	
+			<p>Чтобы создать новый проект, выполните команду:</p>
+	
+			<pre class="cli"><code>$ oil create &lt;project_name&gt;</code></pre>
+			
+			<p>Она создаст папку с введенным вами именем проекта в каталоге, в которым вы находитесь. Затем она скопирует репозиторий и все подмодули в тот каталог.</p>
+			
+			<p>Примечание: Она также запустит <code class="cli">$ oil refine install</code>, делающую нужные каталоги доступными для записи.</p>
+	
+			<h3 id="manual">Инструкции по ручной установке</h3>
+	
+			<p>Это создаст стандартную установку среды разработки Fuel на вашем вебсервере.</p>
+	
+			<ol>
+				<li><a href="download.html">Загрузите среду разработки Fuel</a></li>
+				<li>Разархивируйте загруженный архив</li>
+				<li>Переместите файлы на ваш сервер
+					<ul>
+						<li>Учтите, что общедоступный каталог в исходниках равняется каталогу общедоступных документов вашего вебсервера, т.е.
+						public_html, public, htdocs, и т.д. Переместите его содержимое туда или в подкаталог корневого каталога документов,
+						в котором вы хотите использовать Fuel.</li>
+						<li>В целях безопасности рекомендуется разместить каталог fuel за пределами каталога общедоступных документов.</li>
+						<li>Отредактируйте пути в index.php, чтобы они указывали на ваши каталоги app (приложение), core(ядро) и packages(пакеты).</li>
+					</ul>
+<pre class="plain"><code>/
+  fuel/
+    app/
+    core/
+    packages/
+  public/
+    .htaccess
+    assets/
+    index.php
+  oil
+</code></pre>
+				</li>
+				<li>
+					Вручные установите права доступа к доступным для записи папкам, или выполните:
+<pre class="cli"><code>$ php oil refine install
+	Made writable: APPPATH/cache
+	Made writable: APPPATH/logs
+	Made writable: APPPATH/tmp
+</code>
+</pre>
+				</li>
+			</ol>
+	
+			<h2 id="configuration">Конфигурация</h2>
+	
+			<p>Главная конфигурация находится в app/config/config.php. Редактируйте ее по своему усмотрению.</p>
+	
+			<h2 id="install_inside_root">Установка внутри корневого каталога документов</h2>
+	
+			<p>Как объяснено в пункте 3, в целях безопасности настоятельно рекомендуется не устанавливать Fuel внутри корневого каталога документов вашего вебсервера.</p>
+			<p>
+				Однако бывают случаи, когда вам понадобится это сделать, например, в (локальной) среде разработки, в которой динамический модуль виртуального хостинга Apache
+				используется для быстрой установки новых сред разработки без необходимости перезапускать вебсервер.
+			</p>
+			<p>В этом случае вам нужен дополнительный файл .htaccess, который нужно поместить в корневой каталог документов, и который будет перенаправлять запросы к корневому каталогу сайта в вашу общедоступную папку, и также изменит команды перезаписи, чтобы они включали в себя общедоступную папку:</p>
+<pre class="plain"><code>
+&lt;IfModule mod_rewrite.c>
+	RewriteEngine on
+
+	RewriteBase /public
+
+	RewriteRule ^(/)?$ index.php/$1 [L]
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+
+	RewriteRule ^(.*)$ index.php/$1 [L]
+&lt;/IfModule>
+</code>
+</pre>
+			
+			<h2 id="setting_the_environment">Установка среды</h2>
+			
+			<p>
+				По умолчанию, среда установлена в режим разработки. Fuel использует среду, чтобы определять, какие настройки базы данных использовать, но вы можете применять ее для других вещей.
+			</p>
+			<p>
+				Чтобы установить среду, добавьте следующую строку в ваш файл .htaccess.
+			</p>
+			<pre class="plain"><code>SetEnv FUEL_ENV production</code></pre>
+			<p>
+				Доступные опции подробно описаны в <a href="../classes/fuel.html#class_constants">константах класса</a> класса Fuel.
+			</p>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; Группа разработчиков FuelPHP 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> выпущен по лицензии MIT.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

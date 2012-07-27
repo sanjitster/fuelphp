@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../../';
+	</script>
+	<script src="./../../../assets/js/combined.js"></script>
+	<title>Belongs To - Relations - Orm Package - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Documentation
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">table of contents</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<section>
+				<h2 id="belongs_to">Отношение: Belongs To(Пренадлежит к)</h2>
+
+				<p>
+                    Имеет отношение к primary key(первичного ключа) базовой таблицы к полю в своей таблице, относится к одному связанному с ним объекту.
+                    Это другая сторона <a href="has_one.html">HasOne</a> или <a href="has_many.html">HasMany</a> отношений.
+                </p>
+
+				<h3>Примеры</h3>
+
+				<pre class="php"><code>protected static $_belongs_to = array('post');</code></pre>
+
+				<p>Ниже приведены примеры для установления и разрыва <em>belongs to</em> отношений:</p>
+
+				<pre class="php"><code>// отношения являются новыми:
+$comment = new Model_Comment();
+$comment->post = new Model_Post();
+$comment->save();
+
+// отношения являются уже установленными
+$comment = Model_Comment::find(6);
+$comment->post = Model_Post::find(1);
+$comment->save();
+
+// отношения прекращены
+$comment = Model_Comment::find(6);
+$comment->post = null;
+$comment->save();</code></pre>
+
+				<h3>Полный пример конфигурации со значениями по умолчанию</h3>
+
+				<pre class="php"><code>// Model_Comment которая belong_to - post
+protected static $_belongs_to = array(
+	'post' => array(
+		'key_from' => 'comment_id',
+		'model_to' => 'Model_Post',
+		'key_to' => 'id',
+		'cascade_save' => true,
+		'cascade_delete' => false,
+	)
+);</code></pre>
+			</section>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

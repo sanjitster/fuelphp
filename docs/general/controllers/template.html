@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./../../assets/css/combined.css">
+    <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+    <script type="text/javascript">
+        var path = './../../';
+    </script>
+    <script src="./../../assets/js/combined.js"></script>
+    <title>Template Controller - General - FuelPHP Documentation</title>
+</head>
+<body>
+<div id="container">
+<header id="header">
+    <div class="table">
+        <h1>
+            <strong>FuelPHP, a PHP 5.3 Framework</strong>
+            Документация
+        </h1>
+
+        <form id="google_search">
+            <p>
+                <span id="search_clear">&nbsp;</span>
+                <input type="submit" name="search_submit" id="search_submit" value="search"/>
+                <input type="text" value="" id="search_input" name="search_input"/>
+            </p>
+        </form>
+    </div>
+    <nav>
+
+        <div class="clear"></div>
+    </nav>
+    <a href="#" id="toc_handle">содержание</a>
+
+    <div class="clear"></div>
+</header>
+
+<div id="cse">
+    <div id="cse_point"></div>
+    <div id="cse_content"></div>
+</div>
+
+<div id="main">
+
+    <h2>Контроллер шаблона</h2>
+
+    <iframe width="640" height="360" src="http://www.youtube.com/embed/mkPXTn9cRs0" frameborder="0"
+            allowfullscreen></iframe>
+
+    <h3>Что такое контроллер шаблона?</h3>
+
+    <p>Контроллер шаблона - расширение базового контроллера, имеющее поддержку шаблонов, встроееную с помощью некоторых
+        заранее заданных методов before() и after(). Он может использоваться для обертывания представления в макет с
+        шапкой, подвалом, боковой колонкой, и т.д.</p>
+
+    <h3>Использование контроллера шаблона</h3>
+
+    <p>Как и для всех контроллеров, вы создаете класс в каталоге <kbd>fuel/app/classes/controller</kbd>. Он должен
+        расширять класс <kbd>Controller_Template</kbd> и по умолчанию снабжается префиксом "Controller_". Ниже дан
+        пример контроллера "example": </p>
+
+    <p class="note"><strong>Заметьте:</strong> по умолчанию все методы класса, расширяющего Controller_Template, будут
+        использовать шаблон.
+        <br/>
+        Однако возможно пропускать методы из шаблона.</p>
+			
+	<pre><code>class Controller_Example extends Controller_Template
+        {
+
+        public function action_index()
+        {
+        $data = array();
+        $this->template->title = 'Example Page';
+        $this->template->content = View::forge('test/index', $data);
+        }
+        }</code></pre>
+
+    <h3>Использование контроллера шаблона с before()</h3>
+
+    <p class="note"><strong>Заметьте:</strong> если в вашем расширении контроллера шаблона имеется метод before(), вы
+        должны добавить <kbd>parent::before();</kbd> в этот метод, или <kbd>$this->template</kbd> будет недоступен.
+        <strong>Сделайте before() совместимым</strong> с таким же методом Controller_Template: используйте <kbd>before($data
+            = null)</kbd> вместо before().</p>
+	
+			
+	<pre><code>class Controller_Example extends Controller_Template
+        {
+
+        /**
+        * Делаем before() совместимым с Controller_Template путем добавления $data = null в качестве
+        параметра
+        */
+        public function before($data = null)
+        {
+        parent::before(); // Без этой строки шаблонизация не работает!
+
+        // выполняем какие-то действия
+        }
+
+        public function action_index()
+        {
+        $data = array();
+        $this->template->title = 'Example Page';
+        $this->template->content = View::forge('test/index', $data);
+        }
+        }</code></pre>
+
+    <h3>Пример шаблона</h3>
+
+    <p>
+        Файл шаблона - прекрасное место для вызова вашего JS, CSS, и т.д, структурирования вашего HTML и вызова
+        составляющих представления. Он позволяет задавать структуру вашего вывода. Это всего лишь файл представления, по
+        умолчанию контроллер шаблона будет смотреть здесь: <kbd>fuel/app/views/template.php</kbd>.
+    </p>
+	
+	<pre><code>&lt;!DOCTYPE html>
+        &lt;html>
+        &lt;head>
+        &lt;meta charset="utf-8">
+        &lt;title>&lt;?php echo $title; ?>&lt;/title>
+
+        &lt;?php echo Asset::css('main.css'); ?>
+        &lt;/head>
+        &lt;body>
+        &lt;div id="wrapper">
+        &lt;h1>&lt;?php echo $title; ?>&lt;/h1>
+
+        &lt;div id="content">
+        &lt;?php echo $content; ?>
+        &lt;/div>
+        &lt;/div>
+        &lt;/body>
+        &lt;/html></code></pre>
+
+    <h3>Замена стандартного файла шаблона</h3>
+
+    <p>Вы можете заменить стандартный файл <kbd>APPPATH/views/template.php</kbd> на нечто другое.<br/>
+        Вы должны установить открытую переменную <kbd>$template</kbd> (примечание: здесь не нужно расширение.php) в
+        нечто другое, например:
+    </p>
+	
+	<pre><code>class Controller_Example extends Controller_Template
+        {
+
+        public $template = 'template_admin';
+
+        public function action_index()
+        {
+        $this->template->title = 'Example Page';
+        $this->template->content = View::forge('test/index', $data);
+        }
+        }</code></pre>
+
+    <h3 id="omit_methods">Пропуск методов из контроллера шаблона</h3>
+
+    <p>
+        По умолчанию все методы класса, расширяющего Controller_Template, будут использовать шаблон.<br/>
+        Если вы хотите пропустить методы из шаблона, вы должны установить <kbd>$this->auto_render = false</kbd> в
+        before()
+    </p>
+
+    <p class="note">
+        <strong>Заметьте:</strong> <kbd>$this->auto_render = false</kbd> должен идти после<strong></strong> <kbd>parent::before()</kbd>.
+    </p>
+
+    <p>
+        Если вы хотите использовать макет шаблона, вы должны написать <kbd>$this->response->body =
+        $this->template;</kbd>
+        <br/>
+        Если вы не хотите использовать макет шаблона, напишите <kbd>$this->response->body = View::forge('test/index',
+        $data);</kbd>
+    </p>
+	
+		<pre><code>class Controller_Example extends Controller_Template
+            {
+
+            public $template = 'template_admin';
+
+            public function before($data = null)
+            {
+            parent::before(); // Без этой строки шаблонизация не будет работать!
+
+            $this->auto_render = false; // Не формировать шаблоны автоматически
+            }
+
+            public function action_index()
+            {
+            $this->template->title = 'Example Page';
+            $this->template->content = View::forge('test/index', $data);
+
+            $this->response->body = $this->template; // показывает содержимое в шаблоне
+            }
+
+            public function action_example()
+            {
+            $data['title'] = "Example Page";
+            $data['content'] = "Don't show me in the template";
+
+            $this->response->body = View::forge('index/test', $data); // показывает содержимое
+            //без шаблона
+            }
+            }</code></pre>
+
+
+    <h3>Модули и наследование</h3>
+
+    <p>
+        Допустим у вас есть два модуля, один Controller_Base(содержит базовые настройки шаблона) и второй
+        Controller_Module(который имеет свой подшаблон).
+        Вполне логичным будет унаследовать Controller_Module extends Controller_Base, для того чтобы можно было
+        отправлять свой подшаблон в шаблон базовый. Тут возникает проблема связанная с поиском в пространстве имен
+         и текущим контекстом.
+
+    </p>
+
+    <p>
+        Вам нужно явно указать в каком пространстве имен искать шаблон. Делается это так:
+    </p>
+
+          		<pre><code>
+          namespace Base;
+          class Controller_Base extends /Controller_Template
+          {
+          // Указываем явно в каком пространтсве имен лежит наш базовый шаблон
+          public $template = 'Base::mybasetemplate';
+
+
+          }</code></pre>
+
+
+</div>
+
+<footer>
+    <p>
+        &copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT
+        license.
+    </p>
+</footer>
+</div>
+</body>
+</html>

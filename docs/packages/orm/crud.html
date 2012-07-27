@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./../../assets/css/combined.css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+	<script type="text/javascript">
+		var path = './../../';
+	</script>
+	<script src="./../../assets/js/combined.js"></script>
+	<title>CRUD - Orm Package - FuelPHP Documentation</title>
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+			<div class="table">
+				<h1>
+					<strong>FuelPHP, a PHP 5.3 Framework</strong>
+					Documentation
+				</h1>
+
+				<form id="google_search">
+					<p>
+						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+					</p>
+				</form>
+			</div>
+			<nav>
+
+				<div class="clear"></div>
+			</nav>
+			<a href="#" id="toc_handle">table of contents</a>
+			<div class="clear"></div>
+		</header>
+
+		<div id="cse">
+			<div id="cse_point"></div>
+			<div id="cse_content"></div>
+		</div>
+
+		<div id="main">
+
+			<section>
+				<h2 id="crud">CRUD: Create, Read, Update and Delete</h2>
+
+				<p>После того как вы настроили свою Модель пора приступить к выполнению различных действий с вашей БД: Созданию, Чтению, Обновлению и Удалению.</p>
+
+				<article id="create">
+					<h2>Create(Создать)</h2>
+
+					<pre class="php"><code>
+$new = new Model_Example(); // или так - $new = Model_Example::forge()
+$new->property = 'something'; //Передадим "какоето" значение
+$new->save(); // Сохраним в базе
+
+</code></pre>
+
+					<p class="note">После выполнения <kbd>save()</kbd> модель выполнит сохранение в базу и если вы используете
+						<kbd>auto_increment</kbd> то primary key будет автоматически установлен на экземпляре после успешного
+                        сохранения.</p>
+
+					<p>Ещё вы можете передавать значения в массиве:</p>
+
+					<pre class="php"><code>$props = array('property' => 'something');
+
+// Используя "new"
+$new = new Model_Example($props); //Передаем
+$new->save(); //Сохраняем
+
+// Без "new"
+$new = Model_Example::forge($props)->save(); // Передаем и сохраняем</code></pre>
+				</article>
+
+				<article id="read">
+					<h2>Read(Чтение)</h2>
+
+					<p>Метод find() может быть использован тремя способами: поиск по id (primary
+						key), поиск first/last или поиск всех записей отвечающих условию, или для сцепления условий.
+                        Примеры всевозможных методов выборки (where, or_where, order_by, etc) внизу этой страницы.</p>
+
+					<h3 id="find_by_id">Find by ID</h3>
+
+					<pre class="php"><code>// вы знаете что у нужной primary key ID=2
+$entry = Model_Article::find(2);
+
+// ...или когда используются несколько primary key
+$entry = Model_Article::find(array(2, 5));</code></pre>
+
+					<p>Этот пример вернет экземпляр Model_Article или null, если ID не был найден.</p>
+
+					<h3 id="find_first_last">Find first/last</h3>
+
+					<pre class="php"><code>// Найдет первое попавшееся
+$entry = Model_Article::find('first');
+
+// найдет последнюю добавленную запись, но прежде упорядочит по дате
+$entry = Model_Article::find('last', array('order_by' => 'date'));</code></pre>
+
+					<p>Вернет инстанс либо, если ничего не найдено null.</p>
+
+					<h3 id="find_all">Find all</h3>
+
+					<pre class="php"><code>// найти все записи
+$entry = Model_Article::find('all');
+
+// найти все статьи из категории 1 порядке убывания по дате
+$entry = Model_Article::find('all', array(
+	'where' =&gt; array(
+		array('category_id', 1),
+	),
+	'order_by' =&gt; array('date' =&gt; 'desc'),
+));</code></pre>
+
+					<p>В данном примере всегда будет возвращаться массив экземпляров Model_Article.</p>
+
+					<h3 id="find_chaining">Find using method chaining</h3>
+
+					<p>При использовании <kbd>find()</kbd> без параметров вернется объект Orm\Query, который вы можете использовать для сцепления запросов.</p>
+
+					<pre class="php"><code>$query = Model_Article::find()->where('category_id', 1)->order_by('date', 'desc');
+
+// Мы хотим знать общее количество статей для пагинации
+$number_of_articles = $query->count();
+
+// извлечь одну статью
+$newest_article = $query->get_one();
+
+// используем повторно $query, но указываем лимит в 15 статей
+$all_articles = $query->limit(15)->get();</code></pre>
+
+				</article>
+
+				<article id="update">
+					<h2>Update</h2>
+
+					<pre class="php"><code>$entry = Model_Article::find(4);
+$entry->title = 'My first edit';
+$entry->author = 'Total n00b';
+$entry->save();</code></pre>
+
+					<p>Этот пример находит поле по id, заменяет значения и сохраняет.</p>
+				</article>
+
+				<article id="delete">
+					<h2>Delete</h2>
+
+					<pre class="php"><code>$entry = Model_Article::find(4);
+$entry->delete();</code></pre>
+
+					<p>Этот пример находит по id поле и удаляет его.</p>
+
+				</article>
+
+				<article id="functions">
+					<h2>Методы выборки, которые используются в сцеплении find()</h2>
+
+					<table class="config">
+						<tbody>
+							<tr class="header">
+								<th>Method</th>
+								<th>Params</th>
+								<th>Examples</th>
+							</tr>
+							<tr>
+								<th>where</th>
+								<td>string <kbd>$column</kbd>, [string <kbd>$operator</kbd>,] mixed <kbd>$value</kbd></td>
+								<td>
+									<pre class="php"><code>// Single where
+Model_Article::find()-&gt;where('id', 4);
+Model_Article::find('all', array('where' =&gt; array('category_id' => 5)));
+
+// Multiple where usage examples
+Model_Article::find()-&gt;where('id', 4)->where('category_id', '>', 1);
+Model_Article::find()-&gt;where(array('id' => 4, 'category_id' => 6));
+Model_Article::find('all', array('where' => array(array('category_id', '=', 5), array('publish', '<', time()))));</code></pre>
+								</td>
+							</tr>
+							<tr>
+								<th>where</th>
+								<td>string <kbd>$column</kbd>, [string <kbd>$operator</kbd>,] mixed <kbd>$value</kbd></td>
+								<td>Same as <kbd>where()</kbd></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<p>Их больше скоро допишем...</p>
+				</article>
+			</section>
+
+		</div>
+
+		<footer>
+			<p>
+				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
+			</p>
+		</footer>
+	</div>
+</body>
+</html>
