@@ -56,31 +56,28 @@
                     Также в Auth пакете имеется базовая реализация(driver) и для большинства её может хватить.
                 </p>
 
-				<p>The interface contains 3 types of drivers (which can be extended to more types): login, groups &amp; ACL.
-				The login drivers handle a user login and can handle multiple login drivers at the same time. For example
-				one could make it possible for users to login through Twitter and their own native users at the same time
-				using 2 login drivers.<br />
-				As a next step you could group those 2 types of logins using a group driver that doesn't care about the
-				type of login you're using. And last but not least you can use an Acl driver to give specific rights to
-				those groups.</p>
+				<p>
+                    Интерфейс содержит 3 типа драйверов (и может расширятся другими драйверами): вход в систему(Login), группы(groups) и ACL(Access Control List — список контроля доступа, который определяет, кто или что может получать доступ к конкретному объекту). Login отвечает за вход/выход пользователя в систему и может работать с несколькими драйверами входа одновременно. Например, добавить к стандартному входу в систему возможность входа через Twitter. В качестве следующего шага можно сгруппировать эти 2 типа входа с драйвером groups, который будет отвечать за разделение пользователей на группы. И последнее, но не менее важное - вы можете использовать драйвер Acl, чтобы назначить определенные права этим группам.
+                </p>
 
-				<p>The above is just an example of how you might use it, not how you <em>have</em> to use it. Read on in
-				the next section to understand which methods are part of the generic interface and which will be driver
-				specific: <a href="usage.html">Basic Usage</a></p>
+				<p>
+                    Важно понимать, что выше приведен пример <strong>того, как можно</strong> использовать, <strong>а не, как вы должны</strong> использовать. Читайте в следующей секции, какие методы являются частью родного интерфейса: <a href="usage.html">Basic Usage</a></p>
+
+                </p>
 
 				<section>
-					<h3 id="install">Installation</h3>
+					<h3 id="install">Подключение</h3>
 
-					<p>The Auth package is included in the Fuel download. All you need to do is enable it in your config.</p>
+					<p>В конфиге требуется прописать</p>
 					<pre class="php"><code>'packages' => array(
 	'auth',
 ),</code></pre>
 				</section>
 
 				<section>
-					<h3 id="configuration">Configuration</h3>
+					<h3 id="configuration">Настройки</h3>
 
-					<p>Auth can be configured in a config/auth.php file and takes the following keys:</p>
+					<p>Auth может быть настроен в config/auth.php файле и содержит следующие значения:</p>
 
 					<table class="config">
 						<tbody>
@@ -95,7 +92,7 @@
 								<td>string|array</td>
 								<td><pre class="php"><code>array('SimpleAuth')</code></pre></td>
 								<td>
-									Login drivers to load, the first will also be the default returned by Auth::instance().
+									Драйвер авторизации.
 								</td>
 							</tr>
 							<tr>
@@ -103,8 +100,7 @@
 								<td>bool</td>
 								<td><pre class="php"><code>false</code></pre></td>
 								<td>
-									Whether checking for login continues after one driver has validated a login successfully,
-									this makes it possible to login in multiple ways at the same time.
+									Поддержка одновременного входа несколькимим способами.
 								</td>
 							</tr>
 							<tr>
@@ -112,24 +108,24 @@
 								<td>string</td>
 								<td><pre class="php"><code>'put_your_salt_here'</code></pre></td>
 								<td>
-									The salt used for password hashing.
+									Ключ для хеширования паролей.
 								</td>
 							</tr>
 						</tbody>
 					</table>
 
-					<p>Your auth config file should look like this:</p>
+					<p>Файл настроек должен выглядеть как-то так:</p>
 
 					<pre class="php"><code>&lt;?php
 
 return array(
-	// The drivers
+	// Драйвер/Драйверы
 	'driver' => array('SimpleAuth'),
 
-	// Set to true to allow multiple logins
+	// Включение поддержки мультивхода под одним логином
 	'verify_multiple_logins' => true,
 
-	// Use your own salt for security reasons
+	// Ключ для хеша
 	'salt' => 'Th1s=mY0Wn_$@|+',
 );
 

@@ -1,549 +1,419 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="./../../assets/css/combined.css">
-	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
-	<script type="text/javascript">
-		var path = './../../';
-		var class_prefix = "Auth::";
-	</script>
-	<script src="./../../assets/js/combined.js"></script>
-	<title>Usage - Auth Package - FuelPHP Documentation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./../../assets/css/combined.css">
+    <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+    <script type="text/javascript">
+        var path = './../../';
+        var class_prefix = "Auth::";
+    </script>
+    <script src="./../../assets/js/combined.js"></script>
+    <title>Usage - Auth Package - FuelPHP Documentation</title>
 </head>
 <body>
-	<div id="container">
-		<header id="header">
-			<div class="table">
-				<h1>
-					<strong>FuelPHP, a PHP 5.3 Framework</strong>
-					Documentation
-				</h1>
+<div id="container">
+<header id="header">
+    <div class="table">
+        <h1>
+            <strong>FuelPHP, a PHP 5.3 Framework</strong>
+            Documentation
+        </h1>
 
-				<form id="google_search">
-					<p>
-						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
-						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
-					</p>
-				</form>
-			</div>
-			<nav>
+        <form id="google_search">
+            <p>
+                <span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
+                <span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+            </p>
+        </form>
+    </div>
+    <nav>
 
-				<div class="clear"></div>
-			</nav>
-			<a href="#" id="toc_handle">table of contents</a>
-			<div class="clear"></div>
-		</header>
+        <div class="clear"></div>
+    </nav>
+    <a href="#" id="toc_handle">table of contents</a>
 
-		<div id="cse">
-			<div id="cse_point"></div>
-			<div id="cse_content"></div>
-		</div>
+    <div class="clear"></div>
+</header>
 
-		<div id="main">
-			<h2>Auth package</h2>
+<div id="cse">
+    <div id="cse_point"></div>
+    <div id="cse_content"></div>
+</div>
 
-			<p>The Auth package provides a standardized interface for authentication in Fuel. This allows our users to
-			write their own drivers and easily integrate a new driver to work with old code by keeping the basic methods
-			consistent.</p>
+<div id="main">
 
-			<ul>
-				<li><a href="#login_drivers">Basic Usage of Login drivers</a></li>
-				<li><a href="#group_drivers">Basic Usage of Group drivers</a></li>
-				<li><a href="#acl_drivers">Basic Usage of Acl drivers</a></li>
-			</ul>
+<h2>Auth package</h2>
 
-			<section>
-				<h2 id="login_drivers">Basic Usage of Login drivers</h2>
+<p>
+    Auth пакет предоставляет единый базовый интерфейс для аутентификации в fuelphp. Что позволяет создавать свои собственные драйверы авторизации и легко их подключать к имеющемуся коду, наследуя основные методы.
+</p>
 
-				<p>The Auth class works mainly with one or more login drivers and offers a set of 2 methods for all other
-				drivers. One getting a driver instance and a second answering whether a loaded driver of that type
-				validates. Below are first the methods for checking and getting the drivers.</p>
+<section>
+<h3 id="auth_interface">Интерфейс(Interface)</h3>
 
-				<article>
-					<h4 id="method_check" class="method">check($specific = null)</h4>
-					<p>Checks either all loaded Login drivers or just those specified as the parameter.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>Yes</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td>
-								<table class="parameters">
-									<tr>
-										<th>Param</th>
-										<th>Default</th>
-										<th class="description">Description</th>
-									</tr>
-									<tr>
-										<th><kbd>$specific</kbd></th>
-										<td><i>null</i></td>
-										<td>null to check all or one ore more driver id's (single string or array of strings)</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>bool, whether one of the (given) drivers successfully validated the login</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-								<pre class="php"><code>if ( ! Auth::check())
-{
-	Response::redirect('login');
-}
+<p>
+    Класс Auth предоставляет статический интерфейс для родных методов и содержит магический метод __ callStatic, который позволяет получить инстансы драйверов, и обращаться к их статическим методам.
+</p>
 
-// specific driver
-Auth::check('simpleauth');
+<article>
+    <h4 id="method_forge" class="method">forge($custom = array())</h4>
 
-// Multiple drivers
-Auth::check(array('simpleauth', 'twitter'));</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
+    <p>
+        Создает экземпляр драйвера или драйверов, определенных в файле конфигурации. Опционально, вы можете передать настройки массивом.
+    </p>
+    <table class="method">
+        <tbody>
+        <tr>
+            <th class="legend">Static</th>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <th>Parameters</th>
+            <td>
+                <table class="parameters">
+                    <tr>
+                        <th>Param</th>
+                        <th>Default</th>
+                        <th class="description">Description</th>
+                    </tr>
+                    <tr>
+                        <th><kbd>$custom</kbd></th>
+                        <td><i>mixed</i></td>
+                        <td>
+                            Массив настроек или строка иеменем драйвера. Если ничего не пердавать, то будут использованы стандартные настройки из файла.
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>Returns</th>
+            <td>Auth_Login_Driver инстанс</td>
+        </tr>
+        <tr>
+            <th>Throws</th>
 
-				<article>
-					<h4 id="method_instance" class="method">instance($instance = null)</h4>
-					<p>Retrieves a loaded driver, when multiple drivers are set in config the first driver will also be the
-						default.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>Yes</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td>
-								<table class="parameters">
-									<tr>
-										<th>Param</th>
-										<th>Default</th>
-										<th class="description">Description</th>
-									</tr>
-									<tr>
-										<th><kbd>$instance</kbd></th>
-										<td><i>null</i></td>
-										<td>null to fetch the default driver, or a driver id to get a specific one</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>Auth_Login_Driver</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-								<pre class="php"><code>// Logout the default driver
+            <td>
+                AuthException, если драйвер выдал ошибки при загрузке, или если другие драйверы уже созданы и используют тот же идентификатор.
+            </td>
+        </tr>
+        <tr>
+            <th>Example</th>
+            <td>
+                <pre class="php"><code>// Создаст стандартный инстанс/инстансы
+Auth::forge();
+
+// Создаст инстанс драйвера SimpleAuth
+Auth::forge('simpleauth');
+
+// Создаст инстанс SimpleAuth со своими настройками
+Auth::forge(array('driver' => 'simpleauth', 'id' => 'customid'));</code></pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</article>
+
+<article>
+    <h4 id="method_instance" class="method">instance($instance = null)</h4>
+
+    <p>
+        Возвращает уже созданный инстанс драйвера. Когда несколько драйверов устанавлены в настройках, то первый будет установлен в качестве драйвера по умолчанию.
+    </p>
+    <table class="method">
+        <tbody>
+        <tr>
+            <th class="legend">Static</th>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <th>Parameters</th>
+            <td>
+                <table class="parameters">
+                    <tr>
+                        <th>Param</th>
+                        <th>Default</th>
+                        <th class="description">Description</th>
+                    </tr>
+                    <tr>
+                        <th><kbd>$instance</kbd></th>
+                        <td><i>null</i></td>
+                        <td>если null - то будет возвращен драйвер по умолчанию</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>Returns</th>
+            <td>Auth_Login_Driver</td>
+        </tr>
+        <tr>
+            <th>Example</th>
+            <td>
+                <pre class="php"><code>// Logout the default driver
 Auth::instance()->logout();
 
 // Login the SimpleAuth driver
-Auth::instance('simpleauth')->login(Input::post('username'), Input::post('password'));</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
+Auth::instance('simpleauth')->login(Input::post('username'),
+Input::post('password'));</code></pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="note">
+        Если экземпляр по умолчанию запрошен, но тот ещё не загружен, то instance() вызовет forge() для создания экземпляра на основе параметров, заданных в файле настроек.
+    </p>
+</article>
 
-				<h3 id="driver_methods">Driver methods</h3>
+<article>
+    <h4 id="method_unload" class="method">unload($driver_id = null)</h4>
 
-				<p>The methods below should be available on all Auth drivers in at least the way described here, but will
-				often have specific parameters added for their implementation.</p>
+    <p>Удаляет загруженный драйвер по id. Если null, удаляет дефолтный дрйвер.</p>
+    <table class="method">
+        <tbody>
+        <tr>
+            <th class="legend">Static</th>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <th>Parameters</th>
+            <td>
+                <table class="parameters">
+                    <tr>
+                        <th>Param</th>
+                        <th>Default</th>
+                        <th class="description">Description</th>
+                    </tr>
+                    <tr>
+                        <th><kbd>$driver_id</kbd></th>
+                        <td><i>null</i></td>
+                        <td>Удаляет загруженный драйвер по id. Если null, удаляет дефолтный дрйвер.</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>Returns</th>
+            <td>boolean, <strong>true</strong> если успех, <strong>false</strong> если нет.</td>
+        </tr>
+        <tr>
+            <th>Throws</th>
+            <td>AuthException, когда $driver_id не валидно.</td>
+        </tr>
+        <tr>
+            <th>Example</th>
+            <td>
+                <pre class="php"><code>// Удаляет драйве по дефолту
+Auth::unload();
 
-				<article>
-					<h4 id="method_get_user_array" class="method" data-class="Auth_Login_Driver">get_user_array(Array $additional_fields = array())</h4>
-					<p>Returns an array describing the current logged in user, always includes at least a screenname and
-					an emailaddress. Additional fields can be configured in the driver config or requested through the
-					$additional_fields array, but they must have a get_user_<em>fieldname</em>() method within the driver
-					to be gettable.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>No</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td>
-								<table class="parameters">
-									<tr>
-										<th>Param</th>
-										<th>Default</th>
-										<th class="description">Description</th>
-									</tr>
-									<tr>
-										<th><kbd>$additional_fields</kbd></th>
-										<td><i>array()</i></td>
-										<td>an array with fieldnames to fetch</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>array</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-								<pre class="php"><code>$user = Auth::instance()->get_user_array();</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
+// Удаляет драйвер SimpleAuth
+Auth::unload('simpleauth');</code></pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</article>
 
-				<article>
-					<h4 id="method_login" class="method" data-class="Auth_Login_Driver">login()</h4>
-					<p>Must be implemented specific to the driver to login the user.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>No</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td><em>None by default</em></td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>bool</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-								<pre class="php"><code>Auth::instance('simpleauth')->login($username, $password);</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
+<article>
+    <h4 id="method_check" class="method">check($specific = null)</h4>
 
-				<article>
-					<h4 id="method_logout" class="method" data-class="Auth_Login_Driver">logout()</h4>
-					<p>Must be implemented specific to the driver to logout the user, and work without parameters.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>No</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td><em>None</em></td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>void</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-								<pre class="php"><code>Auth::instance('simpleauth')->logout();</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
-
-				<article>
-					<h4 id="method_get_email" class="method" data-class="Auth_Login_Driver">get_email()</h4>
-					<p>Fetches the current logged in user's emailaddress.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>No</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td><em>None</em></td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>string</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-								<pre class="php"><code>$email = Auth::instance('simpleauth')->get_email();</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
-
-				<article>
-					<h4 id="method_get_screen_name" class="method" data-class="Auth_Login_Driver">get_screen_name()</h4>
-					<p>Fetches the current logged in user's screen name.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>No</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td><em>None</em></td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>string</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-								<pre class="php"><code>$name = Auth::instance('simpleauth')->get_screen_name();</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
-
-			</section>
-
-			<section>
-				<h2 id="group_drivers">Basic Usage of Group drivers</h2>
-
-				<p>Group drivers are for assigning users to user groups.</p>
-
-				<article>
-					<h4 id="method_member" class="method">member($group, $specific = null)</h4>
-					<p>Checks if user is a member of the given group in either all loaded Group drivers or just those
-						specified as the 2nd parameter.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>Yes</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td>
-								<table class="parameters">
-									<tr>
-										<th>Param</th>
-										<th>Default</th>
-										<th class="description">Description</th>
-									</tr>
-									<tr>
-										<th><kbd>$group</kbd></th>
-										<td><i>required</i></td>
-										<td>group id</td>
-									</tr>
-									<tr>
-										<th><kbd>$specific</kbd></th>
-										<td><i>null</i></td>
-										<td>null to check all or one ore more driver id's (single string or array of strings)</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>bool, whether one of the (given) drivers had the current user registered as a member</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-								<pre class="php"><code>if ( ! Auth::member(100))
+    <p>Проверка всех загруженных драйверов типа Логин или только того, что задан в качестве параметра.</p>
+    <table class="method">
+        <tbody>
+        <tr>
+            <th class="legend">Static</th>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <th>Parameters</th>
+            <td>
+                <table class="parameters">
+                    <tr>
+                        <th>Param</th>
+                        <th>Default</th>
+                        <th class="description">Description</th>
+                    </tr>
+                    <tr>
+                        <th><kbd>$specific</kbd></th>
+                        <td><i>null</i></td>
+                        <td>null - проверит всех. Принимается как строка так и массив.</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>Returns</th>
+            <td>bool</td>
+        </tr>
+        <tr>
+            <th>Example</th>
+            <td>
+                <pre class="php"><code>if ( ! Auth::check())//Если нет
 {
-	Response::redirect('no_admin');
+Response::redirect('login');
 }
 
-// specific driver
-Auth::member(1, 'simplegroup');
+// пример с единичным параметром
+Auth::check('simpleauth');
 
-// Multiple drivers
-Auth::check(0, array('simplegroup', 'genericgroup'));</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
+// пример с массивом
+Auth::check(array('simpleauth', 'twitter'));</code></pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</article>
 
-				<article>
-					<h4 id="method_group" class="method">group($instance = null)</h4>
-					<p>Retrieves a loaded group driver, when multiple drivers are set in config the first driver will also
-						be the default.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>Yes</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td>
-								<table class="parameters">
-									<tr>
-										<th>Param</th>
-										<th>Default</th>
-										<th class="description">Description</th>
-									</tr>
-									<tr>
-										<th><kbd>$instance</kbd></th>
-										<td><i>null</i></td>
-										<td>null to fetch the default driver, or a driver id to get a specific one</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>Auth_Group_Driver</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-								<pre class="php"><code>Auth::group()->get_name();</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
+<article>
+    <h4 id="method_verified" class="method">verified($specific = null)</h4>
 
-			</section>
+    <p>Получение всех или какого-то конкретного проверенного драйвера.</p>
+    <table class="method">
+        <tbody>
+        <tr>
+            <th class="legend">Static</th>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <th>Parameters</th>
+            <td>
+                <table class="parameters">
+                    <tr>
+                        <th>Param</th>
+                        <th>Default</th>
+                        <th class="description">Description</th>
+                    </tr>
+                    <tr>
+                        <th><kbd>$specific</kbd></th>
+                        <td><i>null</i></td>
+                        <td>null вернет массив, или строку если по id</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>Returns</th>
+            <td>Array|Auth_Login_Driver|false.</td>
+        </tr>
+        <tr>
+            <th>Example</th>
+            <td>
+                <pre class="php"><code>// Проверяет simpleauth проверенный или нет, если нет то вернет false
+$driver = Auth::verified('simpleauth');
+                </code></pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</article>
 
-			<section>
-				<h2 id="acl_drivers">Basic Usage of ACL drivers</h2>
+<article>
+    <h4 id="method_logout" class="method">logout()</h4>
 
-				<p>Group drivers are for assigning users to user groups.<br />
-					ACL uses input of a location and required rights on that location as input for the checking of rights,
-					what that exactly means is up to you. There are 2 common ways in which these are implemented:</p>
+    <p>Выход всех залогинненых в данный момент в драйверах.</p>
+</article>
 
-				<ul>
-					<li><strong>Location = Controller, Rights = Methods</strong><br />
-						In this scenario you could have a <kbd>Controller_Articles</kbd> with methods like
-						<kbd>action_list()</kbd> and <kbd>action_create()</kbd> which you could check using:
-						<kbd>Auth::has_access('articles.list');</kbd></li>
-					<li><strong>Location = Model, Rights = specific operations</strong><br />
-						In this scenario you could have a <kbd>Model_Article</kbd> and before allowing any operation within
-						the model you first check if the user has the required CRUD rights:
-						<kbd>Auth::has_access('article.[read,update]');</kbd></li>
-				</ul>
+<article>
+    <h4 id="method_register_driver_type" class="method">register_driver_type($type, $check_method)</h4>
 
-				<p>These are but examples, it's up to you how you interpret and use these.</p>
-
-				<article>
-					<h4 id="method_has_access" class="method">has_access($condition, $specific = null)</h4>
-					<p>Checks if user is has access for the given condition in either all loaded Acl drivers or just those
-						specified as the 2nd parameter.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>Yes</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td>
-								<table class="parameters">
-									<tr>
-										<th>Param</th>
-										<th>Default</th>
-										<th class="description">Description</th>
-									</tr>
-									<tr>
-										<th><kbd>$condition</kbd></th>
-										<td><i>required</i></td>
-										<td>takes a location and the required rights on the location as either a string or
-											an array</td>
-									</tr>
-									<tr>
-										<th><kbd>$specific</kbd></th>
-										<td><i>null</i></td>
-										<td>null to check all or one ore more driver id's (single string or array of strings)</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>bool, whether the user gets access to all given rights in the given location from the loaded
-								(or specified) ACL drivers.</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-								<pre class="php"><code>// check if user is allowed to comment
-if ( ! Auth::has_access('comments.create'))
+    <p>Регистрирует новый тип драйвера.</p>
+    <table class="method">
+        <tbody>
+        <tr>
+            <th class="legend">Static</th>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <th>Parameters</th>
+            <td>
+                <table class="parameters">
+                    <tr>
+                        <th>Param</th>
+                        <th>Default</th>
+                        <th class="description">Description</th>
+                    </tr>
+                    <tr>
+                        <th><kbd>$type</kbd></th>
+                        <td>обязательный</td>
+                        <td>Тип нового драйвера.</td>
+                    </tr>
+                    <tr>
+                        <th><kbd>$check_method</kbd></th>
+                        <td>обязательный</td>
+                        <td>Метод драйвера, который вызывается при проверке драйверов этого типа.</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>Example</th>
+            <td>
+                <pre class="php"><code>// register the 'role' driver type
+if ( ! Auth::register_driver_type('role', 'check_role'))
 {
-	Response::redirect('no_admin');
+throw new AuthException('role could not be registered');
 }
+                </code></pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="note">
+        Оба, и тип, и метод должны быть уникальными среди всех зарегистрированных драйверов. Этот вернется false, если это не так.
+    </p>
+</article>
 
-// check if user can also update & delete comments
-Auth::has_access('comments.[update,delete]');
+<article>
+    <h4 id="method_unregister_driver_type" class="method">unregister_driver_type($type)</h4>
 
-// The same with an array instead of a string
-Auth::has_access(array('comments', array('update', 'delete')));</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
+    <p>Дерегистрация типа драйвера.</p>
+    <table class="method">
+        <tbody>
+        <tr>
+            <th class="legend">Static</th>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <th>Parameters</th>
+            <td>
+                <table class="parameters">
+                    <tr>
+                        <th>Param</th>
+                        <th>Default</th>
+                        <th class="description">Description</th>
+                    </tr>
+                    <tr>
+                        <th><kbd>$type</kbd></th>
+                        <td>обязательный</td>
+                        <td>Удаляемый тип драйвера.</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>Example</th>
+            <td>
+                <pre class="php"><code>// remove the 'role' driver type
+Auth::unregister_driver_type('role');
+                </code></pre>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="note">'login', 'group' и 'acl' типы драйверов не могут быть дерегистрированы!</p>
+</article>
+</section>
 
-				<article>
-					<h4 id="method_acl" class="method">acl($instance = null)</h4>
-					<p>Retrieves a loaded ACL driver, when multiple drivers are set in config the first driver will also
-						be the default.</p>
-					<table class="method">
-						<tbody>
-						<tr>
-							<th class="legend">Static</th>
-							<td>Yes</td>
-						</tr>
-						<tr>
-							<th>Parameters</th>
-							<td>
-								<table class="parameters">
-									<tr>
-										<th>Param</th>
-										<th>Default</th>
-										<th class="description">Description</th>
-									</tr>
-									<tr>
-										<th><kbd>$instance</kbd></th>
-										<td><i>null</i></td>
-										<td>null to fetch the default driver, or a driver id to get a specific one</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<tr>
-							<th>Returns</th>
-							<td>Auth_Acl_Driver</td>
-						</tr>
-						<tr>
-							<th>Example</th>
-							<td>
-		<pre class="php"><code>Auth::acl();</code></pre>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</article>
+</div>
 
-			</section>
-
-		</div>
-
-		<footer>
-			<p>
-				&copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT license.
-			</p>
-		</footer>
-	</div>
+<footer>
+    <p>
+        &copy; FuelPHP Development Team 2010-2011 - <a href="http://fuelphp.com">FuelPHP</a> is released under the MIT
+        license.
+    </p>
+</footer>
+</div>
 </body>
 </html>
