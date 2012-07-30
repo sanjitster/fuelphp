@@ -13,15 +13,10 @@
 	<![endif]-->
 
 	<!-- Le styles -->
-	<? echo \Fuel\Core\Asset::css('bootstrap.css'); ?>
-	<? echo \Fuel\Core\Asset::css('bootstrap-responsive.css'); ?>
-	<? echo \Fuel\Core\Asset::css('docs.css'); ?>
-
+	<? Casset::css('*.css'); echo Casset::render(); ?>
 
 </head>
-
 <body data-offset="50" data-target=".subnav" data-spy="scroll" data-twttr-rendered="true">
-
 
 <!-- Navbar
 ================================================== -->
@@ -37,15 +32,13 @@
 			<div class="nav-collapse collapse">
 				<ul class="nav">
 					<li class="">
-						<? echo Html::anchor('exemple_ormrelationusers/orm/posts', 'AllPosts'); ?>
+						<? echo Html::anchor('exemple_ormrelationusers/orm/posts', 'AllPosts') ?>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</div>
 </div>
-
-
 <div class="container">
 
 
@@ -89,16 +82,10 @@
 
 </div><!-- /container -->
 
-
-
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<? echo \Fuel\Core\Asset::js('jquery.js'); ?>
-<? echo \Fuel\Core\Asset::js('bootstrap.js'); ?>
-<? echo \Fuel\Core\Asset::js('aplication.js'); ?>
-
-
+<? Casset::js('*.js'); echo Casset::render(); ?>
 
 </body>
 </html>

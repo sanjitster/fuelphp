@@ -43,7 +43,7 @@ return array(
 	 */
 	'index_file'  => false,
 
-	'profiling'  => false,
+	'profiling'  => true,
 
 	/**
 	 * Settings for Cache class
@@ -186,7 +186,7 @@ return array(
 		 */
 		'packages'  => array(
 			'orm',
-			'oil'
+			'casset',
 		),
 
 		/**

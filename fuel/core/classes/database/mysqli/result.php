@@ -63,6 +63,7 @@ class Database_MySQLi_Result extends \Database_Result
 		elseif (is_string($this->_as_object))
 		{
 			// Return an object of given class name
+			//! TODO: add the $params parameter
 			return $this->_result->fetch_object($this->_as_object);
 		}
 		else

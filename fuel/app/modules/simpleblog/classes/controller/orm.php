@@ -9,7 +9,6 @@
 
 namespace SimpleBlog;
 
-
 class Controller_Orm extends \Fuel\Core\Controller_Template {
 
 	public $template = 'index';

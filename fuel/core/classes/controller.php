@@ -32,7 +32,7 @@ abstract class Controller
 	 * @param   Request   The current request object
 	 * @param   Response  The current response object
 	 */
-	public function __construct(\Request $request = null, \Response $response = null)
+	public function __construct(\Request $request, \Response $response)
 	{
 		$this->request = $request;
 		$this->response = $response;
