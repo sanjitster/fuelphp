@@ -45,37 +45,32 @@
         <h2 id="driver_types">Auth_Login_Driver</h2>
 
         <p>
-            This driver is the base class for all Auth login drivers. It is defined as an abstract class which contains
-            all methods generic to all login drivers, and abstract method definitions for all methods any login driver
-            MUST implement.
+            Этот драйвер является базовым классом для всех остальных драйверов входа в систему(Login). Это абстрактный класс, который содержит общие методы для всех драйверов входа. Ещё он содержит абстрактные методы, которые должны быть реализованы в драйвере потомке.
         </p>
 
-        <h3 id="driver_config">Driver configuration</h3>
+        <h3 id="driver_config">Настройки драйвера</h3>
 
         <p>
-            A group driver can load additional drivers that it depends on. Generally, these are ACL drivers. But your implementation
-            could introduce and use custom driver types as well. To do so, add this structure to your driver class:
+            Драйвер group может загружать дополнительные драйверы. Как правило, это ACL драйвер. Но ваша реализация может внедрять и использовать пользовательские типы драйверов. Чтобы сделать это, добавьте в свой класс драйвера:
         </p>
 
-            <pre class="php"><code>// autoload the SimpleGroup group driver when loading this login driver
-// this also defines the additional user record fields this driver has a getter for
+            <pre class="php"><code>// автозагрузка драйвера group SimpleGroup при загрузке драйвера Login
+// определяет дополнительные поля пользователя этого драйвера
 protected $config = array(
 'drivers' => array('group' => array('SimpleGroup')),
 'additional_fields' => array('profile_fields'),
 );
             </code></pre>
-        <h3 id="generic_methods">Generic methods</h3>
+        <h3 id="generic_methods">Базовые методы</h3>
 
         <p>
-            Generic methods are defined in the login base driver, and are available to all Auth login drivers through
-            extension. These methods provide functions to create and retrieve instances, to set and get configuration
-            values, as well as generic method for password hashing and access to the <a href="acl.html">ACL</a> and <a href="group.html">Group</a> drivers.
+            Базовые методы реализованы в базовом Auth_Login_Driver и доступны для наследования всеми login драйверами. Эти методы используются для создания объектов и извлечения инстансов, для установки и получения значений параметров конфигурации, для хэширования паролей, а также доступа к <a href="acl.html">ACL</a> и <a href="group.html">Group</a> драйверам.
         </p>
-        <p class="note">The methods defined in the classes but not documented here are used internally, and should not be called directly.</p>
+        <p class="note">Методы, определенные в классе, но не упомянутые в этом документе, предназначены для внутреннего использования и не должны вызываться.</p>
 
         <article>
             <h4 id="method_get_id" class="method">get_id()</h4>
-            <p>Returns the drivers unique id. This can be used to identify the driver, or to select a specific driver instance.</p>
+            <p>Возвращает уникальный идентификатор драйвера. Это может быть использована для идентификации драйвера или выбора конкретного экземпляря драйвера.</p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -90,12 +85,12 @@ protected $config = array(
                 </tr>
                 <tr>
                     <th>Returns</th>
-                    <td>The drivers id string.</td>
+                    <td>id драйвера(строка).</td>
                 </tr>
                 <tr>
                     <th>Example</th>
                     <td>
-								<pre class="php"><code>// returns 'simpleauth'
+								<pre class="php"><code>// вернет 'simpleauth'
 $id = Auth::instance('simpleauth')->get_id();
                                 </code></pre>
                     </td>
@@ -106,7 +101,7 @@ $id = Auth::instance('simpleauth')->get_id();
 
         <article>
             <h4 id="method_set_config" class="method">set_config($key, $value)</h4>
-            <p>Sets a driver configuration value.</p>
+            <p>Устанавливает значение конфигурации драйвера.</p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -125,12 +120,12 @@ $id = Auth::instance('simpleauth')->get_id();
                             <tr>
                                 <th><kbd>$key</kbd></th>
                                 <td>required</td>
-                                <td>Configuration key name</td>
+                                <td>Configuration key</td>
                             </tr>
                             <tr>
                                 <th><kbd>$value</kbd></th>
                                 <td>required</td>
-                                <td>Value for this configuration key</td>
+                                <td>Сonfiguration Value</td>
                             </tr>
                         </table>
                     </td>
@@ -142,7 +137,7 @@ $id = Auth::instance('simpleauth')->get_id();
                 <tr>
                     <th>Example</th>
                     <td>
-								<pre class="php"><code>// set a config value
+								<pre class="php"><code>// назначит ключу key настройку value
 Auth::instance()->set_config('key', 'value');
                                 </code></pre>
                     </td>
@@ -153,7 +148,7 @@ Auth::instance()->set_config('key', 'value');
 
         <article>
             <h4 id="method_get_config" class="method">get_config($key, $default = null)</h4>
-            <p>Gets a driver configuration value.</p>
+            <p>Получение настроек</p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -177,7 +172,7 @@ Auth::instance()->set_config('key', 'value');
                             <tr>
                                 <th><kbd>$default</kbd></th>
                                 <td><i>null</i></td>
-                                <td>Default value to be returned if the requested key does not exist</td>
+                                <td>Если ключ не найден вернется это значение</td>
                             </tr>
                         </table>
                     </td>
@@ -189,7 +184,7 @@ Auth::instance()->set_config('key', 'value');
                 <tr>
                     <th>Example</th>
                     <td>
-								<pre class="php"><code>// get a config value, return false if it doesn't exist
+								<pre class="php"><code>// получит значение настройки по ключу, вернет false если её нет
 $key = Auth::instance()->get_config('key', false);
                                 </code></pre>
                     </td>
@@ -200,7 +195,7 @@ $key = Auth::instance()->get_config('key', false);
 
         <article>
             <h4 id="method_guest_login" class="method">guest_login()</h4>
-            <p>Returns if the driver supports guest logins (a non-authenticated guest user).</p>
+            <p>Проверяет поддерживает ли драйвер гостевой вход (без аутентификации, когда пользователь-гость).</p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -220,10 +215,10 @@ $key = Auth::instance()->get_config('key', false);
                 <tr>
                     <th>Example</th>
                     <td>
-								<pre class="php"><code>// check if the default instance supports guests
+								<pre class="php"><code>// проверит поддерживает ли гостевой вход default instance
 if (Auth::instance()->guest_login())
 {
-// this driver supports guest logins!
+// этот драйвер поддерживает готевой вход!
 }
                                 </code></pre>
                     </td>
@@ -231,16 +226,19 @@ if (Auth::instance()->guest_login())
                 </tbody>
             </table>
 
-            <p class="note">By default, this method returns 'false'. If your login driver supports guest logins, overload this
-                method in your driver class.</p>
+            <p class="note">
+                По умолчанию, этот метод возвращает 'false'. Если Ваш драйвер login поддерживает гостевые входы, перегрузите этот метод в своем класса драйвера.</p>
         </article>
 
         <article>
-            <h4 id="method_get_user_array" class="method">get_user_array(Array $additional_fields = array())</h4>
-            <p>Returns an array describing the current logged in user, always includes at least a screenname and
-                an emailaddress. Additional fields can be configured in the driver config or requested through the
-                $additional_fields array, but they must have a get_user_<em>fieldname</em>() method within the driver
-                to be gettable.</p>
+            <h4 id="method_get_user_array" class="method">
+                get_user_array(Array $additional_fields = array())</h4>
+
+
+
+            <p>
+                Возвращает массив с описанием текущего вошедшего в систему пользователя, всегда включает в себя по крайней мере Screenname и EmailAddress. Дополнительные поля могут быть указаны в настройках драйверов или передаваться через массив $ additional_fields, они должны иметь метод get_user_<em>fieldname</em>() в своем драйвере и быть доступными для извлечения.
+            </p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -259,7 +257,7 @@ if (Auth::instance()->guest_login())
                             <tr>
                                 <th><kbd>$additional_fields</kbd></th>
                                 <td><i>array()</i></td>
-                                <td>an array with fieldnames to fetch</td>
+                                <td>массив с именами полей для извлечения</td>
                             </tr>
                         </table>
                     </td>
@@ -271,13 +269,13 @@ if (Auth::instance()->guest_login())
                 <tr>
                     <th>Example</th>
                     <td>
-								<pre class="php"><code>// call the method on the default instance
+								<pre class="php"><code>// вызовет метод из базового класса драйвера
 $user = Auth::instance()->get_user_array();
 
-// call the method on a specific instance
+// вызовет метод из конкретного класса драйвера
 $user = Auth::instance('simpleauth')->get_user_array();
 
-// static call (if "verify_multiple_logins" is set to false)
+// статический вызов (если настройка "verify_multiple_logins" установлена в ложь)
 $user = Auth::get_user_array();
                                 </code></pre>
                     </td>
@@ -285,12 +283,16 @@ $user = Auth::get_user_array();
                 </tbody>
             </table>
 
-            <p class="note">You can define the 'additional_fields' in the driver configuration array to have them included by default when you call this method.</p>
+            <p class="note">
+                Вы можете определить "additional_fields' в массиве настроек драйвера, чтобы они были доступны по умолчанию при вызове этого метода.
+            </p>
         </article>
 
         <article>
             <h4 id="method_hash_password" class="method">hash_password($password)</h4>
-            <p>Returns a base64 encoded hash of the given password. This method uses the very secure <a href="http://en.wikipedia.org/wiki/PBKDF2">pbkdf2</a> hashing algorithm.</p>
+            <p>
+                Возвращает base64 хеш данного пароля. Этот метод использует очень безопасный <a href="http://en.wikipedia.org/wiki/PBKDF2">pbkdf2</a> алгоритм хэширования.
+            </p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -330,15 +332,17 @@ $password = Auth::instance()->hash_password($password);
             </table>
         </article>
 
-        <h3 id="abstract_methods">Abstract methods</h3>
+        <h3 id="abstract_methods">Абстрактные методы</h3>
 
         <p>
-            Every login driver you develop MUST provide all of these methods, and the MUST return the values documented here.
+            Каждый драйвер login должен реализовать все эти методы, и они должны возвращать значения описаные здесь.
         </p>
 
         <article>
             <h4 id="method_perform_check" class="method">perform_check()</h4>
-            <p>Internal class method which checks if there is a valid session for the current user. It is up to you how your driver will determine this.</p>
+            <p>
+                Внутренний метод класса, который проверяет, есть ли сессии у текущего пользователя. Зависит от вас, как ваш драйвер будет определять это.
+            </p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -353,16 +357,19 @@ $password = Auth::instance()->hash_password($password);
                 </tr>
                 <tr>
                     <th>Returns</th>
-                    <td>boolean, <strong>true</strong> if there is a valid user session, <strong>false</strong> if there isn't.</td>
+                    <td>boolean, <strong>true</strong> если сессия есть, <strong>false</strong> если нет.</td>
                 </tr>
                 </tbody>
             </table>
-            <p class="note">This method is called by Auth::check(), it should not be called directly by the application.</p>
+            <p class="note">
+                Этот метод вызывает Auth::check(), он не должен вызываться непосредственно из приложения.
+            </p>
         </article>
 
         <article>
             <h4 id="method_validate_user" class="method">validate_user()</h4>
-            <p>The <strong>validate_user</strong> method validates a login request. It is up to you how your driver will do this.</p>
+            <p>Метод <strong>validate_user</strong> проверяет зарегистррован ли пользователь. Зависит от вас, как ваш драйвер будет это делать.
+            </p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -377,16 +384,17 @@ $password = Auth::instance()->hash_password($password);
                 </tr>
                 <tr>
                     <th>Returns</th>
-                    <td>mixed. it should return <strong>false</strong> if the user didn't pass validation. Any value that evaluates to true is considered to be valid.</td>
+                    <td>mixed. Вернет <strong>false</strong> если юзер не прошел проверку. Любое другое значение будет определяться как true</td>
                 </tr>
                 </tbody>
             </table>
-            <p class="note">Applications calling this method should not make assumptions about the return value if it isn't <strong>false</strong>!</p>
+            <p class="note">
+                Приложение вызывающее этот метод должно ожидать конкретное возвращаемое значение, если это не <strong>false</strong>!</p>
         </article>
 
         <article>
             <h4 id="method_login" class="method">login()</h4>
-            <p>The <strong>login</strong> method performs a login request. It should call the validate_user() to validate the request. It is up to you how your driver will do this.</p>
+            <p>Метод <strong>login</strong> выполняет вход в систему. Вызывается метод validate_user() для валидации юзера. Зависит от вас, как ваш драйвер будет это делать.</p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -401,16 +409,16 @@ $password = Auth::instance()->hash_password($password);
                 </tr>
                 <tr>
                     <th>Returns</th>
-                    <td>boolean. returns <strong>true</strong> if the login was succesful, <strong>false</strong> otherwise.</td>
+                    <td>boolean. вернет <strong>true</strong> если прошел проверку, <strong>false</strong> если нет.</td>
                 </tr>
                 </tbody>
             </table>
-            <p class="note">If your driver has guest user support, it should setup the guest before returning <strong>false</strong>.</p>
+            <p class="note">Если ваш драйвер имеет поддержку пользоваелей-гостей, они должны быть определены до того как вернется  <strong>false</strong>.</p>
         </article>
 
         <article>
             <h4 id="method_logout" class="method">logout()</h4>
-            <p>The <strong>logout</strong> method logs out the current logged-in user. It is up to you how your driver will do this.</p>
+            <p>The <strong>logout</strong> выход из системы. Зависит от вас, как ваш драйвер будет это делать.</p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -425,16 +433,15 @@ $password = Auth::instance()->hash_password($password);
                 </tr>
                 <tr>
                     <th>Returns</th>
-                    <td>boolean. returns <strong>true</strong> if the logout was succesful, <strong>false</strong> otherwise.</td>
+                    <td>boolean. вернет <strong>true</strong> если выход прошел успешно, <strong>false</strong> если нет.</td>
                 </tr>
                 </tbody>
             </table>
-            <p class="note">If your driver has guest user support, it should setup the guest as current user after a succesful logout.</p>
         </article>
 
         <article>
             <h4 id="method_get_user_id" class="method">get_user_id()</h4>
-            <p>The <strong>get_user_id</strong> method returns an array structure containing the drivers id value, and the id of the currently logged-in user.</p>
+            <p>Метод <strong>get_user_id</strong> возвращает массив, содержащий значения идентификатор драйвера и идентификатор текущего залогиненного в системе пользователя.</p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -449,16 +456,18 @@ $password = Auth::instance()->hash_password($password);
                 </tr>
                 <tr>
                     <th>Returns</th>
-                    <td>mixed. returns an array in the form <strong>array(driver_id, user_id)</strong> if a user is logged in, or <strong>false</strong> otherwise.</td>
+                    <td>mixed. возвращает массив вида <strong>array(driver_id, user_id)</strong> еслю пользователь в системе, или <strong>false</strong> если нет.</td>
                 </tr>
                 </tbody>
             </table>
-            <p class="note">If your driver has guest user support, it should return the array with the (dummy) user_id of your guest, and not <strong>false</strong>!</p>
+            <p class="note">Если есть поддержка гостей, то он должен вернуть массив user_id ваших гостей, а не <strong>false</strong>!</p>
         </article>
 
         <article>
             <h4 id="method_get_groups" class="method">get_groups()</h4>
-            <p>The <strong>get_groups</strong> method returns the user groups assigned to the currently logged-in user.</p>
+            <p>
+                Возвращает группы пользователей, назначенных текущему пользователю в системе.
+            </p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -473,16 +482,17 @@ $password = Auth::instance()->hash_password($password);
                 </tr>
                 <tr>
                     <th>Returns</th>
-                    <td>mixed. returns an array in the form <strong>array(array(driver_id, group_id), array(driver_id, group_id), etc)</strong> if a user is logged in, or <strong>false</strong> otherwise.</td>
+                    <td>mixed. вернет массив вида <strong>array(array(driver_id, group_id), array(driver_id, group_id), etc)</strong> если пользователь есть в системе, или <strong>false</strong> если нет.</td>
                 </tr>
                 </tbody>
             </table>
-            <p class="note">If your driver has guest user support, it should return the array your guest user groups, and not <strong>false</strong>!</p>
+            <p class="note">
+                Если есть поддержка гостей, он должен вернуть массив групп гостя, а не false!!</p>
         </article>
 
         <article>
             <h4 id="method_get_email" class="method">get_email()</h4>
-            <p>The <strong>get_email</strong> method returns the email address assigned to the currently logged-in user.</p>
+            <p>Возвращает email текущего пользователя.</p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -501,12 +511,12 @@ $password = Auth::instance()->hash_password($password);
                 </tr>
                 </tbody>
             </table>
-            <p class="note">If your driver has guest user support, don't forget to return <strong>false</strong> if the guest does not have an email address defined!</p>
+            <p class="note">Если есть поддержка гостей то не забывайте вернуть <strong>false</strong> так как гости не имеют email!</p>
         </article>
 
         <article>
             <h4 id="method_get_screen_name" class="method">get_screen_name()</h4>
-            <p>The <strong>get_screen_name</strong> method returns the screen- or display name of the currently logged-in user.</p>
+            <p>Возвращает имя текущего пользователя.</p>
             <table class="method">
                 <tbody>
                 <tr>
@@ -521,11 +531,11 @@ $password = Auth::instance()->hash_password($password);
                 </tr>
                 <tr>
                     <th>Returns</th>
-                    <td>mixed. returns a string containing the name, or <strong>false</strong> if there is no user logged-in.</td>
+                    <td>mixed. возвращает строку содержащую имя, или <strong>false</strong> если такой пользователь не найден.</td>
                 </tr>
                 </tbody>
             </table>
-            <p class="note">If your driver has guest user support, it should return the guests display name, and not <strong>false</strong>!</p>
+            <p class="note">Если есть поддержка пользователей, то должно возвращаться какое то имя, а не <strong>false</strong>!</p>
         </article>
 
         </section>

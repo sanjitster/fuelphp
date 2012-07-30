@@ -41,16 +41,329 @@
 		</div>
 
 		<div id="main">
-			<h2>Auth package</h2>
+        <section>
+        <h2 id="driver_types">Auth_Group_Driver</h2>
 
-			<p>The Auth package provides a standardized interface for authentication in Fuel. This allows our users to
-			write their own drivers and easily integrate a new driver to work with old code by keeping the basic methods
-			consistent.</p>
+        <p>
+            Этот драйвер является базовым классом для всех драйверов group. Это абстрактный класс, который содержит общие базовые методы для всех драйверов group, а также абстрактные методы, которые должны быть реализованы в своих собственых драйверах.
 
-			<section>
-				<h2 id="driver_types">Driver types: Groups</h2>
+        </p>
 
-			</section>
+        <h3 id="driver_config">Настройки</h3>
+
+        <p>
+            Драйвер group может загружать дополнительные драйверы. Как правило, это ACL драйвер. Но ваша реализация может внедрять и использовать пользовательские типы драйверов. Чтобы сделать это, добавьте в свой класс:
+        </p>
+
+            <pre class="php"><code>// autoload the SimpleAcl acl driver when loading this group driver
+protected $config = array(
+'drivers' => array('acl' => array('SimpleAcl'))
+);
+            </code></pre>
+
+        <h3 id="generic_methods">Базовые методы</h3>
+
+        <p>
+            Базовые методы реализованы в базовом Auth_Login_Driver и доступны для наследования всеми login драйверами. Эти методы используются для создания объектов и извлечения инстансов, для установки и получения значений параметров конфигурации, для хэширования паролей, а также доступа к ACL и Group драйверам.
+        </p>
+        <p class="note">Методы, определенные в классе, но не упомянутые в этом документе, предназначены для внутреннего использования и не должны вызываться.</p>
+
+        <article>
+            <h4 id="method_get_id" class="method">get_id()</h4>
+            <p>Возвращает уникальный идентификатор драйвера. Это может быть использована для идентификации драйвера или выбора конкретного экземпляря драйвера.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        None
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>Строковый идентификатор.</td>
+                </tr>
+                <tr>
+                    <th>Example</th>
+                    <td>
+                        <pre class="php"><code>// вернет 'simpleauth'
+$id = Auth::instance('simplegroup')->get_id();
+                        </code></pre>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_set_config" class="method">set_config($key, $value)</h4>
+            <p>Установка значений настроек.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$key</kbd></th>
+                                <td>required</td>
+                                <td>Configuration key name</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$value</kbd></th>
+                                <td>required</td>
+                                <td>Value for this configuration key</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>void</td>
+                </tr>
+                <tr>
+                    <th>Example</th>
+                    <td>
+                        <pre class="php"><code>// set a config value on the simplegroup driver
+Auth::instance('simplegroup')->set_config('key', 'value');
+                        </code></pre>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_get_config" class="method">get_config($key, $default = null)</h4>
+            <p>Получение значений настроек.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$key</kbd></th>
+                                <td>required</td>
+                                <td>Configuration key name</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$default</kbd></th>
+                                <td><i>null</i></td>
+                                <td>Default value to be returned if the requested key does not exist</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>mixed</td>
+                </tr>
+                <tr>
+                    <th>Example</th>
+                    <td>
+                        <pre class="php"><code>// get a config value of the simplegroup driver, return false if it doesn't exist
+$key = Auth::instance(simplegroup)->get_config('key', false);
+                        </code></pre>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_has_access" class="method">has_access($condition, $driver, $group = null)</h4>
+            <p>Метод <strong>has_access</strong> использует ACL драйвер для проверки доступа пользователей в соответствии с заданным условием.
+            </p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$condition</kbd></th>
+                                <td>required</td>
+                                <td>передаёт строкой или массивом расположение и необходимые права</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$driver</kbd></th>
+                                <td>required</td>
+                                <td>запрос ACL, или значение null</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$group</kbd></th>
+                                <td><i>null</i></td>
+                                <td>Опционально, проверяет только заданную группу.</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>boolean, <strong>true</strong> if access was granted, <strong>false</strong> if not.</td>
+                </tr>
+                <tr>
+                    <th>Example</th>
+                    <td>
+                        <pre class="php"><code>// Проверяет, имеет ли пользователь право комментировать
+if ( ! Auth::instance('simplegroup')->has_access('comments.create'), null)
+{
+Response::redirect('no_admin');
+}
+
+// проверяет имеет ли пользователь права на удаление и обновление комментариев
+Auth::instance('simplegroup')->has_access('comments.[update,delete]', null);
+
+// тоже самое только не со строкой, а с массивом
+Auth::instance('simplegroup')->has_access(array('comments', array('update', 'delete')), null);
+
+// статичный вид проверки (когда используется базовый драйвер group)
+Auth::has_access('comments.[update,delete]');
+
+</code></pre>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <h3 id="abstract_methods">Абстрактные методы</h3>
+
+        <p>
+            Все свои group драйверы должны содержать в себе их реализацию.
+        </p>
+
+        <article>
+            <h4 id="method_member" class="method">member($group, $specific = null)</h4>
+            <p>
+                Проверяет, является ли пользователь членом данной группы в любом из загруженных group драйверов или только тех, что указаны вторым параметром.
+            </p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$group</kbd></th>
+                                <td><i>required</i></td>
+                                <td>group id</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$specific</kbd></th>
+                                <td><i>null</i></td>
+                                <td>null чтобы проверить всех или один, или несколько драйверов. ID могут быть переданы одной строкой или массивом строк)</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>bool,
+                        если в одном из (заданных) драйверов текущий пользователь зарегистрирован</td>
+                </tr>
+                <tr>
+                    <th>Example</th>
+                    <td>
+                        <pre class="php"><code>if ( ! Auth::member(100))
+{
+Response::redirect('no_admin');
+}
+
+// specific driver
+Auth::member(1, 'simplegroup');
+
+// Multiple drivers
+Auth::check(0, array('simplegroup', 'genericgroup'));</code></pre>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_get_name" class="method">get_name($group)</h4>
+            <p>Получить отображаемое название группы.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$group</kbd></th>
+                                <td><i>null</i></td>
+                                <td>название группы</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>mixed, вернет название, или <strong>false</strong> если такой группы нет.</td>
+                </tr>
+                <tr>
+                    <th>Example</th>
+                    <td>
+                        <pre class="php"><code>// get the display name of the admin group
+Auth::instance('simplegroup')->get_name('admin');</code></pre>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        </section>
 
 		</div>
 

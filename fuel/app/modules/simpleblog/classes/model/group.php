@@ -8,7 +8,7 @@
  */
 
 
-namespace Blog;
+namespace SimpleBlog;
 
 class Model_Group extends \Orm\Model {
 
