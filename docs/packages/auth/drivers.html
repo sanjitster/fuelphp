@@ -41,22 +41,21 @@
 		</div>
 
 		<div id="main">
-			<h2>Auth package</h2>
+            <h2>Auth пакет</h2>
 
-			<p>The Auth package provides a standardized interface for authentication in Fuel. This allows our users to
-			write their own drivers and easily integrate a new driver to work with old code by keeping the basic methods
-			consistent.</p>
+            <p>Данный пакет представляет стандартыный интерфейс для авторизации в Fuel.
+                Это позволяет нашим пользователям создавать свои собственные драйверы и легко интегрировать их
+                с базовым ядром, сохраняя основные методы неизменными.</p>
 
 			<section>
-				<h2 id="writing_drivers">Writing your own drivers</h2>
+				<h2 id="writing_drivers">Написание своих собственных драйверов авторизации</h2>
 
 				<p>
-					Writing drivers can be done in two ways. Either by extending the Auth driver classes
-					to create a new driver from scratch or extending the SimpleAuth classes and changing them where needed.
+                    Свои драйверы можно сделать двумя способами. Либо за счет расширения класса Auth создать новый драйвер или расширить SimpleAuth класс и изменить его как вам нужно.
 				</p>
 
 				<p>
-					An Auth driver consists of three types of classes working together. These are:
+                    Драйвер авторизации состоит из трех типов классов, работающих вместе. К ним относятся:
 				</p>
 
 				<ul>
@@ -65,27 +64,24 @@
 					<li>Acl (Auth_Acl_Driver).</li>
 				</ul>
 
-				<h3 id="extending">Extending auth classes.</h3>
-
-				<p>Extend these classes like so:</p>
+				<h3 id="extending">Расширение классов</h3>
 
 				<pre class="php"><code>&lt;?php
 
 class Auth_Login_MyDriver extends \Auth\Auth_Login_Driver
 {
 
-	// Implement all the needed functions and variables defined in the driver class.
+	// Реализация всех необходимых функций и переменных, определенных в драйвере класса.
 
 }
 
 /* End of file mydriver.php */
 </code></pre>
 
-				<h3 id="implementing_function">Implementing functions.</h3>
+				<h3 id="implementing_function">Реализация функций</h3>
 
 				<p>
-					When extending the Auth driver classes take note on the expected return values of each function that needs to be implemented.
-					Every method supplies an example so you know what needs to be returned. Here is an example:
+                    При расширении классов, обратите внимание на ожидаемые значения возврата для каждой функции, они должны быть реализованы. Каждый метод предоставляет пример, чтобы вы знали, что должно быть возвращено. Вот пример:
 				</p>
 
 				<pre class="php"><code>/**
@@ -97,15 +93,11 @@ class Auth_Login_MyDriver extends \Auth\Auth_Login_Driver
 abstract public function get_user_id();</code></pre>
 
 				<p>
-					The code above show you the <em>get_user_id</em> function that every driver should have.
-					Like in all classes you extend that have abstract functions, these functions must be defined in the extended class.
-					The return type of this function is provided in the comment, in this case <em>array(driver_id, user_id)</em>.
-					In order to get your driver to work alongside other drivers make sure you return the right values or your driver
-					breaks protocol.
+                    Код ниже говорит, что драйвер должен иметь get_user_id(). Абстрактные методы расширямого класса должны быть реализованы в обязательном порядке. Тип возвращаемого значения этой функции содержится в комментарии, в данном случае это массив вида (driver_id, user_id). Вы должны придерживаться именно таких возвращаемых данных.
 				</p>
 
 				<p>
-					Here is that same function but then the implementation from the SimpleAuth driver.
+                    Та же функция, но уже с реализацией, драйвер SimpleAuth.
 				</p>
 
 				<pre class="php"><code>/**
@@ -125,15 +117,15 @@ public function get_user_id()
 </code></pre>
 
 				<p>
-					Once you have everything in place for the new driver. Replace or add it to the auth <a href="intro.html#configuration">config</a>.
+                    Если вы хотите добавить новый драйвер к старому или и вовсе заменить старый, то вы можете сделать так как показано в примере ниже. Файл настроек <a href="intro.html#configuration">config</a>.
 				</p>
 
 				<pre class="php"><code>// Inside config/auth.php array
 
-// Add it as a driver
+// добавить к драйверу SimpleAuth драйвер MyDriver
 'driver' => array('SimpleAuth', 'MyDriver'),
 
-// or replace the SimpleAuth driver
+// или заменить драйвер SimpleAuth драйвером MyDriver
 'driver' => array('MyDriver'),
 </code></pre>
 

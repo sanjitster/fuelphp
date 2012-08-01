@@ -41,11 +41,557 @@
 		</div>
 
 		<div id="main">
-			<h2 id="simplelogin">SimpleAuth</h2>
+        <h2 id="simplelogin">SimpleAuth Login</h2>
 
-			<p>TODO</p>
+        <p>
+            Как уже было сказано во введении, система аутентификации SimpleAuth поставляется с тремя встроенными драйверами, один из них SimpleAuth-Login.
+        </p>
+        <p>
+            Этот драйвер обеспечивает логику для создания, обновления, удаления и проверки учетных записей, хранящихся в таблице БД, для получения информации об аккаунтах, для генерирования или сброса паролей, для входа и выхода из системы (создание пользовательской сессии).
+        </p>
 
-		</div>
+        <h3 id="classmethods">Методы класса</h3>
+
+        <article>
+            <h4 id="method_validate_user" class="method">validate_user($username_or_email = '', $password = '')</h4>
+            <p>Проверяет есть ли пользователь с такими данными и паролем. Поддерживает проверку как по полю емейл, так и полю username.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$username_or_email</kbd></th>
+                                <td>required</td>
+                                <td>Either the users username, or email address</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$password</kbd></th>
+                                <td>required</td>
+                                <td>The users password</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>mixed. вернет <strong>false</strong> если пользователь не прошел проверку, и <strong>array</strong> с данными пользоваеля если прошел.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_login" class="method">login($username_or_email = '', $password = '')</h4>
+            <p>Выполняет вход в систему. Он вызывает validate_user() для проверки данных, прежде чем войти.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$username_or_email</kbd></th>
+                                <td>required</td>
+                                <td>Either the users username, or email address</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$password</kbd></th>
+                                <td>required</td>
+                                <td>The users password</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>boolean. вернет <strong>true</strong> если проверка прошла упешно и <strong>false</strong> если нет.</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="note">После удачного входа в систему, 'username' и 'login_hash' текщего юзера будут доступны как переменные сессии.</p>
+        </article>
+
+        <article>
+            <h4 id="method_force_login" class="method">force_login($user_ids = '')</h4>
+            <p>
+                Выполняет принудительный запрос на вход. Вы можете использовать это для автоматизированного входа в систему, когда вы знаете user_id, но не знаете пароль. Это может быть использовано, например, для "запомнить меня".
+            </p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$user_id</kbd></th>
+                                <td>required</td>
+                                <td>The id of the user you want to login</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>boolean. returns <strong>true</strong> if the login was succesful, <strong>false</strong> otherwise.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_logout" class="method">logout()</h4>
+            <p>Выполняет выход из системы залогиненного пользователя.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        None
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>boolean. returns <strong>true</strong> if the logout was succesful, <strong>false</strong> otherwise.</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="note">Если у вас включен гостевой вход пользователей, то после успешного выхода пользователь будет установлен как гость.</p>
+        </article>
+
+        <article>
+            <h4 id="method_create_user" class="method">create_user($username, $password, $email, $group = 1, Array $profile_fields = array())</h4>
+            <p>
+                Создает нового пользователя.
+            </p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$username</kbd></th>
+                                <td>required</td>
+                                <td>The name of the user you want to create</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$password</kbd></th>
+                                <td>required</td>
+                                <td>The password you want to assign to the user</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$email</kbd></th>
+                                <td>required</td>
+                                <td>The email address of the user you want to create</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$group</kbd></th>
+                                <td>1</td>
+                                <td>Группа к которой будет относится пользователь. По умолчанию будет присвоена группа 1.</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$profile_fields</kbd></th>
+                                <td><pre class="php"><code>array()</code></pre>
+                                <td>Дополнительные поля профиля пользователя которые вы хотите назначить пользователю.</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Throws</th>
+                    <td>SimpleUserUpdateException</td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>mixed. возвращает id создаваемого пользователя, или <strong>false</strong> если неудача.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_update_user" class="method">update_user($values, $username = null)</h4>
+            <p>
+                Апдейт пользовательских данных.
+            </p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$values</kbd></th>
+                                <td><pre class="php"><code>array()</code></pre>
+                                <td>Ассоциативный массив name/value колонок или полей профиля пользователя которые вы хотите обновить.</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$username</kbd></th>
+                                <td>required</td>
+                                <td>Имя пользователя</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Throws</th>
+                    <td>SimpleUserUpdateException</td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>boolean. вернет <strong>true</strong> если поля обновлены и <strong>false</strong> если неудача.</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="note">
+                Note that you can <strong>not</strong> use this method to change the username. And as a security measure, if you
+                want to change the password, you have to pass the current password in $values as "old_password".
+            </p>
+        </article>
+
+        <article>
+            <h4 id="method_change_password" class="method">change_password($old_password, $new_password, $username = null)</h4>
+            <p>
+                Позволяет менять пароль пользователя.
+            </p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$old_password</kbd></th>
+                                <td>required</td>
+                                <td>The users current password</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$new_password</kbd></th>
+                                <td>required</td>
+                                <td>The users new password</td>
+                            </tr>
+                            <tr>
+                                <th><kbd>$username</kbd></th>
+                                <td>required</td>
+                                <td>The name of the user of whom you want to change the password</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Throws</th>
+                    <td>SimpleUserUpdateException</td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>boolean. вернет <strong>true</strong> если успех, и <strong>false</strong> если неудача.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_reset_password" class="method">reset_password($username)</h4>
+            <p>
+                Присваивает пользователю новый пароль сгенерированный рандомно.
+            </p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$username</kbd></th>
+                                <td>required</td>
+                                <td>The name of the user for whom you want to reset the password</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Throws</th>
+                    <td>SimpleUserUpdateException</td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>вернет строку со сгенерированным паролем.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_delete_user" class="method">delete_user($username)</h4>
+            <p>
+                Удаляет пользователя.
+            </p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        <table class="parameters">
+                            <tr>
+                                <th>Param</th>
+                                <th>Default</th>
+                                <th class="description">Description</th>
+                            </tr>
+                            <tr>
+                                <th><kbd>$username</kbd></th>
+                                <td>required</td>
+                                <td>The name of the user account you want to delete</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Throws</th>
+                    <td>SimpleUserUpdateException</td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>boolean. returns <strong>true</strong> if the user account was deleted, or <strong>false</strong> if it failed (because the username did not exist).</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_create_login_hash" class="method">create_login_hash()</h4>
+            <p>Генерирует хэш для текущего вошедшего в систему пользователя.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        None
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>string, the generated login hash.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_get_user_id" class="method">get_user_id()</h4>
+            <p>Вернет в виде массива идентификаторы драйверов и идентификатор текущего залогиненного пользователя.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        None
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>mixed. returns an array in the form <strong>array(driver_id, user_id)</strong> if a user is logged in, or <strong>false</strong> otherwise.</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="note">If guest user support is enabled, you will never get <strong>false</strong> returned, because the method will return the user id of the guest user.</p>
+        </article>
+
+        <article>
+            <h4 id="method_get_groups" class="method">get_groups()</h4>
+            <p>Вернет группы к которым пренадлежит текущий пользователь.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        None
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>mixed. вернет массив вида <strong>array(array('SimpleGroup', group_id))</strong> if a user is logged in, or <strong>false</strong> otherwise.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_get_email" class="method">get_email()</h4>
+            <p>Вернет email текущего пользователя.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        None
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>mixed. returns an email address if a user is logged in, or <strong>false</strong> if no email address is defined for the current user, or there is no user logged-in.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_get_screen_name" class="method">get_screen_name()</h4>
+            <p>Вернет отображаемое имя(это как псевдоним) текущего пользователя.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        None
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>mixed. returns a string containing the name, or <strong>false</strong> if there is no user logged-in.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_get_profile_fields" class="method">get_profile_fields()</h4>
+            <p>Вернет массив с полями профиля пользователя(смотрите выше).</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        None
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>array.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article>
+            <h4 id="method_guest_login" class="method">guest_login()</h4>
+            <p>Проверяет гостевой доступ, успех если гостейвой доступ включен и провал если нет.</p>
+            <table class="method">
+                <tbody>
+                <tr>
+                    <th class="legend">Static</th>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <th>Parameters</th>
+                    <td>
+                        None
+                    </td>
+                </tr>
+                <tr>
+                    <th>Returns</th>
+                    <td>boolean. returns <strong>true</strong> if the guest support is enabled, or <strong>false</strong> if not.</td>
+                </tr>
+                </tbody>
+            </table>
+        </article>
+    </div>
 
 		<footer>
 			<p>

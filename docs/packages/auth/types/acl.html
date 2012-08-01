@@ -41,16 +41,201 @@
 		</div>
 
 		<div id="main">
-			<h2>Auth package</h2>
+        <section>
+            <h2 id="driver_types">Auth_Acl_Driver</h2>
 
-			<p>The Auth package provides a standardized interface for authentication in Fuel. This allows our users to
-			write their own drivers and easily integrate a new driver to work with old code by keeping the basic methods
-			consistent.</p>
+            <p>
+                Этот драйвер является базовым классом для всех драйверов ACL. Это абстрактный класс, который содержит общие базовые методы для всех драйверов group, а также абстрактные методы, которые должны быть реализованы в своих собственых драйверах.
+            </p>
 
-			<section>
-				<h2 id="driver_types">Driver types: ACL</h2>
+            <h3 id="generic_methods">Базовые методы</h3>
 
-			</section>
+            <p>
+                Базовые методы уже реализованы и доступны через наследование. Эти методы позволяют взаимодействать с ACL драйверами и выполнять проверку доступа.
+            </p>
+            <p class="note">Те методы, которые есть, но не описаны в настоящей документации являются внутренними и не должны вызываться напрямую.</p>
+
+            <article>
+                <h4 id="method_get_id" class="method">get_id()</h4>
+                <p>Возвращает уникальный идентификатор драйвера. Это может быть использована для идентификации драйвера или выбора конкретного экземпляря драйвера.</p>
+                <table class="method">
+                    <tbody>
+                    <tr>
+                        <th class="legend">Static</th>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>Parameters</th>
+                        <td>
+                            None
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Returns</th>
+                        <td>Строковый идентификатор.</td>
+                    </tr>
+                    <tr>
+                        <th>Example</th>
+                        <td>
+								<pre class="php"><code>// returns 'simpleacl'
+$id = Auth::instance('simpleacl')->get_id();
+                                </code></pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </article>
+
+            <article>
+                <h4 id="method_set_config" class="method">set_config($key, $value)</h4>
+                <p>Установка значений настроек.</p>
+                <table class="method">
+                    <tbody>
+                    <tr>
+                        <th class="legend">Static</th>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>Parameters</th>
+                        <td>
+                            <table class="parameters">
+                                <tr>
+                                    <th>Param</th>
+                                    <th>Default</th>
+                                    <th class="description">Description</th>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$key</kbd></th>
+                                    <td>required</td>
+                                    <td>Configuration key name</td>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$value</kbd></th>
+                                    <td>required</td>
+                                    <td>Value for this configuration key</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Returns</th>
+                        <td>void</td>
+                    </tr>
+                    <tr>
+                        <th>Example</th>
+                        <td>
+								<pre class="php"><code>// set a config value on the simpleacl driver
+Auth::instance('simpleacl')->set_config('key', 'value');
+                                </code></pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </article>
+
+            <article>
+                <h4 id="method_get_config" class="method">get_config($key, $default = null)</h4>
+                <p>Получение настроек по ключу.</p>
+                <table class="method">
+                    <tbody>
+                    <tr>
+                        <th class="legend">Static</th>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>Parameters</th>
+                        <td>
+                            <table class="parameters">
+                                <tr>
+                                    <th>Param</th>
+                                    <th>Default</th>
+                                    <th class="description">Description</th>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$key</kbd></th>
+                                    <td>required</td>
+                                    <td>Configuration key name</td>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$default</kbd></th>
+                                    <td><i>null</i></td>
+                                    <td>Значение по умолчанию должно быть возвращено, если запрошенный ключ не существует</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Returns</th>
+                        <td>mixed</td>
+                    </tr>
+                    <tr>
+                        <th>Example</th>
+                        <td>
+<pre class="php"><code>// получает значение настройки simpleacl драйвера, если оно не существует верется false
+$key = Auth::instance(simpleacl)->get_config('key', false);
+</code></pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </article>
+
+            <h3 id="abstract_methods">Абстрактные методы</h3>
+
+            <p>
+                Все разрабатываемые ACL драйверы должны содержать в себе реализацию абстрактыных методов, либо их перегружать.
+            </p>
+
+            <article>
+                <h4 id="method_has_access" class="method">has_access($condition, Array $entity)</h4>
+                <p>Метод <strong>has_access</strong> использует обявленные ACL драйверы для проверки доступа пользователей в соответствии с заданным условием.</p>
+                <table class="method">
+                    <tbody>
+                    <tr>
+                        <th class="legend">Static</th>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>Parameters</th>
+                        <td>
+                            <table class="parameters">
+                                <tr>
+                                    <th>Param</th>
+                                    <th>Default</th>
+                                    <th class="description">Description</th>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$condition</kbd></th>
+                                    <td>required</td>
+                                    <td>задаёт необходимые права, строка или массив</td>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$entity</kbd></th>
+                                    <td>required</td>
+                                    <td>идентификатор пользователя или групы вида array(driver_id, id).</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Returns</th>
+                        <td>boolean, <strong>true</strong> если доступ разрешен, <strong>false</strong> если нет.</td>
+                    </tr>
+                    <tr>
+                        <th>Example</th>
+                        <td>
+                            <pre class="php"><code>// проверка может ли пользователь добавлять комментарии
+if ( ! Auth::instance('simpleacl')->has_access('comments.create'), array('simplegroup', 1))
+{
+Response::redirect('no_admin');
+}                           </code></pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </article>
+
+        </section>
 
 		</div>
 

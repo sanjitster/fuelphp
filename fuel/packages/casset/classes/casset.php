@@ -13,6 +13,8 @@
 
 namespace Casset;
 
+use Fuel\Core\Config;
+
 class Casset {
 
 	/**
@@ -137,31 +139,31 @@ class Casset {
 			return;
 		}
 
-		\Config::load('casset', true);
+		Config::load('casset', true);
 
-		static::$asset_url = \Config::get('casset.url', \Config::get('base_url'));
+		static::$asset_url = Config::get('casset.url', Config::get('base_url'));
 
 		static::$default_folders = array(
-			'css' => \Config::get('casset.css_dir', static::$default_folders['css']),
-			'js' => \Config::get('casset.js_dir', static::$default_folders['js']),
-			'img' => \Config::get('casset.img_dir', static::$default_folders['img']),
+			'css' => Config::get('casset.css_dir', static::$default_folders['css']),
+			'js' => Config::get('casset.js_dir', static::$default_folders['js']),
+			'img' => Config::get('casset.img_dir', static::$default_folders['img']),
 		);
 
-		$paths = \Config::get('casset.paths', static::$asset_paths);
+		$paths = Config::get('casset.paths', static::$asset_paths);
 
 		foreach($paths as $key => $path)
 		{
 			static::add_path($key, $path);
 		}
 
-		static::$cache_path = \Config::get('casset.cache_path', static::$cache_path);
+		static::$cache_path = Config::get('casset.cache_path', static::$cache_path);
 
-		static::$default_options['min'] = \Config::get('casset.min', static::$default_options['min']);
-		static::$default_options['combine'] = \Config::get('casset.combine', static::$default_options['combine']);
+		static::$default_options['min'] = Config::get('casset.min', static::$default_options['min']);
+		static::$default_options['combine'] = Config::get('casset.combine', static::$default_options['combine']);
 
-		static::$deps_max_depth = \Config::get('casset.deps_max_depth', static::$deps_max_depth);
+		static::$deps_max_depth = Config::get('casset.deps_max_depth', static::$deps_max_depth);
 
-		$group_sets = \Config::get('casset.groups', array());
+		$group_sets = Config::get('casset.groups', array());
 
 		foreach ($group_sets as $group_type => $groups)
 		{
@@ -180,14 +182,14 @@ class Casset {
 		if (!static::group_exists('css', 'global'))
 			static::add_group_base('css', 'global');
 
-		static::$show_files = \Config::get('casset.show_files', static::$show_files);
-		static::$show_files_inline = \Config::get('casset.show_files_inline', static::$show_files_inline);
+		static::$show_files = Config::get('casset.show_files', static::$show_files);
+		static::$show_files_inline = Config::get('casset.show_files_inline', static::$show_files_inline);
 
-		static::$post_load_callback = \Config::get('casset.post_load_callback', static::$post_load_callback);
+		static::$post_load_callback = Config::get('casset.post_load_callback', static::$post_load_callback);
 
-		static::$filepath_callback = \Config::get('casset.filepath_callback', static::$filepath_callback);
+		static::$filepath_callback = Config::get('casset.filepath_callback', static::$filepath_callback);
 
-		static::$css_uri_rewriter = \Config::get('casset.css_uri_rewriter', static::$css_uri_rewriter);
+		static::$css_uri_rewriter = Config::get('casset.css_uri_rewriter', static::$css_uri_rewriter);
 
 		static::$initialized = true;
 	}

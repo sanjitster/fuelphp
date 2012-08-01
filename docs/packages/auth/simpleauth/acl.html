@@ -41,11 +41,108 @@
 		</div>
 
 		<div id="main">
-			<h2 id="simpleacl">SimpleAcl</h2>
+            <h2 id="simpleacl">SimpleAuth Acl</h2>
 
-			<p>TODO</p>
+            <p>
+                Как уже было сказано во введении, система аутентификации SimpleAuth поставляется с тремя встроенными драйверами, один из них SimpleAuth-ACL.
+            </p>
+            <p>
+                Access Control List или ACL — список контроля доступа, который определяет, кто или что может получать доступ к конкретному объекту, и какие именно операции разрешено или запрещено этому субъекту проводить над объектом.
+            </p>
 
-		</div>
+            <h3 id="configuration">Настройки</h3>
+
+            <p>
+                Пример:
+            </p>
+
+			<pre class="php"><code>array(
+    &lt;role&gt; => array(// где &lt;role&gt; имя роли определяемого ACL
+        &lt;location&gt; => array(// где &lt;location&gt; зона для назначения полономочий
+                'rule', 'somerule'// особые права
+        ),
+    ),
+),</code></pre>
+            <p>
+                Файл simpleauth настроек в Auth пакет содержит несколько примеров, которые можно использовать.
+            </p>
+            <p>
+                Вы можете использовать роль "#" для определения прав по умолчанию, которые будут установлены для каждого пользователя, обычно это используется для определения публичного права для вашего приложения. Например, если каждый может читать записи в блоге и комментарии, вы можете определить:
+            </p>
+			<pre class="php"><code>
+'#' => array(// роль для всех пользователей
+    'blog' => array('read'),// все могут читать 'blog'
+    'comments' => array('read'),// все могут читать 'comments'
+),</code></pre>
+            <p>
+                Также есть ещё две предустановленные роли. Одна запрещает любой доступ, и другая, которая предоставляет полномочия. Пользуйтесь второй с осторожностью.
+            </p>
+			<pre class="php"><code>
+                'banned' => false,	// запретить любой доступ 'banned'
+                'administators' => true	// открыть полный доступ 'administrator'</code></pre>
+
+            <h3 id="classmethods">Методы</h3>
+
+            <article>
+                <h4 id="method_has_access" class="method">has_access($condition)</h4>
+                <p>
+                    Позволяет проверить текущего пользователя, имеет ли тот доступ к определенному месту с указанными полномочиями</p>
+                <table class="method">
+                    <tbody>
+                    <tr>
+                        <th class="legend">Static</th>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>Parameters</th>
+                        <td>
+                            <table class="parameters">
+                                <tr>
+                                    <th>Param</th>
+                                    <th>Default</th>
+                                    <th class="description">Description</th>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$condition</kbd></th>
+                                    <td>required</td>
+                                    <td>Условия доступа, которые вы хотите проверить</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Returns</th>
+                        <td>boolean. <strong>true</strong> если имеет доступ, или <strong>false</strong> если нет.</td>
+                    </tr>
+                    <tr>
+                        <th>Example</th>
+                        <td>
+                            <pre class="php"><code>if (Auth::has_access('blog.read'))// имеет ли пользователь доступ к blog с правми на чтение?
+{
+// о да, этот пользователь может читать мой blog
+}
+
+// если у вас есть несколько экземпляров, используйте для вызова нужного экземпляра такой метод
+// Вы также можете проверить сразу нескольких прав
+if (Auth::instance('simpleauth')->has_access('blog.[read,write,delete]'))
+{
+// yes, the user has access and may read, write and delete
+}
+
+// кроме того можно проверять сразу несколько зон полномочий
+if (Auth::has_access(array('blog' => array('read'), 'comments' => array('read')))
+{
+// yes, the user has access to read blogs and comments
+}
+                            </code></pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </article>
+
+
+        </div>
 
 		<footer>
 			<p>

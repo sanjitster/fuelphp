@@ -41,9 +41,138 @@
 		</div>
 
 		<div id="main">
-			<h2 id="simplegroup">SimpleGroup</h2>
+            <h2 id="simplegroup">SimpleAuth Group</h2>
 
-			<p>TODO</p>
+            <p>
+                Как уже было сказано во введении, система аутентификации SimpleAuth поставляется с тремя встроенными драйверами, один из них SimpleAuth-Group.
+            </p>
+            <p>
+                Этот драйвер включается в файле настроек simpleauth. Он обеспечивает логику для проверки пользователя является ли тот членом группы, а также для получения информации о группе, и ролях заданных в группе.
+            </p>
+
+            <h3 id="configuration">Настройки</h3>
+
+            <p>
+                Настройки определяются в виде многомерного массива вида:
+            </p>
+
+			<pre class="php"><code>array(
+&lt;id&gt; => array(				// где &lt;id&gt; числовой идентификатор группы
+'name' => 'name-of-this-group',		// имя группы, например 'Administrators' или 'Guests'
+'roles' => array('role', 'otherrole'),	// список ролей
+),
+),</code></pre>
+            <p>Файл настроек поставляется с Auth пакетом и содержит несколько примеров, которые можно использовать.</p>
+
+            <h3 id="classmethods">Методы</h3>
+
+            <article>
+                <h4 id="method_member" class="method">member($group, $user = null)</h4>
+                <p>Позволяет проверить пренадлежит ли пользователь к группе.</p>
+                <table class="method">
+                    <tbody>
+                    <tr>
+                        <th class="legend">Static</th>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>Parameters</th>
+                        <td>
+                            <table class="parameters">
+                                <tr>
+                                    <th>Param</th>
+                                    <th>Default</th>
+                                    <th class="description">Description</th>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$group</kbd></th>
+                                    <td>required</td>
+                                    <td>id группы</td>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$user</kbd></th>
+                                    <td><pre class="php"><code>null</code></pre>
+                                    <td>Идентификатор пользователя get_user_id(), или <strong>null</strong> если нужно проверить текущего пользователя.</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Returns</th>
+                        <td>boolean. вернет <strong>true</strong> если юзер пренадлежит к группе, и <strong>false</strong> если нет.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </article>
+
+            <article>
+                <h4 id="method_get_name" class="method">get_name($group = null)</h4>
+                <p>позволяет получить имя данного идентификатора группы</p>
+                <table class="method">
+                    <tbody>
+                    <tr>
+                        <th class="legend">Static</th>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>Parameters</th>
+                        <td>
+                            <table class="parameters">
+                                <tr>
+                                    <th>Param</th>
+                                    <th>Default</th>
+                                    <th class="description">Description</th>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$group</kbd></th>
+                                    <td><pre class="php"><code>null</code></pre>
+                                    <td>числовой идентификатор группы</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Returns</th>
+                        <td>mixed. <strong>false</strong> если группы с таким id нет, или вернется имя группы.</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="note">Если не передать параметр, то вернется имя первой объявленной в настроках группы.</p>
+            </article>
+
+            <article>
+                <h4 id="method_get_roles" class="method">get_roles($group = null)</h4>
+                <p>Извлекает роли по id группы.</p>
+                <table class="method">
+                    <tbody>
+                    <tr>
+                        <th class="legend">Static</th>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>Parameters</th>
+                        <td>
+                            <table class="parameters">
+                                <tr>
+                                    <th>Param</th>
+                                    <th>Default</th>
+                                    <th class="description">Description</th>
+                                </tr>
+                                <tr>
+                                    <th><kbd>$group</kbd></th>
+                                    <td><pre class="php"><code>null</code></pre>
+                                    <td>The id of the group you want to get the roles of</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Returns</th>
+                        <td>array. Если группы нет то вернется пустой массив, если не передать параметр то вернет роли первой обявленной в настройках группы.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </article>
 
 		</div>
 
