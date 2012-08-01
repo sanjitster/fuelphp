@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Bootswatch: Cerulean</title>
+	<title><? if(isset($title)) echo $title ?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="">
+	<link href="assets/ico/favicon.ico" rel="shortcut icon">
 
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
 	<!--[if lt IE 9]>
@@ -13,15 +14,10 @@
 	<![endif]-->
 
 	<!-- Le styles -->
-	<? echo \Fuel\Core\Asset::css('bootstrap.css'); ?>
-	<? echo \Fuel\Core\Asset::css('bootstrap-responsive.css'); ?>
-	<? echo \Fuel\Core\Asset::css('docs.css'); ?>
-
+	<? Casset::css('*.css'); echo Casset::render(); ?>
 
 </head>
-
 <body data-offset="50" data-target=".subnav" data-spy="scroll" data-twttr-rendered="true">
-
 
 <!-- Navbar
 ================================================== -->
@@ -33,49 +29,44 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a href="./index.html" class="brand">Bootstrap</a>
+			<a href="./index.html" class="brand">Blog</a>
 			<div class="nav-collapse collapse">
-				<ul class="nav">
+				<ul class="nav pull-left">
 					<li class="">
-						<? echo Html::anchor('exemple_ormrelationusers/orm/posts', 'AllPosts'); ?>
+						<? echo Html::anchor('blog/posts', 'Лента') ?>
 					</li>
+				</ul>
+				<ul class="nav pull-right">
+
+
+					<? if($current_user){ ?>
+
+						<li><a>Вы вошли как: <? echo $current_user->username ?></a></li>
+						<li><? echo Html::anchor('blog/logout','logout') ?></li>
+
+					<? } else { ?>
+
+						<li><? echo Html::anchor('blog/login','login') ?></li>
+
+					<? } ?>
+
+
 				</ul>
 			</div>
 		</div>
 	</div>
 </div>
-
-
 <div class="container">
 
 
 
-
-
-
-
-
-
-
-
-
-	<!-- Content
-	================================================== -->
-	<header class="jumbotron subhead" id="overview">
-		<h1><? echo 'SimpleBlog->'.$title?></h1>
-	</header>
-
-
-	<? echo $content ?>
-
-
-
-
-
-
-
-
-
+	<? if(Session::get_flash('success')) { ?>
+		<div class="alert alert-success fade in">
+			<a class="close fade in" data-dismiss="alert" href="#">&times;</a>
+			<strong><? echo Session::get_flash('success') ?></strong>
+		</div>
+	<? } ?>
+	<? if(isset($content)) echo $content ?>
 
 
 
@@ -89,16 +80,15 @@
 
 </div><!-- /container -->
 
-
-
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<? echo \Fuel\Core\Asset::js('jquery.js'); ?>
-<? echo \Fuel\Core\Asset::js('bootstrap.js'); ?>
-<? echo \Fuel\Core\Asset::js('aplication.js'); ?>
-
-
+<?
+	Casset::js('jquery.js');
+	Casset::js('bootstrap.js');
+	Casset::js('aplication.js');
+	echo Casset::render();
+?>
 
 </body>
 </html>
