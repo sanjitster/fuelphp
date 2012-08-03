@@ -529,7 +529,7 @@ h2 + .row {
 
 /* Remove bottom margin on example forms in wells */
 form.well {
-    padding: 40px 14px 14px;
+    padding: 14px 14px;
 }
 
 /* Tighten up spacing */

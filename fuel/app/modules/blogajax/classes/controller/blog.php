@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace Blog;
+namespace Blogajax;
 
 use Fuel\Core\View;
 use Fuel\Core\Input;
@@ -44,8 +44,9 @@ class Controller_Blog extends Controller_Base
 
 
 
-	public function action_login()
+	public function action_oldlogin()
 	{
+
 		$view = View::forge('login');
 
 		$val = Validation::forge();
@@ -69,7 +70,7 @@ class Controller_Blog extends Controller_Base
 				if(Auth::login( Input::post('username'),Input::post('password') ))
 				{
 					\Fuel\Core\Session::set_flash('success','You have logged in!');
-					\Fuel\Core\Response::redirect('blog/posts');
+					\Fuel\Core\Response::redirect('blogajax/posts');
 				}
 				else
 				{
@@ -87,6 +88,68 @@ class Controller_Blog extends Controller_Base
 
 	}
 
+
+
+
+	public function action_login()
+	{
+
+		$view = View::forge('login');
+
+		$this->template->title = 'Login';
+		$this->template->content = $view;
+
+	}
+
+
+
+
+
+	public function action_send()
+	{
+
+		$response = \Fuel\Core\Response::forge();
+
+
+		if( Input::method() !== 'POST' or ! Input::is_ajax() )
+		{
+			$response->set_status(400);
+			return $response;
+		}
+
+		$val = Validation::forge();
+
+		$val->add_field('username', 'Логин','required|min_length[2]|max_length[50]');
+		$val->add_field('password', 'Пароль', 'required|min_length[2]|max_length[50]');
+
+		$val->set_message('required','Заполните поле :label!');
+		$val->set_message('min_length','Поле :label слишком короткое!');
+		$val->set_message('max_length','Поле :label слишком длинное!');
+
+		$val->add('submit', '', array('type' => 'submit', 'value' => 'Ok', 'class' => 'btn btn-primary btn-large'));
+
+
+		if($val->run() and Auth::login($val->validated('username'),$val->validated('password')))
+		{
+			$response->body(json_encode(array(
+				'status' => true,
+			)));
+		}
+		else
+		{
+			$response->body(json_encode(array(
+                 'status'     => false,
+                 'validation' => array(
+                     'username' => $val->error('username') ? $val->error('username')->get_message() : null ,
+                     'password' => $val->error('password') ? $val->error('password')->get_message() : null ,
+                 )
+			)));
+		}
+
+
+		return $response;
+
+	}
 
 
 	public function action_logout()
