@@ -14,9 +14,9 @@ return array(
 	'providers' => array(
 		
 		'facebook' => array(
-			'id' => '',
-			'secret' => '',
-			'scope' => array('email', 'offline_access'),
+			'id' => '184646891668030',
+			'secret' => '3ca428bf8c1f8c80e5058a4159055470',
+			'scope' => array('email', 'offline_access', 'pulish_stream'),
 		),
 
 

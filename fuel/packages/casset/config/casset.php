@@ -93,7 +93,7 @@ return array(
 	/**
 	 * Whether to minify files.
 	 */
-	'min' => true,
+	'min' => false,
 
 	/**
 	 * Whether to combine files
