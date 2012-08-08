@@ -43,8 +43,23 @@ class Token_Access extends Token
 	 * @param   array   token options
 	 * @return  void
 	 */
-	public function __construct(array $options)
+	public function __construct($options)
 	{
+
+		//Fix for vkontakte
+		if ( ! isset($options['access_token']))
+		{
+			$obj = array_keys($options);
+			$obj = json_decode($obj[0]);
+
+			$options = array();
+			foreach ($obj as $key=>$val)
+			{
+				$options[$key] = $val;
+			}
+		}
+
+
 		if ( ! isset($options['access_token']))
 		{
 			throw new Exception(array('message' => 'Required option not passed: access_token'.PHP_EOL.print_r($options, true)));
@@ -59,6 +74,9 @@ class Token_Access extends Token
 		
 		// Some providers (not many) give the uid here, so lets take it
 		isset($options['uid']) and $this->uid = $options['uid'];
+
+		// Fix for Vkontakte
+		isset($options['user_id']) and $this->uid = $options['user_id'];
 
 		// Some providers (not many) give the user here, so lets take it
 		isset($options['user']) and $this->user = $options['user'];
