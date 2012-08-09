@@ -48,6 +48,7 @@
 
 						<li><? echo Html::anchor('blogajax/blog/login','login') ?></li>
 						<li><? echo Html::anchor('blogajax/auth/session/facebook','login Facebook') ?></li>
+						<li><? echo Html::anchor('blogajax/auth/session/vkontakte','login Vkontakte') ?></li>
 
 					<? } ?>
 

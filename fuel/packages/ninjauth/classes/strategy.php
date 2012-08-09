@@ -37,6 +37,7 @@ abstract class Strategy
 		'soundcloud' 	=> 'OAuth2',
 		'twitter' 		=> 'OAuth',
 		'windowslive' 	=> 'OAuth2',
+		'vkontakte' 	=> 'OAuth2',
 	);
 	
 	public function __construct($provider)

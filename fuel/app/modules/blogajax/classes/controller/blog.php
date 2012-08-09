@@ -158,7 +158,7 @@ class Controller_Blog extends Controller_Base
 		Auth::logout();
 		\Fuel\Core\Session::set_flash('success','You have logged out!');
 
-		\Fuel\Core\Response::redirect('blog/posts');
+		\Fuel\Core\Response::redirect('/blogajax/blog/posts');
 
 	}
 

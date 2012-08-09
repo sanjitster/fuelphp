@@ -9,4 +9,16 @@
 
 namespace Blogajax;
 
-class Controller_Auth extends \NinjAuth\Controller {}
+class Controller_Auth extends \NinjAuth\Controller
+{
+
+	public function before()
+	{
+		parent::before();
+
+		\NinjAuth\Controller::$linked_redirect = '/blogajax/auth/linked';
+		\NinjAuth\Controller::$login_redirect = '/blogajax/blog/posts';
+		\NinjAuth\Controller::$register_redirect = '/blogajax/auth/register';
+		\NinjAuth\Controller::$registered_redirect = '/blogajax/blog/posts';
+	}
+}
