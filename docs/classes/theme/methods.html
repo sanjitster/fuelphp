@@ -26,6 +26,7 @@
 					<p>
 						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
 						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+                        <span>Форум: <a href="http://forum.fuelphp-framework.ru">Forum.fuelphp-framework.ru</a></span>
 					</p>
 				</form>
 			</div>
@@ -49,10 +50,7 @@
 			<article>
 				<h4 class="method" id="method_instance">instance($name = '_default_', array $config = array())</h4>
 				<p>
-					The <strong>instance</strong> method acts as a multiton. It will return the instance identified by $name. If this
-					instance does not exist, it will create a new Theme instance, using the configuration array passed. If no
-					parameters are passed, instance will create the default Theme instance, using the default configuration
-					specified in the theme config file.
+					Этот метод вернет инстанс с указанным идентификатором $name. Если интсанса с таким id не найдется, то будет создан новый инстанс с настройками $config. Если вы не зададите настройки, то будут установлены настройки по умолчанию из файла конфигурации.
 				</p>
 
 				<table class="method">
@@ -75,13 +73,13 @@
 									<th><kbd>$name</kbd></th>
 									<td><em>string</em></td>
 									<td><pre class="php"><code>'_default_'</code></pre></td>
-									<td>The Theme class instance name.</td>
+									<td>Имя/id инстанса</td>
 								</tr>
 								<tr>
 									<th><kbd>$config</kbd></th>
 									<td><em>array</em></td>
 									<td><pre class="php"><code>array()</code></pre></td>
-									<td>The theme instance configuration. Will be ignored if the instance already exists.</td>
+									<td>Массив с настройками. Будет проигнорирован, если инстанс уже существует.</td>
 								</tr>
 							</table>
 						</td>
@@ -93,10 +91,10 @@
 					<tr>
 						<th>Example</th>
 						<td>
-							<pre class="php"><code>// Get the default instance
+							<pre class="php"><code>// Создаст инстанс по умолчанию
 $theme = \Theme::instance();
 
-// Get a custom instance
+// Создаст инстанс со своими собственными настройками
 $theme = \Theme::instance(
 	'custom',
 	array(
@@ -114,13 +112,12 @@ $theme = \Theme::instance(
 			<article>
 				<h4 class="method" id="method_forge">forge(array $config = array())</h4>
 				<p>
-					The <strong>forge</strong> method returns a new Theme instance.
+					Создает инстанс, параметром можно указать входные настройки.
 				</p>
 
 				<p class="note">
-					If no configuration is passed, the configuration is loaded from the global configuration file.
-					Note that if you pass a partial configuration, it will be merged with the defaults shown
-					in the <a href="./introduction.html#config">introduction</a>, <strong>NOT</strong> with the defaults in your configuration file!
+					Если не передать параметр, будет загружена конфигурация по умолчанию.
+					Передаваемая и конфигурация по умолчанию объединяются, старые значения перекрываются новыми. Поэтому если новый параметр настройки не установлен, то будет использован параметр настройки по умолчанию.
 				</p>
 
 				<table class="method">
@@ -143,7 +140,7 @@ $theme = \Theme::instance(
 									<th><kbd>$config</kbd></th>
 									<td><em>array</em></td>
 									<td><pre class="php"><code>array()</code></pre></td>
-									<td>The theme instance configuration.</td>
+									<td>Массив с настройками</td>
 								</tr>
 							</table>
 						</td>
@@ -155,7 +152,7 @@ $theme = \Theme::instance(
 					<tr>
 						<th>Example</th>
 						<td>
-							<pre class="php"><code>// Get a Theme instance
+							<pre class="php"><code>// Создаст инстанс
 $theme = \Theme::forge(array(
 	'active' => 'custom',
 	'fallback' => 'default',
@@ -242,8 +239,7 @@ $view = $theme->view('template/homepage');
 			<article>
 				<h4 class="method" id="method_asset_path">asset_path($path)</h4>
 				<p>
-					The <strong>asset_path</strong> method returns the path to the asset requested in $path, relative to the <strong>DOCROOT</strong>.
-					If the configured asset folder is a URL to the requested $path is returned.
+					Метод возвращает путь к asset, относительно <strong>DOCROOT</strong>.
 				</p>
 				<table class="method">
 					<tbody>
@@ -265,7 +261,7 @@ $view = $theme->view('template/homepage');
 									<th><kbd>$path</kbd></th>
 									<td><em>string</em></td>
 									<td><strong>required</strong></td>
-									<td>The asset requested.</td>
+									<td>Путь к asset</td>
 								</tr>
 							</table>
 						</td>
@@ -280,7 +276,7 @@ $view = $theme->view('template/homepage');
 							<pre class="php"><code>// Get the default instance
 $theme = \Theme::instance();
 
-// will return &lt;img src="/THEMEDIR/assets/img/test.png" /&gt;
+// вернет &lt;img src="/THEMEDIR/assets/img/test.png" /&gt;
 $img = \Html::img($theme->asset_path('img/test.png'));
 </code></pre>
 						</td>
@@ -294,7 +290,7 @@ $img = \Html::img($theme->asset_path('img/test.png'));
 			<article>
 				<h4 class="method" id="method_add_path">add_path($path)</h4>
 				<p>
-					The <strong>add_path</strong> method allows you to add a theme path at runtime.
+					Позволяет добавить путь до папки с темплейтами.
 				</p>
 				<table class="method">
 					<tbody>
@@ -316,7 +312,7 @@ $img = \Html::img($theme->asset_path('img/test.png'));
 									<th><kbd>$path</kbd></th>
 									<td><em>string</em></td>
 									<td><strong>required</strong></td>
-									<td>The path to a folder containing themes.</td>
+									<td>Путь к папке с темплейтами.</td>
 								</tr>
 							</table>
 						</td>
@@ -331,7 +327,7 @@ $img = \Html::img($theme->asset_path('img/test.png'));
 							<pre class="php"><code>// Get the default instance
 $theme = \Theme::instance();
 
-// add the 'mythemes' folder to the theme search paths
+// добавит папку 'mythemes'
 $theme->add_path(DOCROOT.'mythemes');
 </code></pre>
 						</td>
@@ -343,7 +339,7 @@ $theme->add_path(DOCROOT.'mythemes');
 			<article>
 				<h4 class="method" id="method_add_paths">add_paths(array $paths)</h4>
 				<p>
-					The <strong>add_paths</strong> method allows you to add multiple theme paths at runtime.
+					Тоже самое, что и метод выше, тут можно задать сразу несколько папок с темплейтами массивом.
 				</p>
 				<table class="method">
 					<tbody>
@@ -365,7 +361,7 @@ $theme->add_path(DOCROOT.'mythemes');
 									<th><kbd>$paths</kbd></th>
 									<td><em>array</em></td>
 									<td><strong>required</strong></td>
-									<td>The path to a folder containing themes.</td>
+									<td>Массив.</td>
 								</tr>
 							</table>
 						</td>
@@ -380,7 +376,7 @@ $theme->add_path(DOCROOT.'mythemes');
 							<pre class="php"><code>// Get the default instance
 $theme = \Theme::instance();
 
-// add the 'mythemes' folder to the theme search paths
+// добавит папку 'mythemes' с темплейтами
 $theme->add_paths(
 	array(
 		DOCROOT.'mythemes'
@@ -396,7 +392,7 @@ $theme->add_paths(
 			<article>
 				<h4 class="method" id="method_active">active($theme = null)</h4>
 				<p>
-					The <strong>active</strong> method allows you to set the active theme. It will return the active theme definition array.
+					Назначает активную тему или если параметр не указан возвращает текущую активную тему.
 				</p>
 				<table class="method">
 					<tbody>
@@ -418,7 +414,7 @@ $theme->add_paths(
 									<th><kbd>$theme</kbd></th>
 									<td><em>string</em></td>
 									<td><pre class="php"><code>null</code></pre></td>
-									<td>The name of the active theme to select. If <strong>null</strong>, it will return the current active theme.</td>
+									<td>Имя темы которую вы хотите назначить активной. Если null, то вернет текущую активную тему.</td>
 								</tr>
 							</table>
 						</td>
@@ -429,15 +425,15 @@ $theme->add_paths(
 					</tr>
 					<tr>
 						<th>Throws</th>
-						<td>\ThemeException, when the requested theme could not be found.</td>
+						<td>Выбросит \ThemeException в случает, когда указанной темы нет или не найдена.</td>
 					</tr>
 					<tr>
 						<th>Example</th>
 						<td>
-							<pre class="php"><code>// Get the default instance
+							<pre class="php"><code>// Создаст инстанс
 $theme = \Theme::instance();
 
-// set the active theme to 'darkglow', and return its definition
+// назначит 'darkglow' активной темой, и вернет это объявление
 $active = $theme->active('darkglow');
 </code></pre>
 						</td>
@@ -449,7 +445,7 @@ $active = $theme->active('darkglow');
 			<article>
 				<h4 class="method" id="method_fallback">fallback($theme = null)</h4>
 				<p>
-					The <strong>fallback</strong> method allows you to set the fallback theme. It will return the fallback theme definition array.
+					Назначает резервную/фоновую тему.
 				</p>
 				<table class="method">
 					<tbody>

@@ -24,6 +24,7 @@
 					<p>
 						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
 						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+                        <span>Форум: <a href="http://forum.fuelphp-framework.ru">Forum.fuelphp-framework.ru</a></span>
 					</p>
 				</form>
 			</div>
@@ -44,32 +45,26 @@
 			<h2>Email package</h2>
 
 			<p>
-				The Email package provides an interface for sending email using either php's mail function, sendmail
-				or SMTP. The package supports:
+				Данный пакет представляет интерфейс для отправки email, использует php функции для работы с почтой из sendmail и SMTP. Возможности:
 			</p>
 			
 			<ul>
-				<li>Plain-text mails</li>
-				<li>HTML mails, with and optional alternative body</li>
-				<li>Attachments</li>
-				<li>Inline attachments.</li>
+				<li>Отправка обычных текстовых писем</li>
+				<li>Отправка HTML писем</li>
+				<li>Отправка прикрепленных файлов</li>
+				<li>Inline attachments</li>
 			</ul>
 			
 			<section>
 			
-				<h3 id="installation">Installation</h3>
+				<h3 id="installation">Подключение</h3>
 				
-				<p>
-					The Email package is part of the official download (since version 1.1). You will have to enable the package
-					either in the app config or include it on the fly.
-				</p>
-				
-				<pre class="php"><code>// Inside app/config/config.php under 'always_load'
+				<pre class="php"><code>// Внутри app/config/config.php под 'always_load'
 'packages' => array(
 	'email',
 ),
 
-// Or in a controller:
+// Или в контроллере:
 
 \Package::load('email');
 </code></pre>
@@ -78,13 +73,13 @@
 			
 			<section>
 			
-				<h3 id="configuration">Configuration</h3>
+				<h3 id="configuration">Настройки</h3>
 				
 				<p>
-					Create (or copy from the package) a config file at <em>app/config/email.php</em>. And change the settings needed.
+					Можно создать новый конфигурационный файл <em>app/config/email.php</em> или скопировать из папки пакета стандартный файл настроек заменив в нем настройки на нужные.
 				</p>
 				
-				<h4 id="general_config">General configuration</h4>
+				<h4 id="general_config">Основые настройки</h4>
 				
 				<table class="config">
 					<tbody>
@@ -99,7 +94,7 @@
 							<td>array</td>
 							<td><pre class="php"><code>array( /* default config array */ )</code></pre></td>
 							<td>
-								Default settings for every setup group to use. In your setup group you overwrite these values.
+								Настройки по умолчанию, которые будут заменены вашими(если вы их зададите)
 							</td>
 						</tr>
 						<tr>
@@ -107,7 +102,7 @@
 							<td>string</td>
 							<td><pre class="php"><code>'default'</code></pre></td>
 							<td>
-								The default setup to use if none is profided.
+								Настройка по умолчанию, используется если вы не зададите свои собственные настройки.
 							</td>
 						</tr>
 						<tr>
@@ -117,13 +112,13 @@
 		'default' => array(),
 	)</code></pre></td>
 							<td>
-								A setups array with one default setup. Add your own or modify the default setup group.
+								Массив насроек с одной настройкой по умолчанию. Можете модифицироавть её или добавить свою собственную.
 							</td>
 						</tr>
 					</tbody>
 				</table>
 				
-				<h4 id="group_config">Group configuration</h4>
+				<h4 id="group_config">Групповые настройки</h4>
 				
 				<table class="config">
 					<tbody>
@@ -146,7 +141,7 @@
 							<td>string</td>
 							<td><pre class="php"><code>'mail'</code></pre></td>
 							<td>
-								The driver to use. Can be mail, smtp or sendmail. Must be lowercase.
+								Используемый драйвер для отправки почты. Может быть mail, smtp или sendmail. Обязателен нижний регистр при указнии этой настройки.
 							</td>
 						</tr>
 						<tr>
@@ -154,7 +149,7 @@
 							<td>boolean</td>
 							<td><pre class="php"><code>false</code></pre></td>
 							<td>
-								Whether to send as html mail or as plain mail.
+								Определяет как будет отправлено письмо, как html или как обычный текст.
 							</td>
 						</tr>
 						<tr>
@@ -162,7 +157,7 @@
 							<td>string</td>
 							<td><pre class="php"><code>'utf-8'</code></pre></td>
 							<td>
-								The email message charset.
+								Кодировка.
 							</td>
 						</tr>
 						<tr>
@@ -170,7 +165,7 @@
 							<td>string</td>
 							<td><pre class="php"><code>'8bit'</code></pre></td>
 							<td>
-								The email message encoding. Can be 7bit, 8bit, quoted-printable and base64.
+								Формат транспортного кодирования. Может быть 7bit, 8bit, quoted-printable и base64.
 							</td>
 						</tr>
 						<tr>
@@ -178,7 +173,7 @@
 							<td>string</td>
 							<td><pre class="php"><code>\Email::P_NORMAL</code></pre></td>
 							<td>
-								The email's priority. Can be:
+								Приоритет письма. Может быть:
 								<ul style="padding-bottom: 5px; padding-top: 5px;">
 									<li>\Email::P_LOWEST</li>
 									<li>\Email::P_LOW</li>
@@ -193,7 +188,7 @@
 							<td>string|false</td>
 							<td><pre class="php"><code>false</code></pre></td>
 							<td>
-								Use this to set a default from email address.
+								Обратный адрес email отправителя, по умолчанию пустое поле.
 							</td>
 						</tr>
 						<tr>
@@ -201,7 +196,7 @@
 							<td>string|false</td>
 							<td><pre class="php"><code>false</code></pre></td>
 							<td>
-								Use this to set a default from name.
+								Имя отправителя.
 							</td>
 						</tr>
 						<tr>
@@ -209,7 +204,7 @@
 							<td>bool</td>
 							<td><pre class="php"><code>true</code></pre></td>
 							<td>
-								Set to false if you don't want to validate the addresses. Can result in failure in sending.
+								Включение/отключение валидации. Проверяет успешность отправления письма.
 							</td>
 						</tr>
 						<tr>
@@ -217,7 +212,7 @@
 							<td>bool</td>
 							<td><pre class="php"><code>true</code></pre></td>
 							<td>
-								Whether to auto attach (background) images from a html body.
+								Этой настройкой ожно задать автоприкрепление (background) фоновое изображение html body.
 							</td>
 						</tr>
 						<tr>
@@ -225,7 +220,7 @@
 							<td>bool</td>
 							<td><pre class="php"><code>true</code></pre></td>
 							<td>
-								Whether to automatically generate an alt body from a html body.
+								Автоматическая генерация html body.
 							</td>
 						</tr>
 						<tr>
@@ -233,7 +228,7 @@
 							<td>int|false</td>
 							<td><pre class="php"><code>76</code></pre></td>
 							<td>
-								Word wrap size. If lower than anything above 0 will wrap. This setting is ignored when using base64 or quoted-printable.
+								Перенос по словам. Вы можете задать свое цифровое значение. Эта настройка проигнорируется когда используется base64 или quoted-printable.
 							</td>
 						</tr>
 						<tr>
@@ -241,7 +236,7 @@
 							<td>string</td>
 							<td><pre class="php"><code>'/usr/sbin/sendmail'</code></pre></td>
 							<td>
-								Path to sendmail.
+								Путь к sendmail.
 							</td>
 						</tr>
 						<tr>
@@ -281,7 +276,7 @@
 							<td>string</td>
 							<td><pre class="php"><code>''</code></pre></td>
 							<td>
-								SMTP timeout. Increase this when a SMTP servers times out during the sending proccess.
+								SMTP timeout.
 							</td>
 						</tr>
 						<tr>
@@ -297,9 +292,9 @@
 							<td>array</td>
 							<td><pre class="php"><code>array('');</code></pre></td>
 							<td>
-								Array of attachment paths. When adding attachments,
-								the driver will look in these paths and attach the first on found.
-								Leave the empty ('') in there to allow absolute paths.
+								Массив путей для прикреплений. Когда будут добавляться прикрепления,
+								драйвер будет проверять эти пути.
+								Оставив пустым ('') используется абсолютный путь.
 							</td>
 						</tr>
 					</tbody>

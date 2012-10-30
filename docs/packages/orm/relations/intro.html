@@ -24,6 +24,7 @@
 					<p>
                         <span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
 						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+                        <span>Форум: <a href="http://forum.fuelphp-framework.ru">Forum.fuelphp-framework.ru</a></span>
 					</p>
 				</form>
 			</div>
@@ -138,17 +139,15 @@
                     что некоторые (или все) отношения будут выбраны в исходном запросе. Lazy loading подразумевает что отношения не выберутся пока вы их не запросите.
                 </p>
 
-				<pre class="php"><code>// eager loading, using joins:
+				<pre class="php"><code>// жадная загрузка с использованием join:
 $post = Model_Post::find('all', array('related' => array('comments')));
-// or
+// или
 $post = Model_Post::find()->related('comments')->get();
-// $post->comments доступна без каких-либо дополнительных запросов после этого
+// отметим, что $post->comments будет доступна и без этих запросов(смотрите ниже)
 
 // или lazy loading, он без сцеплений, один запрос - один ответ
-// первый получит "post"
-$post = Model_Post::find('first');
-// сейчас запрос не послан (но не загружен), его загрузка происходит со следующим запросом, без сцеплений, автоматически
-$comments = $post->comments;</code></pre>
+$post = Model_Post::find('first');// получает объект первой статьи + объекты всех связанных моделей
+$comments = $post->comments;// получает объект связанных с текущей статьёй комментариев</code></pre>
 
 				<h3 id="usage_rel_conditions">Использование where/order_by операторов</h3>
 

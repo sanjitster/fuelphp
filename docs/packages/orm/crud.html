@@ -24,6 +24,7 @@
 					<p>
 						<span>Нужна помощь с переводом. Skype: SunwayOS</span><br>
 						<span>Группа вконтакте: <a href="http://vk.com/fuelphp">FuelPHP</a></span>
+                        <span>Форум: <a href="http://forum.fuelphp-framework.ru">Forum.fuelphp-framework.ru</a></span>
 					</p>
 				</form>
 			</div>
@@ -48,17 +49,22 @@
 
                 <iframe width="640" height="360" src="http://www.youtube.com/embed/uAMmxDj3Ehw" frameborder="0" allowfullscreen></iframe>
 
-				<p>После того как вы настроили свою Модель пора приступить к выполнению различных действий с вашей БД: Созданию, Чтению, Обновлению и Удалению.</p>
+				<p>После того как вы настроили свою Модель пора приступить к выполнению различных действий с вашей БД: Созданию, Чтению, Обновлению и Удалению. Важно понимать, что вы взаимодействуете не с самой БД, а c объектом. Часто не понимание этого момента может завести в тупик. Например перед вами задача сделать пагинацию, вам нужно использовать offset, limit:</p>
+                <pre class="php"><code>//Неправильно
+$posts = \Blog\Model_Post::find()->where('id','>',0)->offset(2)->limit(1)->get();
+$count = \Blog\Model_Post::find()->where('id','>',0)->count();
+//Правильно
+$posts = \Blog\Model_Post::find()->offset(2)->limit(1)->get();
+$count = \Blog\Model_Post::find()->count();</code></pre>
+                <p>Из этого примера следует - так как это объект, то он уже содержит в себе все поля таблицы, поэтому нет нужды делать чтото вроде этого select('*') или find()->where('id','>',0) - это попросту ненужно.</p>
+
 
 				<article id="create">
 					<h2>Create(Создать)</h2>
 
-					<pre class="php"><code>
-$new = new Model_Example(); // или так - $new = Model_Example::forge()
+					<pre class="php"><code>$new = new Model_Example(); // или так - $new = Model_Example::forge()
 $new->property = 'something'; //Передадим "какоето" значение
-$new->save(); // Сохраним в базе
-
-</code></pre>
+$new->save(); // Сохраним в базе</code></pre>
 
 					<p class="note">После выполнения <kbd>save()</kbd> модель выполнит сохранение в базу и если вы используете
 						<kbd>auto_increment</kbd> то primary key будет автоматически установлен на экземпляре после успешного
@@ -80,7 +86,7 @@ $new = Model_Example::forge($props)->save(); // Передаем и сохран
 					<h2>Read(Чтение)</h2>
 
 					<p>Метод find() может быть использован тремя способами: поиск по id (primary
-						key), поиск first/last или поиск всех записей отвечающих условию, или для сцепления условий.
+						key), поиск first/last или поиск всех записей отвечающих условию. Также вы можете использовать find() без параметров для сцепления операторов.
                         Примеры всевозможных методов выборки (where, or_where, order_by, etc) внизу этой страницы.</p>
 
 					<h3 id="find_by_id">Find by ID</h3>
