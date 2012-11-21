@@ -548,7 +548,8 @@ panes.orm = {
 			"Introduction":			"packages/orm/observers/intro.html",
 			"Included observers":	"packages/orm/observers/included.html",
 			"Writing your own":		"packages/orm/observers/creating.html"
-		}
+		},
+        "EAV": "packages/orm/eav.html"
 	}
 };
 
